@@ -1,0 +1,1907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
+    <title>SomaZon · Marketplace</title>
+
+    <!-- Google Font (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet" />
+
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
+
+    <style>
+        /* ===== RESET & BASE ===== */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #f8fafc;
+            --black: #000000;
+            --gold: #eab308;
+            --white: #ffffff;
+            --dash: #cbd5e1;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --radius: 16px;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+            --transition: 0.25s ease;
+            --font: 'Inter', 'Segoe UI', system-ui, sans-serif;
+        }
+
+        html {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 0 20px 100px 20px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--black);
+            border-radius: 12px;
+        }
+
+        /* ===== TYPOGRAPHY ===== */
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* ===== HEADER / NAV ===== */
+        .site-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 0 14px 0;
+            border-bottom: 2px dashed var(--dash);
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 12px 20px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-icon {
+            font-size: 28px;
+            font-weight: 700;
+            background: var(--black);
+            color: var(--gold);
+            padding: 4px 12px 4px 10px;
+            border-radius: 40px;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .logo-icon span {
+            color: var(--white);
+        }
+
+        .logo-sub {
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--text-muted);
+            margin-left: 2px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        /* ===== USER PROFILE BUTTON ("ME") ===== */
+        .user-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        .user-btn:hover {
+            background: rgba(0, 0, 0, 0.04);
+        }
+
+        .user-btn .avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--black);
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 600;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .user-btn .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .user-btn .avatar-placeholder {
+            background: var(--black);
+            color: var(--gold);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .user-btn .label {
+            line-height: 1.2;
+        }
+
+        .user-btn.active .avatar {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.25);
+        }
+
+        /* ===== SELL BUTTON (header) ===== */
+        .btn-sell-header {
+            background: var(--black);
+            color: var(--gold);
+            border: none;
+            padding: 10px 22px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 15px;
+            font-family: var(--font);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+            letter-spacing: 0.2px;
+        }
+
+        .btn-sell-header:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+        }
+
+        .btn-sell-header .plus {
+            font-size: 22px;
+            line-height: 1;
+            font-weight: 300;
+        }
+
+        /* ===== FLOATING SELL BUTTON (mobile friendly) ===== */
+        .btn-sell-float {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 999;
+            background: var(--black);
+            color: var(--gold);
+            border: none;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            font-size: 34px;
+            font-weight: 300;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .btn-sell-float:hover {
+            transform: scale(1.06);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+        }
+
+        .btn-sell-float .label-float {
+            display: none;
+        }
+
+        @media (min-width: 640px) {
+            .btn-sell-float {
+                width: auto;
+                border-radius: 60px;
+                padding: 0 28px;
+                gap: 10px;
+                font-size: 18px;
+                font-weight: 600;
+            }
+            .btn-sell-float .label-float {
+                display: inline;
+            }
+            .btn-sell-float .plus {
+                font-size: 26px;
+                font-weight: 300;
+            }
+        }
+
+        /* ===== PAGE CONTAINERS ===== */
+        .page {
+            display: none;
+            animation: fadeUp 0.35s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== MARKETPLACE GRID ===== */
+        .marketplace-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .marketplace-header h2 {
+            font-size: 26px;
+        }
+
+        .marketplace-header .count {
+            font-size: 15px;
+            font-weight: 400;
+            color: var(--text-muted);
+            background: var(--white);
+            padding: 6px 18px;
+            border-radius: 60px;
+            border: 1px dashed var(--dash);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 24px;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            border: 1px dashed var(--dash);
+            padding: 16px 16px 18px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.07);
+        }
+
+        .product-card .img-wrap {
+            width: 100%;
+            aspect-ratio: 1/1;
+            background: var(--bg);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            position: relative;
+            border: 1px solid #e9edf2;
+        }
+
+        .product-card .img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .product-card .img-wrap .img-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 13px;
+            background: #f1f5f9;
+        }
+
+        .product-card .category-tag {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: var(--black);
+            color: var(--gold);
+            padding: 3px 12px;
+            border-radius: 40px;
+            align-self: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .product-card h3 {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+
+        .product-card .price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--black);
+            margin-bottom: 10px;
+        }
+
+        .product-card .price small {
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--text-muted);
+        }
+
+        .product-card .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: auto;
+            padding-top: 12px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .btn-buy {
+            background: var(--black);
+            color: var(--white);
+            border: none;
+            padding: 8px 18px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 13px;
+            font-family: var(--font);
+            cursor: pointer;
+            transition: var(--transition);
+            flex: 1;
+        }
+
+        .btn-buy:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        .btn-buy:active {
+            transform: scale(0.96);
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+            background: var(--white);
+            border-radius: var(--radius);
+            border: 2px dashed var(--dash);
+        }
+
+        .empty-state .emoji {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        /* ===== SELL PAGE / MODAL ===== */
+        #sell-page {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .sell-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            border: 1px dashed var(--dash);
+            padding: 28px 30px 34px;
+            box-shadow: var(--shadow);
+        }
+
+        .sell-card h2 {
+            font-size: 26px;
+            margin-bottom: 6px;
+        }
+
+        .sell-card .sub {
+            color: var(--text-muted);
+            font-size: 15px;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .form-group label .required {
+            color: #dc2626;
+            margin-left: 2px;
+        }
+
+        .form-group .hint {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-left: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-family: var(--font);
+            font-size: 15px;
+            background: var(--white);
+            transition: var(--transition);
+            color: var(--text);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--black);
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        /* ===== IMAGE UPLOAD BOXES ===== */
+        .image-upload-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin-top: 4px;
+        }
+
+        .upload-box {
+            aspect-ratio: 1/1;
+            border: 2px dashed var(--dash);
+            border-radius: 14px;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            min-height: 130px;
+        }
+
+        .upload-box:hover {
+            border-color: var(--black);
+            background: #f1f5f9;
+        }
+
+        .upload-box.drag-over {
+            border-color: var(--gold);
+            background: rgba(234, 179, 8, 0.06);
+        }
+
+        .upload-box .upload-icon {
+            font-size: 28px;
+            line-height: 1;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .upload-box .upload-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 0 6px;
+            font-weight: 500;
+        }
+
+        .upload-box .upload-label .badge {
+            display: inline-block;
+            background: var(--black);
+            color: var(--white);
+            font-size: 9px;
+            padding: 1px 10px;
+            border-radius: 40px;
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
+        .upload-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .upload-box .remove-img {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            opacity: 0;
+        }
+
+        .upload-box:hover .remove-img {
+            opacity: 1;
+        }
+
+        .upload-box .remove-img:hover {
+            background: #dc2626;
+        }
+
+        .upload-box .file-input {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .upload-box.has-image .upload-icon,
+        .upload-box.has-image .upload-label {
+            display: none;
+        }
+
+        .upload-box .preview-overlay {
+            display: none;
+        }
+
+        .upload-box.has-image .preview-overlay {
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .upload-box.has-image .preview-overlay img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .btn-publish {
+            background: var(--black);
+            color: var(--gold);
+            border: none;
+            padding: 14px 32px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 17px;
+            font-family: var(--font);
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            margin-top: 8px;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-publish:hover {
+            background: var(--gold);
+            color: var(--black);
+            transform: scale(1.01);
+        }
+
+        .btn-publish:active {
+            transform: scale(0.97);
+        }
+
+        .btn-publish:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ===== "ME" PAGE ===== */
+        #me-page {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .me-layout {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 28px;
+            background: var(--white);
+            border-radius: var(--radius);
+            border: 1px dashed var(--dash);
+            padding: 24px 20px 28px;
+            box-shadow: var(--shadow);
+            min-height: 460px;
+        }
+
+        @media (max-width: 640px) {
+            .me-layout {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px 16px;
+            }
+        }
+
+        .me-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            border-right: 1px solid #f1f5f9;
+            padding-right: 18px;
+        }
+
+        @media (max-width: 640px) {
+            .me-sidebar {
+                border-right: none;
+                border-bottom: 1px solid #f1f5f9;
+                padding-right: 0;
+                padding-bottom: 16px;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+        }
+
+        .me-sidebar .me-tab {
+            background: none;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-family: var(--font);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .me-sidebar .me-tab:hover {
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .me-sidebar .me-tab.active {
+            background: var(--black);
+            color: var(--gold);
+        }
+
+        .me-sidebar .me-tab .icon {
+            font-size: 18px;
+        }
+
+        .me-content {
+            padding-left: 4px;
+        }
+
+        .me-content .tab-pane {
+            display: none;
+            animation: fadeUp 0.25s ease;
+        }
+
+        .me-content .tab-pane.active {
+            display: block;
+        }
+
+        .me-content h3 {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .me-content .desc {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        /* Profile picture upload */
+        .profile-pic-section {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .profile-pic-wrap {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: var(--black);
+            border: 3px solid var(--gold);
+            overflow: hidden;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .profile-pic-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-pic-wrap .placeholder {
+            color: var(--gold);
+            font-size: 34px;
+            font-weight: 600;
+        }
+
+        .profile-pic-upload-btn {
+            background: var(--black);
+            color: var(--white);
+            border: none;
+            padding: 8px 22px;
+            border-radius: 60px;
+            font-family: var(--font);
+            font-weight: 500;
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .profile-pic-upload-btn:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        .profile-pic-upload-btn input {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 480px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* KYC */
+        .kyc-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid #f1f5f9;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .kyc-item:last-child {
+            border-bottom: none;
+        }
+
+        .kyc-item .info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .kyc-item .info .icon {
+            font-size: 28px;
+        }
+
+        .kyc-item .info .name {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .kyc-item .info .sub {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .kyc-status {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 16px;
+            border-radius: 40px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .kyc-status.verified {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .kyc-status.pending {
+            background: #fef9c3;
+            color: #a16207;
+        }
+
+        .kyc-status.unverified {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .kyc-upload-btn {
+            background: var(--black);
+            color: var(--white);
+            border: none;
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-family: var(--font);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .kyc-upload-btn:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        .kyc-upload-btn input {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .support-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .support-actions .btn-support {
+            background: var(--black);
+            color: var(--white);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-family: var(--font);
+            font-weight: 500;
+            font-size: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            width: fit-content;
+        }
+
+        .support-actions .btn-support:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            body {
+                padding: 0 14px 100px 14px;
+            }
+
+            .site-header {
+                padding: 12px 0 10px;
+                margin-bottom: 18px;
+            }
+
+            .logo-icon {
+                font-size: 22px;
+                padding: 2px 10px 2px 8px;
+            }
+
+            .btn-sell-header {
+                padding: 6px 14px;
+                font-size: 13px;
+            }
+            .btn-sell-header .plus {
+                font-size: 18px;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 14px;
+            }
+
+            .sell-card {
+                padding: 18px 16px 22px;
+            }
+
+            .image-upload-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 10px;
+            }
+
+            .me-layout {
+                padding: 16px 12px;
+            }
+
+            .profile-pic-wrap {
+                width: 68px;
+                height: 68px;
+            }
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--black);
+            color: var(--gold);
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-weight: 500;
+            font-size: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+            z-index: 9999;
+            font-family: var(--font);
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media (min-width: 640px) {
+            .toast {
+                bottom: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast" class="toast"></div>
+
+    <!-- ===== HEADER ===== -->
+    <header class="site-header">
+        <div class="logo-area">
+            <div class="logo-icon">S<span>Z</span></div>
+            <div>
+                <div style="font-weight:700; font-size:20px; letter-spacing:-0.3px;">SomaZon</div>
+                <div class="logo-sub">marketplace</div>
+            </div>
+        </div>
+
+        <div class="nav-actions">
+            <!-- Sell Button (desktop) -->
+            <button class="btn-sell-header" id="navSellBtn" aria-label="Sell">
+                <span class="plus">+</span> Sell
+            </button>
+
+            <!-- "Me" User Button -->
+            <button class="user-btn" id="meBtn" aria-label="My account">
+                <span class="avatar" id="avatarDisplay">
+                    <span class="avatar-placeholder" id="avatarPlaceholder">👤</span>
+                </span>
+                <span class="label">Me</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ===== PAGE: MARKETPLACE (HOME) ===== -->
+    <section class="page active" id="home-page">
+        <div class="marketplace-header">
+            <h2>🛒 Marketplace</h2>
+            <span class="count" id="productCount">0 items</span>
+        </div>
+
+        <div class="product-grid" id="productGrid">
+            <!-- products injected by JS -->
+            <div class="empty-state" id="emptyState">
+                <span class="emoji">📦</span>
+                <p style="font-size:18px; font-weight:500; color:var(--text);">No products yet</p>
+                <p style="font-size:14px; margin-top:4px;">Click <strong>+ Sell</strong> to list your first item!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PAGE: SELL ===== -->
+    <section class="page" id="sell-page">
+        <div class="sell-card">
+            <h2>✨ List a Product</h2>
+            <p class="sub">Fill in the details and publish to the marketplace.</p>
+
+            <form id="sellForm" novalidate>
+                <!-- Category -->
+                <div class="form-group">
+                    <label>Category <span class="required">*</span></label>
+                    <select class="form-control" id="productCategory" required>
+                        <option value="">Select category…</option>
+                        <option value="Electronics &amp; Tech">📱 Electronics &amp; Tech</option>
+                        <option value="Fashion &amp; Apparel">👕 Fashion &amp; Apparel</option>
+                        <option value="Trading Assets">📈 Trading Assets</option>
+                        <option value="Services">🛠️ Services</option>
+                        <option value="Home &amp; Living">🏠 Home &amp; Living</option>
+                        <option value="Other">🧩 Other</option>
+                    </select>
+                </div>
+
+                <!-- Title -->
+                <div class="form-group">
+                    <label>Product Title <span class="required">*</span></label>
+                    <input class="form-control" id="productTitle" placeholder="e.g. Vintage Leather Jacket" required />
+                </div>
+
+                <!-- Price -->
+                <div class="form-group">
+                    <label>Price (USD) <span class="required">*</span></label>
+                    <input class="form-control" id="productPrice" type="number" step="0.01" placeholder="49.99" required />
+                </div>
+
+                <!-- Description -->
+                <div class="form-group">
+                    <label>Description <span class="required">*</span></label>
+                    <textarea class="form-control" id="productDesc" placeholder="Describe your item…" required></textarea>
+                </div>
+
+                <!-- Image Uploads -->
+                <div class="form-group">
+                    <label>Product Photos <span class="required">*</span> <span class="hint">(first is required)</span></label>
+                    <div class="image-upload-grid" id="imageUploadGrid">
+                        <!-- Image 1 (required) -->
+                        <div class="upload-box" id="uploadBox1" data-index="0">
+                            <div class="upload-icon">🖼️</div>
+                            <div class="upload-label">Main Photo <span class="badge">required</span></div>
+                            <input class="file-input" type="file" accept="image/*" />
+                            <div class="preview-overlay"></div>
+                            <button class="remove-img" type="button" aria-label="Remove image">×</button>
+                        </div>
+                        <!-- Image 2 (optional) -->
+                        <div class="upload-box" id="uploadBox2" data-index="1">
+                            <div class="upload-icon">🖼️</div>
+                            <div class="upload-label">Photo 2 <span class="badge">optional</span></div>
+                            <input class="file-input" type="file" accept="image/*" />
+                            <div class="preview-overlay"></div>
+                            <button class="remove-img" type="button" aria-label="Remove image">×</button>
+                        </div>
+                        <!-- Image 3 (optional) -->
+                        <div class="upload-box" id="uploadBox3" data-index="2">
+                            <div class="upload-icon">🖼️</div>
+                            <div class="upload-label">Photo 3 <span class="badge">optional</span></div>
+                            <input class="file-input" type="file" accept="image/*" />
+                            <div class="preview-overlay"></div>
+                            <button class="remove-img" type="button" aria-label="Remove image">×</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-publish" type="submit" id="publishBtn">🚀 Publish Product</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- ===== PAGE: ME (User Portal) ===== -->
+    <section class="page" id="me-page">
+        <div class="me-layout">
+            <!-- Sidebar -->
+            <div class="me-sidebar">
+                <button class="me-tab active" data-tab="profile">
+                    <span class="icon">👤</span> My Profile
+                </button>
+                <button class="me-tab" data-tab="kyc">
+                    <span class="icon">🔒</span> Verification
+                </button>
+                <button class="me-tab" data-tab="support">
+                    <span class="icon">💬</span> Support
+                </button>
+            </div>
+
+            <!-- Content -->
+            <div class="me-content">
+                <!-- PROFILE TAB -->
+                <div class="tab-pane active" id="tab-profile">
+                    <h3>My Profile</h3>
+                    <p class="desc">Update your personal information and profile picture.</p>
+
+                    <div class="profile-pic-section">
+                        <div class="profile-pic-wrap" id="profilePicWrap">
+                            <span class="placeholder" id="profilePlaceholder">👤</span>
+                            <img id="profilePicImg" style="display:none;" alt="Profile" />
+                        </div>
+                        <button class="profile-pic-upload-btn">
+                            📷 Upload Photo
+                            <input type="file" accept="image/*" id="profilePicInput" />
+                        </button>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input class="form-control" id="profileName" placeholder="Jane Doe" value="Alex Rivera" />
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input class="form-control" id="profileEmail" placeholder="alex@example.com" value="alex.r@example.com" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input class="form-control" id="profilePhone" placeholder="+1 234 567 890" value="+1 415 555 0199" />
+                        </div>
+                        <div class="form-group">
+                            <label>Country</label>
+                            <input class="form-control" id="profileCountry" placeholder="United States" value="United States" />
+                        </div>
+                    </div>
+
+                    <button class="btn-publish" style="width:auto; padding:10px 32px; margin-top:12px;" id="saveProfileBtn">💾 Save Profile</button>
+                </div>
+
+                <!-- KYC TAB -->
+                <div class="tab-pane" id="tab-kyc">
+                    <h3>🔐 Verification (KYC)</h3>
+                    <p class="desc">Upload identity documents to verify your account. Broker-style compliance.</p>
+
+                    <div class="kyc-item">
+                        <div class="info">
+                            <span class="icon">🪪</span>
+                            <div>
+                                <div class="name">Passport</div>
+                                <div class="sub">International travel document</div>
+                            </div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                            <span class="kyc-status unverified" id="kycPassportStatus">Not Verified</span>
+                            <button class="kyc-upload-btn" data-target="passport">
+                                Upload
+                                <input type="file" accept="image/*" class="kyc-file-input" data-target="passport" />
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="kyc-item">
+                        <div class="info">
+                            <span class="icon">🆔</span>
+                            <div>
+                                <div class="name">ID Card</div>
+                                <div class="sub">National identity card</div>
+                            </div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                            <span class="kyc-status unverified" id="kycIdStatus">Not Verified</span>
+                            <button class="kyc-upload-btn" data-target="idcard">
+                                Upload
+                                <input type="file" accept="image/*" class="kyc-file-input" data-target="idcard" />
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="kyc-item">
+                        <div class="info">
+                            <span class="icon">🚗</span>
+                            <div>
+                                <div class="name">Driver's License</div>
+                                <div class="sub">State-issued license</div>
+                            </div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                            <span class="kyc-status unverified" id="kycLicenseStatus">Not Verified</span>
+                            <button class="kyc-upload-btn" data-target="license">
+                                Upload
+                                <input type="file" accept="image/*" class="kyc-file-input" data-target="license" />
+                            </button>
+                        </div>
+                    </div>
+
+                    <p style="margin-top:20px; font-size:13px; color:var(--text-muted); border-top:1px solid #f1f5f9; padding-top:16px;">
+                        ⚡ All documents are encrypted and handled securely.
+                    </p>
+                </div>
+
+                <!-- SUPPORT TAB -->
+                <div class="tab-pane" id="tab-support">
+                    <h3>💬 Support &amp; Contact</h3>
+                    <p class="desc">Reach out to our team for help with your account or listings.</p>
+
+                    <div class="support-actions">
+                        <a class="btn-support" href="mailto:support@somazon.com?subject=Support%20Request">
+                            📧 support@somazon.com
+                        </a>
+                        <a class="btn-support" href="mailto:help@somazon.com?subject=Help%20with%20my%20account">
+                            🆘 help@somazon.com
+                        </a>
+                        <button class="btn-support" style="background:var(--gold); color:var(--black);" id="supportChatBtn">
+                            💬 Start Live Chat (simulated)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FLOATING SELL BUTTON ===== -->
+    <button class="btn-sell-float" id="floatSellBtn" aria-label="Sell">
+        <span class="plus">+</span>
+        <span class="label-float">Sell</span>
+    </button>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // ============================================================
+            //  SUPABASE INIT
+            // ============================================================
+            const SUPABASE_URL = 'https://ywajfrskmmehsgckgnbd.supabase.co';
+            const SUPABASE_ANON_KEY =
+                'sb_publishable_-djHA95UQyk5DhIF1gtTxA_QD9vnmRa';
+            const STORAGE_BUCKET = 'products';
+
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+            // ============================================================
+            //  STATE
+            // ============================================================
+            const state = {
+                products: [],
+                profile: {
+                    name: 'Alex Rivera',
+                    email: 'alex.r@example.com',
+                    phone: '+1 415 555 0199',
+                    country: 'United States',
+                    avatar: null,
+                },
+                kyc: {
+                    passport: 'unverified',
+                    idcard: 'unverified',
+                    license: 'unverified',
+                },
+                productImages: [null, null, null], // dataURLs for preview
+            };
+
+            // ============================================================
+            //  DOM REFS
+            // ============================================================
+            const $ = (sel) => document.querySelector(sel);
+            const $$ = (sel) => document.querySelectorAll(sel);
+
+            const pages = {
+                home: $('#home-page'),
+                sell: $('#sell-page'),
+                me: $('#me-page'),
+            };
+
+            const productGrid = $('#productGrid');
+            const emptyState = $('#emptyState');
+            const productCount = $('#productCount');
+
+            const sellForm = $('#sellForm');
+            const categoryEl = $('#productCategory');
+            const titleEl = $('#productTitle');
+            const priceEl = $('#productPrice');
+            const descEl = $('#productDesc');
+            const publishBtn = $('#publishBtn');
+
+            const uploadBoxes = [
+                $('#uploadBox1'),
+                $('#uploadBox2'),
+                $('#uploadBox3'),
+            ];
+
+            const avatarDisplay = $('#avatarDisplay');
+            const avatarPlaceholder = $('#avatarPlaceholder');
+            const profilePicWrap = $('#profilePicWrap');
+            const profilePicImg = $('#profilePicImg');
+            const profilePlaceholder = $('#profilePlaceholder');
+            const profilePicInput = $('#profilePicInput');
+
+            const profileName = $('#profileName');
+            const profileEmail = $('#profileEmail');
+            const profilePhone = $('#profilePhone');
+            const profileCountry = $('#profileCountry');
+            const saveProfileBtn = $('#saveProfileBtn');
+
+            const toast = $('#toast');
+            let toastTimer = null;
+
+            // ============================================================
+            //  TOAST
+            // ============================================================
+            function showToast(msg, duration = 2800) {
+                toast.textContent = msg;
+                toast.classList.add('show');
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => toast.classList.remove('show'), duration);
+            }
+
+            // ============================================================
+            //  NAVIGATION
+            // ============================================================
+            function navigateTo(pageId) {
+                Object.values(pages).forEach(p => p.classList.remove('active'));
+                const target = document.getElementById(pageId);
+                if (target) target.classList.add('active');
+
+                const meBtn = $('#meBtn');
+                if (pageId === 'me-page') {
+                    meBtn.classList.add('active');
+                } else {
+                    meBtn.classList.remove('active');
+                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // ============================================================
+            //  RENDER PRODUCTS
+            // ============================================================
+            function renderProducts() {
+                const items = state.products;
+                const children = productGrid.children;
+                for (let i = children.length - 1; i >= 0; i--) {
+                    if (children[i] !== emptyState) {
+                        children[i].remove();
+                    }
+                }
+
+                if (items.length === 0) {
+                    emptyState.style.display = 'block';
+                    productCount.textContent = '0 items';
+                    return;
+                }
+
+                emptyState.style.display = 'none';
+                productCount.textContent = `${items.length} item${items.length > 1 ? 's' : ''}`;
+
+                const reversed = [...items].reverse();
+                for (const p of reversed) {
+                    const card = document.createElement('div');
+                    card.className = 'product-card';
+
+                    const imgWrap = document.createElement('div');
+                    imgWrap.className = 'img-wrap';
+                    if (p.images && p.images.length > 0 && p.images[0]) {
+                        const img = document.createElement('img');
+                        img.src = p.images[0];
+                        img.alt = p.title || 'Product';
+                        img.loading = 'lazy';
+                        imgWrap.appendChild(img);
+                    } else {
+                        const placeholder = document.createElement('div');
+                        placeholder.className = 'img-placeholder';
+                        placeholder.textContent = '📷 No image';
+                        imgWrap.appendChild(placeholder);
+                    }
+                    card.appendChild(imgWrap);
+
+                    if (p.category) {
+                        const tag = document.createElement('span');
+                        tag.className = 'category-tag';
+                        tag.textContent = p.category;
+                        card.appendChild(tag);
+                    }
+
+                    const title = document.createElement('h3');
+                    title.textContent = p.title || 'Untitled';
+                    card.appendChild(title);
+
+                    const price = document.createElement('div');
+                    price.className = 'price';
+                    price.innerHTML = `$${Number(p.price || 0).toFixed(2)} <small>USD</small>`;
+                    card.appendChild(price);
+
+                    const actions = document.createElement('div');
+                    actions.className = 'actions';
+                    const buyBtn = document.createElement('button');
+                    buyBtn.className = 'btn-buy';
+                    buyBtn.textContent = 'BUY NOW';
+                    buyBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        showToast(`🛒 "${p.title || 'Item'}" added to cart!`, 2000);
+                    });
+                    actions.appendChild(buyBtn);
+                    card.appendChild(actions);
+
+                    productGrid.appendChild(card);
+                }
+            }
+
+            // ============================================================
+            //  LOAD PRODUCTS FROM SUPABASE
+            // ============================================================
+            async function loadProducts() {
+                try {
+                    const { data, error } = await supabase
+                        .from('products')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+
+                    if (error) {
+                        console.error('Error loading products:', error);
+                        showToast('⚠️ Could not load products from server.', 2500);
+                        return;
+                    }
+
+                    if (data && data.length > 0) {
+                        state.products = data;
+                    } else {
+                        // If no products in DB, keep local state (maybe empty)
+                        state.products = [];
+                    }
+                    renderProducts();
+                } catch (err) {
+                    console.error('Unexpected error loading products:', err);
+                    showToast('⚠️ Error loading products.', 2000);
+                }
+            }
+
+            // ============================================================
+            //  UPLOAD IMAGE TO SUPABASE STORAGE
+            // ============================================================
+            async function uploadImage(file, productId, index) {
+                const ext = file.name.split('.').pop();
+                const fileName = `${productId}/${Date.now()}_${index}.${ext}`;
+                const { data, error } = await supabase.storage
+                    .from(STORAGE_BUCKET)
+                    .upload(fileName, file, {
+                        cacheControl: '3600',
+                        upsert: false,
+                    });
+
+                if (error) {
+                    console.error('Upload error:', error);
+                    throw new Error(`Failed to upload image ${index + 1}: ${error.message}`);
+                }
+
+                // Get public URL
+                const { data: urlData } = supabase.storage
+                    .from(STORAGE_BUCKET)
+                    .getPublicUrl(fileName);
+
+                return urlData.publicUrl;
+            }
+
+            // ============================================================
+            //  SELL FORM SUBMIT - WITH SUPABASE
+            // ============================================================
+            sellForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const category = categoryEl.value.trim();
+                const title = titleEl.value.trim();
+                const price = parseFloat(priceEl.value);
+                const desc = descEl.value.trim();
+
+                if (!category) { showToast('Please select a category.', 2000); return; }
+                if (!title) { showToast('Please enter a product title.', 2000); return; }
+                if (isNaN(price) || price <= 0) { showToast('Please enter a valid price.', 2000); return; }
+                if (!desc) { showToast('Please enter a description.', 2000); return; }
+
+                // First image required
+                if (!state.productImages[0]) {
+                    showToast('⚠️ Please upload a main product photo (required).', 2500);
+                    return;
+                }
+
+                // Disable button to prevent double submit
+                publishBtn.disabled = true;
+                publishBtn.textContent = '⏳ Publishing...';
+
+                try {
+                    // 1. Generate a product ID (will be used for folder)
+                    const productId = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+
+                    // 2. Upload images (only those that exist)
+                    const uploadedUrls = [];
+                    for (let i = 0; i < state.productImages.length; i++) {
+                        const dataUrl = state.productImages[i];
+                        if (dataUrl) {
+                            // Convert dataURL to File
+                            const res = await fetch(dataUrl);
+                            const blob = await res.blob();
+                            const file = new File([blob], `image_${i}.jpg`, { type: 'image/jpeg' });
+                            const url = await uploadImage(file, productId, i);
+                            uploadedUrls.push(url);
+                        }
+                    }
+
+                    // 3. Insert product into Supabase
+                    const newProduct = {
+                        id: productId,
+                        category,
+                        title,
+                        price,
+                        description: desc,
+                        images: uploadedUrls,
+                        created_at: new Date().toISOString(),
+                    };
+
+                    const { data, error } = await supabase
+                        .from('products')
+                        .insert([newProduct])
+                        .select();
+
+                    if (error) {
+                        console.error('Insert error:', error);
+                        throw new Error('Failed to save product: ' + error.message);
+                    }
+
+                    // 4. Update local state and re-render
+                    if (data && data.length > 0) {
+                        state.products.unshift(data[0]); // add to front
+                    } else {
+                        // fallback: add our local object
+                        state.products.unshift(newProduct);
+                    }
+                    renderProducts();
+
+                    // 5. Reset form and images
+                    categoryEl.value = '';
+                    titleEl.value = '';
+                    priceEl.value = '';
+                    descEl.value = '';
+                    state.productImages = [null, null, null];
+                    uploadBoxes.forEach((box) => {
+                        box.classList.remove('has-image');
+                        const overlay = box.querySelector('.preview-overlay');
+                        if (overlay) overlay.innerHTML = '';
+                        const fileInput = box.querySelector('.file-input');
+                        if (fileInput) fileInput.value = '';
+                        const icon = box.querySelector('.upload-icon');
+                        const label = box.querySelector('.upload-label');
+                        if (icon) icon.style.display = '';
+                        if (label) label.style.display = '';
+                    });
+
+                    showToast('🚀 Product published successfully!', 2500);
+                    navigateTo('home-page');
+
+                } catch (err) {
+                    console.error('Publish error:', err);
+                    showToast('❌ ' + err.message, 3000);
+                } finally {
+                    publishBtn.disabled = false;
+                    publishBtn.textContent = '🚀 Publish Product';
+                }
+            });
+
+            // ============================================================
+            //  IMAGE UPLOAD BOXES (preview only, no supabase yet)
+            // ============================================================
+            function setupImageUpload(box, index) {
+                const fileInput = box.querySelector('.file-input');
+                const previewOverlay = box.querySelector('.preview-overlay');
+                const removeBtn = box.querySelector('.remove-img');
+
+                fileInput.addEventListener('change', function(e) {
+                    const file = this.files[0];
+                    if (!file) return;
+                    if (!file.type.startsWith('image/')) {
+                        showToast('Please select an image file.', 2000);
+                        this.value = '';
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = function(ev) {
+                        const dataURL = ev.target.result;
+                        state.productImages[index] = dataURL;
+                        updateBoxPreview(box, dataURL);
+                        showToast(`📸 Photo ${index+1} uploaded!`, 1500);
+                    };
+                    reader.readAsDataURL(file);
+                });
+
+                removeBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    state.productImages[index] = null;
+                    fileInput.value = '';
+                    box.classList.remove('has-image');
+                    previewOverlay.innerHTML = '';
+                    const icon = box.querySelector('.upload-icon');
+                    const label = box.querySelector('.upload-label');
+                    if (icon) icon.style.display = '';
+                    if (label) label.style.display = '';
+                });
+
+                box.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    this.classList.add('drag-over');
+                });
+                box.addEventListener('dragleave', function(e) {
+                    e.preventDefault();
+                    this.classList.remove('drag-over');
+                });
+                box.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.classList.remove('drag-over');
+                    const files = e.dataTransfer.files;
+                    if (files.length === 0) return;
+                    const file = files[0];
+                    if (!file.type.startsWith('image/')) {
+                        showToast('Please drop an image file.', 2000);
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = function(ev) {
+                        const dataURL = ev.target.result;
+                        state.productImages[index] = dataURL;
+                        updateBoxPreview(box, dataURL);
+                        const dt = new DataTransfer();
+                        dt.items.add(file);
+                        fileInput.files = dt.files;
+                        showToast(`📸 Photo ${index+1} uploaded!`, 1500);
+                    };
+                    reader.readAsDataURL(file);
+                });
+
+                box.addEventListener('click', function(e) {
+                    if (e.target.closest('.remove-img')) return;
+                    fileInput.click();
+                });
+            }
+
+            function updateBoxPreview(box, dataURL) {
+                const overlay = box.querySelector('.preview-overlay');
+                const icon = box.querySelector('.upload-icon');
+                const label = box.querySelector('.upload-label');
+                overlay.innerHTML = `<img src="${dataURL}" alt="Preview" />`;
+                box.classList.add('has-image');
+                if (icon) icon.style.display = 'none';
+                if (label) label.style.display = 'none';
+            }
+
+            // ============================================================
+            //  PROFILE PICTURE
+            // ============================================================
+            profilePicInput.addEventListener('change', function(e) {
+                const file = this.files[0];
+                if (!file) return;
+                if (!file.type.startsWith('image/')) {
+                    showToast('Please select an image.', 2000);
+                    this.value = '';
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    const dataURL = ev.target.result;
+                    state.profile.avatar = dataURL;
+                    updateProfilePicture(dataURL);
+                    showToast('📸 Profile picture updated!', 1800);
+                };
+                reader.readAsDataURL(file);
+            });
+
+            function updateProfilePicture(dataURL) {
+                avatarPlaceholder.style.display = 'none';
+                let img = avatarDisplay.querySelector('img');
+                if (!img) {
+                    img = document.createElement('img');
+                    img.alt = 'Avatar';
+                    avatarDisplay.appendChild(img);
+                }
+                img.src = dataURL;
+                img.style.display = 'block';
+
+                profilePlaceholder.style.display = 'none';
+                profilePicImg.src = dataURL;
+                profilePicImg.style.display = 'block';
+            }
+
+            // ============================================================
+            //  SAVE PROFILE
+            // ============================================================
+            saveProfileBtn.addEventListener('click', function() {
+                state.profile.name = profileName.value.trim() || 'Anonymous';
+                state.profile.email = profileEmail.value.trim() || '';
+                state.profile.phone = profilePhone.value.trim() || '';
+                state.profile.country = profileCountry.value.trim() || '';
+                showToast('💾 Profile saved successfully!', 2000);
+            });
+
+            // ============================================================
+            //  KYC UPLOAD
+            // ============================================================
+            document.querySelectorAll('.kyc-file-input').forEach(input => {
+                input.addEventListener('change', function(e) {
+                    const file = this.files[0];
+                    if (!file) return;
+                    if (!file.type.startsWith('image/')) {
+                        showToast('Please upload an image file.', 2000);
+                        this.value = '';
+                        return;
+                    }
+                    const target = this.dataset.target;
+                    const statusEl = document.getElementById(`kyc${target.charAt(0).toUpperCase() + target.slice(1)}Status`);
+                    if (statusEl) {
+                        statusEl.textContent = 'Pending Review';
+                        statusEl.className = 'kyc-status pending';
+                        state.kyc[target] = 'pending';
+                        showToast(`📎 ${target.charAt(0).toUpperCase() + target.slice(1)} document uploaded. Pending review.`, 2000);
+
+                        setTimeout(() => {
+                            if (state.kyc[target] === 'pending') {
+                                statusEl.textContent = 'Verified ✅';
+                                statusEl.className = 'kyc-status verified';
+                                state.kyc[target] = 'verified';
+                                showToast(`✅ ${target.charAt(0).toUpperCase() + target.slice(1)} verified!`, 2000);
+                            }
+                        }, 2200);
+                    }
+                    this.value = '';
+                });
+            });
+
+            // ============================================================
+            //  SUPPORT CHAT
+            // ============================================================
+            $('#supportChatBtn').addEventListener('click', function() {
+                showToast('💬 Support chat: Our team will respond within 24 hours.', 2800);
+            });
+
+            // ============================================================
+            //  NAVIGATION EVENTS
+            // ============================================================
+            $('#meBtn').addEventListener('click', function() {
+                navigateTo('me-page');
+            });
+
+            $('#navSellBtn').addEventListener('click', function() {
+                navigateTo('sell-page');
+                setTimeout(() => categoryEl.focus(), 100);
+            });
+
+            $('#floatSellBtn').addEventListener('click', function() {
+                navigateTo('sell-page');
+                setTimeout(() => categoryEl.focus(), 100);
+            });
+
+            // ============================================================
+            //  ME SIDEBAR TABS
+            // ============================================================
+            document.querySelectorAll('.me-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.me-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const target = this.dataset.tab;
+                    document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+                    const pane = document.getElementById(`tab-${target}`);
+                    if (pane) pane.classList.add('active');
+                });
+            });
+
+            // ============================================================
+            //  INIT
+            // ============================================================
+            async function init() {
+                // Setup image upload previews
+                uploadBoxes.forEach((box, idx) => setupImageUpload(box, idx));
+
+                // Load products from Supabase
+                await loadProducts();
+
+                // Restore profile pic if any
+                if (state.profile.avatar) {
+                    updateProfilePicture(state.profile.avatar);
+                }
+
+                // Populate profile fields
+                profileName.value = state.profile.name;
+                profileEmail.value = state.profile.email;
+                profilePhone.value = state.profile.phone;
+                profileCountry.value = state.profile.country;
+
+                // Ensure home page is active
+                navigateTo('home-page');
+
+                console.log('🚀 SomaZon with Supabase initialized.');
+            }
+
+            init();
+
+            // Expose state for debugging
+            window.__state = state;
+
+        })();
+    </script>
+
+</body>
+    </html>
