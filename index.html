@@ -21,7 +21,6 @@
     <meta property="og:title" content="SomaZon Marketplace">
     <meta property="og:description" content="مرحباً بكم في منصة SomaZon Marketplace">
     <meta property="og:url" content="https://somazon.netlify.app/">
-    
     <meta property="og:image" content="https://i.postimg.cc/DzFmbpwn/1787505001070.png">
     <meta property="og:image:secure_url" content="https://i.postimg.cc/DzFmbpwn/1787505001070.png">
     <meta property="og:image:type" content="image/png">
@@ -33,7 +32,6 @@
     <meta name="twitter:title" content="SomaZon Marketplace">
     <meta name="twitter:description" content="مرحباً بكم في منصة SomaZon Marketplace">
     <meta name="twitter:image" content="https://i.postimg.cc/DzFmbpwn/1787505001070.png">
-
 
     <!-- Supabase JS SDK CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -210,14 +208,8 @@
             display: block;
         }
         @keyframes fadeUp {
-            0% {
-                opacity: 0;
-                transform: translateY(12px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            0% { opacity: 0; transform: translateY(12px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         .page-title {
@@ -363,20 +355,9 @@
             padding: 60px 20px;
             color: #94a3b8;
         }
-        .empty-state .icon {
-            font-size: 64px;
-            margin-bottom: 16px;
-            opacity: 0.5;
-        }
-        .empty-state h3 {
-            font-size: 20px;
-            color: #334155;
-        }
-        .empty-state p {
-            font-size: 15px;
-            max-width: 400px;
-            margin: 8px auto 0;
-        }
+        .empty-state .icon { font-size: 64px; margin-bottom: 16px; opacity: 0.5; }
+        .empty-state h3 { font-size: 20px; color: #334155; }
+        .empty-state p { font-size: 15px; max-width: 400px; margin: 8px auto 0; }
 
         /* ── SELL FLOATING BUTTON ── */
         .sell-fab {
@@ -405,11 +386,7 @@
             color: #000;
             border-color: #000;
         }
-        .sell-fab .plus {
-            font-size: 24px;
-            line-height: 1;
-            font-weight: 300;
-        }
+        .sell-fab .plus { font-size: 24px; line-height: 1; font-weight: 300; }
 
         /* ── SELL PAGE / FORM ── */
         .sell-form-wrap {
@@ -420,18 +397,9 @@
             border-radius: 18px;
             border: 2px dashed #cbd5e1;
         }
-        .sell-form-wrap h2 {
-            font-size: 24px;
-            margin-bottom: 4px;
-        }
-        .sell-form-wrap .sub {
-            color: #64748b;
-            margin-bottom: 24px;
-            font-size: 14px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
+        .sell-form-wrap h2 { font-size: 24px; margin-bottom: 4px; }
+        .sell-form-wrap .sub { color: #64748b; margin-bottom: 24px; font-size: 14px; }
+        .form-group { margin-bottom: 20px; }
         .form-group label {
             display: block;
             font-weight: 600;
@@ -439,10 +407,7 @@
             margin-bottom: 5px;
             color: #0f172a;
         }
-        .form-group label .required {
-            color: #eab308;
-            margin-left: 2px;
-        }
+        .form-group label .required { color: #eab308; margin-left: 2px; }
         .form-group input,
         .form-group select,
         .form-group textarea {
@@ -462,10 +427,7 @@
             border-color: #eab308;
             box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.15);
         }
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
+        .form-group textarea { resize: vertical; min-height: 80px; }
 
         /* ── IMAGE UPLOAD BOXES ── */
         .upload-grid {
@@ -490,100 +452,48 @@
             gap: 6px;
             position: relative;
         }
-        .upload-box:hover {
-            border-color: #eab308;
-            background: #fefce8;
-        }
-        .upload-box .icon {
-            font-size: 28px;
-            opacity: 0.5;
-        }
-        .upload-box .label {
-            font-size: 12px;
-            color: #64748b;
-            font-weight: 500;
-        }
-        .upload-box .label .req {
-            color: #eab308;
-        }
+        .upload-box:hover { border-color: #eab308; background: #fefce8; }
+        .upload-box .icon { font-size: 28px; opacity: 0.5; }
+        .upload-box .label { font-size: 12px; color: #64748b; font-weight: 500; }
+        .upload-box .label .req { color: #eab308; }
         .upload-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 6px;
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
+            object-fit: cover; border-radius: 6px;
+            position: absolute; inset: 0;
             border-radius: 8px;
         }
         .upload-box .preview-wrap {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            inset: 0;
-            border-radius: 8px;
-            overflow: hidden;
+            width: 100%; height: 100%;
+            position: absolute; inset: 0;
+            border-radius: 8px; overflow: hidden;
         }
         .upload-box .remove-img {
-            position: absolute;
-            top: 6px;
-            right: 6px;
-            background: rgba(0, 0, 0, 0.7);
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            font-size: 14px;
-            cursor: pointer;
-            z-index: 5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: absolute; top: 6px; right: 6px;
+            background: rgba(0, 0, 0, 0.7); color: #fff;
+            border: none; border-radius: 50%;
+            width: 24px; height: 24px; font-size: 14px;
+            cursor: pointer; z-index: 5;
+            display: flex; align-items: center; justify-content: center;
             transition: 0.2s;
         }
-        .upload-box .remove-img:hover {
-            background: #dc2626;
-        }
-        .upload-box .file-input {
-            display: none;
-        }
-        .upload-box.has-image {
-            border-color: #eab308;
-            background: #fff;
-        }
+        .upload-box .remove-img:hover { background: #dc2626; }
+        .upload-box .file-input { display: none; }
+        .upload-box.has-image { border-color: #eab308; background: #fff; }
         .upload-box .status-badge {
-            position: absolute;
-            bottom: 6px;
-            right: 6px;
-            background: rgba(0, 0, 0, 0.7);
-            color: #fff;
-            font-size: 9px;
-            padding: 2px 10px;
-            border-radius: 12px;
-            text-transform: uppercase;
-            font-weight: 600;
-            letter-spacing: 0.3px;
+            position: absolute; bottom: 6px; right: 6px;
+            background: rgba(0, 0, 0, 0.7); color: #fff;
+            font-size: 9px; padding: 2px 10px;
+            border-radius: 12px; text-transform: uppercase;
+            font-weight: 600; letter-spacing: 0.3px;
         }
 
         .publish-btn {
-            background: #000000;
-            color: #fff;
-            border: none;
-            padding: 14px 32px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.2s;
-            width: 100%;
-            margin-top: 8px;
+            background: #000000; color: #fff; border: none;
+            padding: 14px 32px; border-radius: 8px;
+            font-size: 16px; font-weight: 700; cursor: pointer;
+            transition: 0.2s; width: 100%; margin-top: 8px;
         }
-        .publish-btn:hover {
-            background: #eab308;
-            color: #000;
-        }
+        .publish-btn:hover { background: #eab308; color: #000; }
 
         /* ── ME PAGE ── */
         .me-layout {
@@ -602,38 +512,20 @@
             top: 90px;
         }
         .me-sidebar .me-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 20px;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 14px;
-            color: #334155;
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 20px; cursor: pointer;
+            font-weight: 500; font-size: 14px; color: #334155;
             border-left: 3px solid transparent;
-            transition: 0.2s;
-            background: none;
-            border-top: none;
-            border-right: none;
-            border-bottom: none;
-            width: 100%;
-            text-align: left;
+            transition: 0.2s; background: none;
+            border-top: none; border-right: none; border-bottom: none;
+            width: 100%; text-align: left;
         }
-        .me-sidebar .me-item:hover {
-            background: #f8fafc;
-            color: #000;
-        }
+        .me-sidebar .me-item:hover { background: #f8fafc; color: #000; }
         .me-sidebar .me-item.active {
             border-left-color: #eab308;
-            background: #fefce8;
-            color: #000;
-            font-weight: 600;
+            background: #fefce8; color: #000; font-weight: 600;
         }
-        .me-sidebar .me-item .icon {
-            font-size: 18px;
-            width: 28px;
-            text-align: center;
-        }
+        .me-sidebar .me-item .icon { font-size: 18px; width: 28px; text-align: center; }
         .me-content {
             background: #ffffff;
             border-radius: 14px;
@@ -641,320 +533,261 @@
             padding: 28px 32px;
             min-height: 400px;
         }
-        .me-content .tab-pane {
-            display: none;
-            animation: fadeUp 0.25s ease;
-        }
-        .me-content .tab-pane.active {
-            display: block;
-        }
-        .me-content .tab-pane h3 {
-            font-size: 20px;
-            margin-bottom: 4px;
-        }
-        .me-content .tab-pane .desc {
-            color: #64748b;
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
+        .me-content .tab-pane { display: none; animation: fadeUp 0.25s ease; }
+        .me-content .tab-pane.active { display: block; }
+        .me-content .tab-pane h3 { font-size: 20px; margin-bottom: 4px; }
+        .me-content .tab-pane .desc { color: #64748b; font-size: 14px; margin-bottom: 20px; }
 
         /* Profile pic upload */
         .profile-pic-wrap {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
+            display: flex; align-items: center; gap: 24px;
+            margin-bottom: 24px; flex-wrap: wrap;
         }
         .profile-pic-wrap .avatar-large {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: #f1f5f9;
-            border: 3px solid #eab308;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            font-weight: 700;
-            color: #eab308;
-            overflow: hidden;
-            flex-shrink: 0;
-            position: relative;
+            width: 100px; height: 100px; border-radius: 50%;
+            background: #f1f5f9; border: 3px solid #eab308;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 40px; font-weight: 700; color: #eab308;
+            overflow: hidden; flex-shrink: 0; position: relative;
         }
-        .profile-pic-wrap .avatar-large img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .profile-pic-wrap .avatar-large img { width: 100%; height: 100%; object-fit: cover; }
         .profile-pic-wrap .upload-btn {
-            background: #000;
-            color: #fff;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 13px;
+            background: #000; color: #fff; border: none;
+            padding: 8px 20px; border-radius: 6px;
+            font-weight: 600; cursor: pointer; font-size: 13px;
             transition: 0.2s;
         }
-        .profile-pic-wrap .upload-btn:hover {
-            background: #eab308;
-            color: #000;
-        }
-        .profile-pic-wrap .file-input {
-            display: none;
-        }
+        .profile-pic-wrap .upload-btn:hover { background: #eab308; color: #000; }
+        .profile-pic-wrap .file-input { display: none; }
 
-        .me-form .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-        .me-form .form-group {
-            margin-bottom: 16px;
-        }
-        .me-form .form-group label {
-            font-weight: 500;
-            font-size: 13px;
-            color: #334155;
-        }
+        .me-form .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .me-form .form-group { margin-bottom: 16px; }
+        .me-form .form-group label { font-weight: 500; font-size: 13px; color: #334155; }
         .me-form .form-group input {
-            padding: 9px 12px;
-            border: 2px solid #e2e8f0;
-            border-radius: 6px;
-            width: 100%;
-            font-size: 14px;
-            font-family: inherit;
-            transition: 0.2s;
-            background: #fafcff;
+            padding: 9px 12px; border: 2px solid #e2e8f0;
+            border-radius: 6px; width: 100%; font-size: 14px;
+            font-family: inherit; transition: 0.2s; background: #fafcff;
         }
         .me-form .form-group input:focus {
-            border-color: #eab308;
-            outline: none;
+            border-color: #eab308; outline: none;
             box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.12);
         }
 
         /* KYC */
         .kyc-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 0;
-            border-bottom: 1px solid #f1f5f9;
-            flex-wrap: wrap;
-            gap: 12px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 0; border-bottom: 1px solid #f1f5f9;
+            flex-wrap: wrap; gap: 12px;
         }
-        .kyc-item:last-child {
-            border-bottom: none;
-        }
-        .kyc-item .info {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-        .kyc-item .info .doc-icon {
-            font-size: 28px;
-        }
-        .kyc-item .info .doc-name {
-            font-weight: 600;
-            font-size: 15px;
-        }
-        .kyc-item .info .doc-sub {
-            font-size: 13px;
-            color: #64748b;
-        }
+        .kyc-item:last-child { border-bottom: none; }
+        .kyc-item .info { display: flex; align-items: center; gap: 14px; }
+        .kyc-item .info .doc-icon { font-size: 28px; }
+        .kyc-item .info .doc-name { font-weight: 600; font-size: 15px; }
+        .kyc-item .info .doc-sub { font-size: 13px; color: #64748b; }
         .kyc-item .status {
-            font-size: 12px;
-            font-weight: 700;
-            padding: 4px 14px;
-            border-radius: 20px;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
+            font-size: 12px; font-weight: 700;
+            padding: 4px 14px; border-radius: 20px;
+            text-transform: uppercase; letter-spacing: 0.3px;
         }
-        .status.verified {
-            background: #dcfce7;
-            color: #166534;
-        }
-        .status.pending {
-            background: #fef9c3;
-            color: #854d0e;
-        }
-        .status.unverified {
-            background: #f1f5f9;
-            color: #64748b;
-        }
+        .status.verified { background: #dcfce7; color: #166534; }
+        .status.pending { background: #fef9c3; color: #854d0e; }
+        .status.unverified { background: #f1f5f9; color: #64748b; }
         .kyc-upload-btn {
-            background: #000;
-            color: #fff;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
+            background: #000; color: #fff; border: none;
+            padding: 6px 16px; border-radius: 6px;
+            font-size: 12px; font-weight: 600; cursor: pointer;
             transition: 0.2s;
         }
-        .kyc-upload-btn:hover {
-            background: #eab308;
-            color: #000;
-        }
-        .kyc-upload-btn .file-input {
-            display: none;
-        }
+        .kyc-upload-btn:hover { background: #eab308; color: #000; }
+        .kyc-upload-btn .file-input { display: none; }
 
         /* Support */
         .support-card {
-            background: #f8fafc;
-            border-radius: 10px;
-            padding: 20px 24px;
-            margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            flex-wrap: wrap;
-            border: 1px solid #e2e8f0;
+            background: #f8fafc; border-radius: 10px;
+            padding: 20px 24px; margin-bottom: 14px;
+            display: flex; align-items: center; gap: 16px;
+            flex-wrap: wrap; border: 1px solid #e2e8f0;
         }
-        .support-card .icon {
-            font-size: 28px;
-        }
-        .support-card .text {
-            flex: 1;
-        }
-        .support-card .text h4 {
-            font-size: 16px;
-        }
-        .support-card .text p {
-            font-size: 13px;
-            color: #64748b;
-            margin: 0;
-        }
+        .support-card .icon { font-size: 28px; }
+        .support-card .text { flex: 1; }
+        .support-card .text h4 { font-size: 16px; }
+        .support-card .text p { font-size: 13px; color: #64748b; margin: 0; }
         .support-card .btn {
-            background: #000;
-            color: #fff;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: 0.2s;
-            text-decoration: none;
-            display: inline-block;
+            background: #000; color: #fff; border: none;
+            padding: 8px 20px; border-radius: 6px;
+            font-weight: 600; font-size: 13px; cursor: pointer;
+            transition: 0.2s; text-decoration: none; display: inline-block;
         }
-        .support-card .btn:hover {
-            background: #eab308;
-            color: #000;
-        }
+        .support-card .btn:hover { background: #eab308; color: #000; }
 
         /* ── FOOTER ── */
         footer {
-            padding: 32px 40px;
-            background: #111111;
-            color: #94a3b8;
-            text-align: center;
-            font-size: 14px;
-            margin-top: auto;
+            padding: 32px 40px; background: #111111;
+            color: #94a3b8; text-align: center;
+            font-size: 14px; margin-top: auto;
             border-top: 2px solid #1a1a1a;
         }
-        footer .gold {
+        footer .gold { color: #eab308; font-weight: 600; }
+
+        /* ── AUTH MODAL (NEW – required for sign in / sign up) ── */
+        #authModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        #authModal.open { display: flex; }
+        #authModal .modal-card {
+            background: #ffffff;
+            border-radius: 16px;
+            max-width: 420px;
+            width: 100%;
+            padding: 32px 28px 24px;
+            border: 2px dashed #cbd5e1;
+            position: relative;
+            animation: fadeUp 0.25s ease;
+        }
+        #authModal .modal-card h2 {
+            font-size: 22px;
+            margin-bottom: 4px;
+            color: #0f172a;
+        }
+        #authModal .modal-card .modal-sub {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+        #authModal .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            background: none;
+            border: none;
+            font-size: 22px;
+            line-height: 1;
+            cursor: pointer;
+            color: #64748b;
+        }
+        #authModal .modal-close:hover { color: #000; }
+        #authModal label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #334155;
+        }
+        #authModal input[type="email"],
+        #authModal input[type="password"],
+        #authModal input[type="text"] {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            background: #fafcff;
+            margin-bottom: 14px;
+            transition: 0.2s;
+        }
+        #authModal input:focus {
+            outline: none;
+            border-color: #eab308;
+            box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.15);
+        }
+        #authModal .auth-primary {
+            width: 100%;
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 4px;
+        }
+        #authModal .auth-primary:hover { background: #eab308; color: #000; }
+        #authModal .auth-toggle {
+            background: none;
+            border: none;
             color: #eab308;
+            font-size: 13px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            margin-top: 14px;
+            padding: 6px;
             font-weight: 600;
         }
+        #authModal .auth-toggle:hover { text-decoration: underline; }
+        #authModal .auth-msg {
+            margin-top: 12px;
+            font-size: 13px;
+            text-align: center;
+            min-height: 18px;
+            font-weight: 600;
+        }
+        #authModal .auth-msg.error { color: #dc2626; }
+        #authModal .auth-msg.success { color: #166534; }
+
+        /* Logout button (inside modal, shown when logged in) */
+        #authModal .auth-logout {
+            width: 100%;
+            background: #fff;
+            color: #000;
+            border: 2px solid #000;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 8px;
+        }
+        #authModal .auth-logout:hover { background: #000; color: #fff; }
 
         /* ── RESPONSIVE ── */
         @media (max-width: 820px) {
-            header {
-                padding: 12px 16px;
-            }
-            nav input[type="search"] {
-                width: 130px;
-            }
-            .page {
-                padding: 16px 16px 80px;
-            }
-            .me-layout {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
+            header { padding: 12px 16px; }
+            nav input[type="search"] { width: 130px; }
+            .page { padding: 16px 16px 80px; }
+            .me-layout { grid-template-columns: 1fr; gap: 20px; }
             .me-sidebar {
-                position: static;
-                display: flex;
-                overflow-x: auto;
-                padding: 8px 12px;
-                gap: 4px;
-                border-radius: 10px;
+                position: static; display: flex; overflow-x: auto;
+                padding: 8px 12px; gap: 4px; border-radius: 10px;
             }
             .me-sidebar .me-item {
-                padding: 8px 14px;
-                white-space: nowrap;
-                border-left: none;
-                border-bottom: 3px solid transparent;
+                padding: 8px 14px; white-space: nowrap;
+                border-left: none; border-bottom: 3px solid transparent;
                 font-size: 13px;
             }
-            .me-sidebar .me-item.active {
-                border-left: none;
-                border-bottom-color: #eab308;
-            }
-            .me-content {
-                padding: 20px;
-            }
-            .me-form .form-row {
-                grid-template-columns: 1fr;
-            }
-            .upload-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .sell-form-wrap {
-                padding: 20px 18px;
-            }
-            .profile-pic-wrap {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .card .actions {
-                flex-direction: column;
-            }
-            .sell-fab {
-                padding: 12px 20px;
-                font-size: 14px;
-                bottom: 20px;
-                right: 20px;
-            }
-            .grid {
-                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-                gap: 18px;
-            }
+            .me-sidebar .me-item.active { border-left: none; border-bottom-color: #eab308; }
+            .me-content { padding: 20px; }
+            .me-form .form-row { grid-template-columns: 1fr; }
+            .upload-grid { grid-template-columns: 1fr 1fr; }
+            .sell-form-wrap { padding: 20px 18px; }
+            .profile-pic-wrap { flex-direction: column; align-items: flex-start; }
+            .card .actions { flex-direction: column; }
+            .sell-fab { padding: 12px 20px; font-size: 14px; bottom: 20px; right: 20px; }
+            .grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; }
         }
         @media (max-width: 480px) {
-            .upload-grid {
-                grid-template-columns: 1fr;
-            }
-            nav {
-                gap: 10px;
-            }
-            nav input[type="search"] {
-                width: 100px;
-                font-size: 12px;
-                padding: 6px 10px;
-            }
-            .logo {
-                font-size: 22px;
-            }
-            .me-btn .avatar {
-                width: 32px;
-                height: 32px;
-                font-size: 14px;
-            }
-            .me-btn .label {
-                font-size: 8px;
-            }
+            .upload-grid { grid-template-columns: 1fr; }
+            nav { gap: 10px; }
+            nav input[type="search"] { width: 100px; font-size: 12px; padding: 6px 10px; }
+            .logo { font-size: 22px; }
+            .me-btn .avatar { width: 32px; height: 32px; font-size: 14px; }
+            .me-btn .label { font-size: 8px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ═══ HEADER ═══ -->
     <!-- ═══ HEADER ═══ -->
     <header>
         <div class="logo" onclick="showPage('home')">Soma<span>Zon</span></div>
@@ -962,6 +795,8 @@
             <input type="search" id="searchInput" placeholder="Search products..." oninput="filterProducts()">
             <button class="nav-link" onclick="showPage('marketplace')">Marketplace</button>
             <button class="nav-link support" onclick="window.location.href='mailto:supportsomazon@gmail.com'">Support</button>
+            <!-- NEW: Auth button -->
+            <button class="nav-link" id="authBtn" onclick="handleAuthClick()">Sign In</button>
             <button class="me-btn" onclick="showPage('me-page')" id="meNavBtn">
                 <span class="avatar" id="meAvatar">M</span>
                 <span class="label">Me</span>
@@ -990,7 +825,6 @@
         <h1 class="page-title">Marketplace</h1>
         <p class="page-sub" id="productCount">0 products available</p>
         <div class="grid" id="productGrid">
-            <!-- Products rendered by JS -->
             <div class="empty-state" id="emptyState">
                 <div class="icon">📦</div>
                 <h3>No products yet</h3>
@@ -1005,14 +839,12 @@
         <p class="page-sub">Manage your profile, verification, and support.</p>
 
         <div class="me-layout">
-            <!-- Sidebar -->
             <div class="me-sidebar" id="meSidebar">
                 <button class="me-item active" data-tab="profile"><span class="icon">👤</span> My Profile</button>
                 <button class="me-item" data-tab="kyc"><span class="icon">🛡️</span> Verification</button>
                 <button class="me-item" data-tab="support"><span class="icon">💬</span> Support</button>
             </div>
 
-            <!-- Content -->
             <div class="me-content">
                 <!-- PROFILE TAB -->
                 <div class="tab-pane active" id="tab-profile">
@@ -1034,21 +866,21 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Full Name</label>
-                                <input type="text" id="profileName" value="John Doe" placeholder="Your full name">
+                                <input type="text" id="profileName" placeholder="Your full name">
                             </div>
                             <div class="form-group">
                                 <label>Email</label>
-                                <input type="email" id="profileEmail" value="john.doe@example.com" placeholder="Your email">
+                                <input type="email" id="profileEmail" placeholder="Your email">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Phone</label>
-                                <input type="tel" id="profilePhone" value="+1 (555) 123-4567" placeholder="Phone number">
+                                <input type="tel" id="profilePhone" placeholder="Phone number">
                             </div>
                             <div class="form-group">
                                 <label>Country</label>
-                                <input type="text" id="profileCountry" value="United States" placeholder="Country">
+                                <input type="text" id="profileCountry" placeholder="Country">
                             </div>
                         </div>
                         <button onclick="saveProfile()" style="background:#000;color:#fff;border:none;padding:10px 28px;border-radius:6px;font-weight:600;cursor:pointer;margin-top:4px;">Save Changes</button>
@@ -1061,9 +893,7 @@
                     <h3>Verification (KYC)</h3>
                     <p class="desc">Complete your identity verification to unlock full trading access.</p>
 
-                    <div id="kycList">
-                        <!-- Rendered by JS -->
-                    </div>
+                    <div id="kycList"></div>
                     <div style="margin-top:20px;padding:16px 20px;background:#fefce8;border-radius:8px;border:1px solid #fde68a;">
                         <strong style="color:#854d0e;">⏳ Overall Status:</strong>
                         <span id="kycOverallStatus" style="font-weight:700;color:#64748b;">Not Verified</span>
@@ -1081,7 +911,7 @@
                             <h4>Email Support</h4>
                             <p>We'll respond within 24 hours.</p>
                         </div>
-                        <a href="mailto:support@somazon.com" class="btn">Send Email</a>
+                        <a href="mailto:supportsomazon@gmail.com" class="btn">Send Email</a>
                     </div>
                     <div class="support-card">
                         <span class="icon">💬</span>
@@ -1091,14 +921,13 @@
                         </div>
                         <a href="https://wa.me/2520672367121?text=Welcome%20to%20somaZone!%20How%20can%20we%20help%20you%20today%3F" target="_blank" class="btn">Start Chat</a>
                     </div>
-
                     <div class="support-card">
                         <span class="icon">📞</span>
                         <div class="text">
                             <h4>Phone Support</h4>
                             <p>+2520672367121</p>
                         </div>
-                        <button class="btn" onclick="alert('Call us at +1 (800) 555‑SOMA')">Call Now</button>
+                        <button class="btn" onclick="alert('Call us at +2520672367121')">Call Now</button>
                     </div>
                 </div>
             </div>
@@ -1141,19 +970,16 @@
             <div class="form-group">
                 <label>Product Photos <span class="required">*</span> <span style="font-weight:400;color:#64748b;font-size:13px;">(Image 1 required)</span></label>
                 <div class="upload-grid" id="uploadGrid">
-                    <!-- Image 1 -->
                     <div class="upload-box" id="uploadBox1" onclick="document.getElementById('fileInput1').click()">
                         <div class="icon">📷</div>
                         <div class="label">Image 1 <span class="req">*</span></div>
                         <input type="file" id="fileInput1" class="file-input" accept="image/*" onchange="handleSellImage(1, event)">
                     </div>
-                    <!-- Image 2 -->
                     <div class="upload-box" id="uploadBox2" onclick="document.getElementById('fileInput2').click()">
                         <div class="icon">🖼️</div>
                         <div class="label">Image 2 <span style="color:#94a3b8;">(optional)</span></div>
                         <input type="file" id="fileInput2" class="file-input" accept="image/*" onchange="handleSellImage(2, event)">
                     </div>
-                    <!-- Image 3 -->
                     <div class="upload-box" id="uploadBox3" onclick="document.getElementById('fileInput3').click()">
                         <div class="icon">🖼️</div>
                         <div class="label">Image 3 <span style="color:#94a3b8;">(optional)</span></div>
@@ -1177,8 +1003,41 @@
         <p>© 2026 <span class="gold">SomaZon</span> — Built with ❤️ for the future of trading.</p>
     </footer>
 
+    <!-- ═══ AUTH MODAL (NEW) ═══ -->
+    <div id="authModal">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeAuthModal()" aria-label="Close">×</button>
+            <h2 id="authTitle">Sign In</h2>
+            <p class="modal-sub" id="authSub">Sign in to manage your products and profile.</p>
+
+            <!-- AUTH FORM (shown when logged out) -->
+            <form id="authForm" onsubmit="handleAuthSubmit(event)">
+                <label for="authName" id="authNameLabel" style="display:none;">Full Name</label>
+                <input type="text" id="authName" placeholder="Full name" style="display:none;">
+
+                <label for="authEmail">Email</label>
+                <input type="email" id="authEmail" placeholder="you@example.com" required autocomplete="email">
+
+                <label for="authPassword">Password</label>
+                <input type="password" id="authPassword" placeholder="••••••••" required autocomplete="current-password" minlength="6">
+
+                <button type="submit" class="auth-primary" id="authSubmitBtn">Sign In</button>
+                <button type="button" class="auth-toggle" id="authToggleBtn" onclick="toggleAuthMode()">
+                    Need an account? Sign Up
+                </button>
+                <div class="auth-msg" id="authMsg"></div>
+            </form>
+
+            <!-- LOGGED-IN PANEL (shown when signed in) -->
+            <div id="authLoggedIn" style="display:none;">
+                <p class="modal-sub" style="margin-bottom:14px;">Signed in as<br><strong id="authCurrentEmail" style="color:#0f172a;"></strong></p>
+                <button type="button" class="auth-logout" onclick="handleLogout()">Log Out</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ═══════════════════════════════════════ -->
-    <!-- ═══ JAVASCRIPT — FULL STATE ═══ -->
+    <!-- ═══ JAVASCRIPT — FULL STATE + SUPABASE ═══ -->
     <!-- ═══════════════════════════════════════ -->
     <script>
         (function() {
@@ -1193,58 +1052,204 @@
             // ─── STATE ──────────────────────────────────────────────
             const state = {
                 products: [],
+                user: null, // Supabase auth user
                 profile: {
-                    name: 'John Doe',
-                    email: 'john.doe@example.com',
-                    phone: '+1 (555) 123-4567',
-                    country: 'United States',
-                    avatar: null,         // public URL after Supabase upload
-                    avatarPreview: null   // local dataURL during upload
+                    name: '',
+                    email: '',
+                    phone: '',
+                    country: '',
+                    avatar: null,
+                    avatarPreview: null
                 },
                 kyc: [
                     { id: 'passport', label: 'Passport', status: 'unverified', imageUrl: null },
                     { id: 'idcard', label: 'ID Card', status: 'unverified', imageUrl: null },
                     { id: 'license', label: "Driver's License", status: 'unverified', imageUrl: null }
                 ],
-                sellImages: { 1: null, 2: null, 3: null },          // public URLs
-                sellImagePreview: { 1: null, 2: null, 3: null },    // local dataURLs
-                sellImageUploading: { 1: false, 2: false, 3: false }
+                sellImages: { 1: null, 2: null, 3: null },
+                sellImagePreview: { 1: null, 2: null, 3: null },
+                sellImageUploading: { 1: false, 2: false, 3: false },
+                authMode: 'signin' // 'signin' | 'signup'
             };
 
             // ─── DOM REFS ──────────────────────────────────────────
             const $ = (sel) => document.querySelector(sel);
             const $$ = (sel) => document.querySelectorAll(sel);
-
             const productGrid = $('#productGrid');
             const emptyState = $('#emptyState');
             const productCount = $('#productCount');
 
-            // ─── HELPER: Upload image to Supabase Storage ──────────
+            // ─── HELPERS ───────────────────────────────────────────
+            function escapeHtml(str) {
+                if (str == null) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            }
+
             async function uploadImageToSupabase(file, folder) {
+                const fileExt = (file.name.split('.').pop() || 'jpg').toLowerCase();
+                const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${fileExt}`;
+                const filePath = `${folder}/${fileName}`;
+
+                const { error: uploadError } = await supabase.storage
+                    .from(STORAGE_BUCKET)
+                    .upload(filePath, file, { cacheControl: '3600', upsert: false });
+
+                if (uploadError) throw uploadError;
+
+                const { data } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(filePath);
+                return data.publicUrl;
+            }
+
+            // ─── AUTH ──────────────────────────────────────────────
+            window.handleAuthClick = function() {
+                if (state.user) {
+                    // already signed in → open modal showing logout
+                    openAuthModal('account');
+                } else {
+                    openAuthModal('signin');
+                }
+            };
+
+            window.openAuthModal = function(mode) {
+                const modal = $('#authModal');
+                modal.classList.add('open');
+                if (state.user) {
+                    // Show logged-in panel
+                    $('#authForm').style.display = 'none';
+                    $('#authLoggedIn').style.display = 'block';
+                    $('#authCurrentEmail').textContent = state.user.email || '';
+                    $('#authTitle').textContent = 'My Account';
+                    $('#authSub').textContent = 'You are signed in.';
+                } else {
+                    $('#authForm').style.display = 'block';
+                    $('#authLoggedIn').style.display = 'none';
+                    if (mode === 'signup') setAuthMode('signup');
+                    else setAuthMode('signin');
+                }
+            };
+
+            window.closeAuthModal = function() {
+                $('#authModal').classList.remove('open');
+                $('#authMsg').textContent = '';
+                $('#authMsg').className = 'auth-msg';
+            };
+
+            function setAuthMode(mode) {
+                state.authMode = mode;
+                const isSignup = mode === 'signup';
+                $('#authTitle').textContent = isSignup ? 'Create Account' : 'Sign In';
+                $('#authSub').textContent = isSignup
+                    ? 'Create a free SomaZon account to start selling.'
+                    : 'Sign in to manage your products and profile.';
+                $('#authSubmitBtn').textContent = isSignup ? 'Sign Up' : 'Sign In';
+                $('#authToggleBtn').textContent = isSignup
+                    ? 'Already have an account? Sign In'
+                    : 'Need an account? Sign Up';
+                $('#authNameLabel').style.display = isSignup ? 'block' : 'none';
+                $('#authName').style.display = isSignup ? 'block' : 'none';
+                $('#authName').required = isSignup;
+                $('#authPassword').autocomplete = isSignup ? 'new-password' : 'current-password';
+            }
+
+            window.toggleAuthMode = function() {
+                setAuthMode(state.authMode === 'signin' ? 'signup' : 'signin');
+            };
+
+            window.handleAuthSubmit = async function(event) {
+                event.preventDefault();
+                const msg = $('#authMsg');
+                const btn = $('#authSubmitBtn');
+                msg.textContent = '';
+                msg.className = 'auth-msg';
+
+                const email = $('#authEmail').value.trim();
+                const password = $('#authPassword').value;
+                const fullName = $('#authName').value.trim();
+
+                btn.disabled = true;
+                btn.textContent = state.authMode === 'signup' ? 'Creating…' : 'Signing in…';
+
                 try {
-                    const fileExt = file.name.split('.').pop() || 'jpg';
-                    const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${fileExt}`;
-                    const filePath = `${folder}/${fileName}`;
-
-                    const { error: uploadError } = await supabase.storage
-                        .from(STORAGE_BUCKET)
-                        .upload(filePath, file, {
-                            cacheControl: '3600',
-                            upsert: false
+                    if (state.authMode === 'signup') {
+                        const { data, error } = await supabase.auth.signUp({
+                            email,
+                            password,
+                            options: { data: { full_name: fullName } }
                         });
+                        if (error) throw error;
 
-                    if (uploadError) throw uploadError;
+                        // Create profile row immediately (works if email confirmation is disabled)
+                        if (data.user) {
+                            await supabase.from('profiles').upsert({
+                                id: data.user.id,
+                                full_name: fullName,
+                                email: email,
+                                phone: '',
+                                country: '',
+                                avatar_url: null,
+                                kyc: []
+                            }, { onConflict: 'id' });
+                        }
 
-                    const { data } = supabase.storage
-                        .from(STORAGE_BUCKET)
-                        .getPublicUrl(filePath);
-
-                    return data.publicUrl;
+                        if (data.session) {
+                            msg.textContent = '✅ Account created!';
+                            msg.className = 'auth-msg success';
+                            setTimeout(closeAuthModal, 700);
+                        } else {
+                            msg.textContent = '✅ Check your email to confirm your account.';
+                            msg.className = 'auth-msg success';
+                        }
+                    } else {
+                        const { error } = await supabase.auth.signInWithPassword({ email, password });
+                        if (error) throw error;
+                        msg.textContent = '✅ Signed in!';
+                        msg.className = 'auth-msg success';
+                        setTimeout(closeAuthModal, 500);
+                    }
                 } catch (err) {
-                    console.error('Supabase upload error:', err);
-                    throw err;
+                    msg.textContent = '⚠️ ' + (err.message || 'Something went wrong.');
+                    msg.className = 'auth-msg error';
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = state.authMode === 'signup' ? 'Sign Up' : 'Sign In';
+                }
+            };
+
+            window.handleLogout = async function() {
+                await supabase.auth.signOut();
+                closeAuthModal();
+            };
+
+            function updateAuthUI() {
+                const btn = $('#authBtn');
+                if (!btn) return;
+                if (state.user) {
+                    btn.textContent = 'Logout';
+                } else {
+                    btn.textContent = 'Sign In';
                 }
             }
+
+            // ─── AUTH STATE LISTENER ───────────────────────────────
+            supabase.auth.onAuthStateChange(async (event, session) => {
+                state.user = session?.user || null;
+                updateAuthUI();
+
+                if (event === 'SIGNED_IN' && state.user) {
+                    await loadUserProfile();
+                    await loadUserKYC();
+                    updateProfileUI();
+                }
+                if (event === 'SIGNED_OUT') {
+                    resetProfileState();
+                    updateProfileUI();
+                }
+            });
 
             // ─── PAGE NAVIGATION ──────────────────────────────────
             window.showPage = function(id) {
@@ -1253,21 +1258,26 @@
                 if (target) target.classList.add('active');
 
                 if (id === 'sell-page') {
+                    if (!state.user) {
+                        // Require sign-in to access Sell page
+                        openAuthModal('signin');
+                        const msg = $('#authMsg');
+                        msg.textContent = '⚠️ Please sign in to list a product.';
+                        msg.className = 'auth-msg error';
+                        return;
+                    }
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
-
                 if (id === 'me-page') {
                     renderKYC();
+                    if (state.user) loadUserProfile().then(updateProfileUI);
                 }
-
                 if (id === 'marketplace') {
                     renderProducts();
                 }
 
                 const sidebar = document.getElementById('meSidebar');
-                if (sidebar) {
-                    sidebar.scrollLeft = 0;
-                }
+                if (sidebar) sidebar.scrollLeft = 0;
             };
 
             // ─── ME SIDEBAR TABS ──────────────────────────────────
@@ -1289,24 +1299,38 @@
             window.handleProfilePic = async function(event) {
                 const file = event.target.files[0];
                 if (!file) return;
+                if (!state.user) {
+                    openAuthModal('signin');
+                    event.target.value = '';
+                    return;
+                }
 
-                // 1. Local preview
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     state.profile.avatarPreview = e.target.result;
                     updateProfileUI();
                 };
                 reader.readAsDataURL(file);
-                event.target.value = ''; // reset input
+                event.target.value = '';
 
-                // 2. Upload to Supabase
                 try {
                     const publicUrl = await uploadImageToSupabase(file, 'profile-images');
                     state.profile.avatar = publicUrl;
                     state.profile.avatarPreview = null;
+
+                    // Persist to profiles table
+                    await supabase.from('profiles').upsert({
+                        id: state.user.id,
+                        full_name: state.profile.name,
+                        email: state.profile.email,
+                        phone: state.profile.phone,
+                        country: state.profile.country,
+                        avatar_url: publicUrl
+                    }, { onConflict: 'id' });
+
                     updateProfileUI();
-                    document.getElementById('profileSaveMsg').textContent = '✅ Photo uploaded!';
-                    setTimeout(() => { document.getElementById('profileSaveMsg').textContent = ''; }, 2000);
+                    $('#profileSaveMsg').textContent = '✅ Photo uploaded!';
+                    setTimeout(() => { $('#profileSaveMsg').textContent = ''; }, 2000);
                 } catch (error) {
                     state.profile.avatarPreview = null;
                     updateProfileUI();
@@ -1315,35 +1339,129 @@
             };
 
             function updateProfileUI() {
-                const avatarLarge = document.getElementById('profileAvatarLarge');
-                const meAvatar = document.getElementById('meAvatar');
+                const avatarLarge = $('#profileAvatarLarge');
+                const meAvatar = $('#meAvatar');
                 const avatarSrc = state.profile.avatarPreview || state.profile.avatar;
 
                 if (avatarSrc) {
                     avatarLarge.innerHTML = `<img src="${avatarSrc}" alt="Avatar">`;
                     meAvatar.innerHTML = `<img src="${avatarSrc}" alt="Avatar">`;
                 } else {
-                    const initial = (state.profile.name || 'M').charAt(0).toUpperCase();
+                    const initial = (state.profile.name || state.user?.email || 'M').charAt(0).toUpperCase();
                     avatarLarge.innerHTML = `<span id="avatarPlaceholder">${initial}</span>`;
                     meAvatar.textContent = initial;
                 }
             }
 
-            // ─── SAVE PROFILE ──────────────────────────────────────
-            window.saveProfile = function() {
-                state.profile.name = document.getElementById('profileName').value.trim() || 'John Doe';
-                state.profile.email = document.getElementById('profileEmail').value.trim() || 'john.doe@example.com';
-                state.profile.phone = document.getElementById('profilePhone').value.trim() || '+1 (555) 123-4567';
-                state.profile.country = document.getElementById('profileCountry').value.trim() || 'United States';
+            // ─── PROFILE LOAD / SAVE ──────────────────────────────
+            async function loadUserProfile() {
+                if (!state.user) return;
+                const { data, error } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', state.user.id)
+                    .maybeSingle();
+
+                if (error) {
+                    console.warn('Load profile error:', error.message);
+                    return;
+                }
+
+                if (data) {
+                    state.profile.name = data.full_name || '';
+                    state.profile.email = data.email || state.user.email || '';
+                    state.profile.phone = data.phone || '';
+                    state.profile.country = data.country || '';
+                    state.profile.avatar = data.avatar_url || null;
+                    if (Array.isArray(data.kyc) && data.kyc.length) {
+                        state.kyc = data.kyc;
+                    }
+                } else {
+                    // No profile row yet — prefill with auth email
+                    state.profile.email = state.user.email || '';
+                    state.profile.name = state.user.user_metadata?.full_name || '';
+                }
+
+                // Sync inputs
+                $('#profileName').value = state.profile.name;
+                $('#profileEmail').value = state.profile.email;
+                $('#profilePhone').value = state.profile.phone;
+                $('#profileCountry').value = state.profile.country;
+            }
+
+            async function loadUserKYC() {
+                if (!state.user) return;
+                const { data } = await supabase
+                    .from('profiles')
+                    .select('kyc')
+                    .eq('id', state.user.id)
+                    .maybeSingle();
+                if (data && Array.isArray(data.kyc) && data.kyc.length) {
+                    state.kyc = data.kyc;
+                }
+                renderKYC();
+            }
+
+            function resetProfileState() {
+                state.profile = {
+                    name: '', email: '', phone: '', country: '',
+                    avatar: null, avatarPreview: null
+                };
+                state.kyc = [
+                    { id: 'passport', label: 'Passport', status: 'unverified', imageUrl: null },
+                    { id: 'idcard', label: 'ID Card', status: 'unverified', imageUrl: null },
+                    { id: 'license', label: "Driver's License", status: 'unverified', imageUrl: null }
+                ];
+                $('#profileName').value = '';
+                $('#profileEmail').value = '';
+                $('#profilePhone').value = '';
+                $('#profileCountry').value = '';
+                renderKYC();
+            }
+
+            window.saveProfile = async function() {
+                if (!state.user) {
+                    openAuthModal('signin');
+                    const msg = $('#authMsg');
+                    msg.textContent = '⚠️ Please sign in to save your profile.';
+                    msg.className = 'auth-msg error';
+                    return;
+                }
+
+                state.profile.name = $('#profileName').value.trim();
+                state.profile.email = $('#profileEmail').value.trim() || state.user.email || '';
+                state.profile.phone = $('#profilePhone').value.trim();
+                state.profile.country = $('#profileCountry').value.trim();
+
+                const msgEl = $('#profileSaveMsg');
+                msgEl.textContent = 'Saving…';
+                msgEl.style.color = '#64748b';
+
+                const { error } = await supabase.from('profiles').upsert({
+                    id: state.user.id,
+                    full_name: state.profile.name,
+                    email: state.profile.email,
+                    phone: state.profile.phone,
+                    country: state.profile.country,
+                    avatar_url: state.profile.avatar,
+                    kyc: state.kyc
+                }, { onConflict: 'id' });
+
+                if (error) {
+                    msgEl.textContent = '⚠️ ' + error.message;
+                    msgEl.style.color = '#dc2626';
+                    return;
+                }
 
                 updateProfileUI();
-                document.getElementById('profileSaveMsg').textContent = '✅ Profile saved!';
-                setTimeout(() => { document.getElementById('profileSaveMsg').textContent = ''; }, 2000);
+                msgEl.textContent = '✅ Profile saved!';
+                msgEl.style.color = '#eab308';
+                setTimeout(() => { msgEl.textContent = ''; }, 2000);
             };
 
             // ─── KYC ───────────────────────────────────────────────
             function renderKYC() {
-                const container = document.getElementById('kycList');
+                const container = $('#kycList');
                 if (!container) return;
                 container.innerHTML = '';
                 state.kyc.forEach((doc, idx) => {
@@ -1363,8 +1481,8 @@
                         <div class="info">
                             <span class="doc-icon">📄</span>
                             <div>
-                                <div class="doc-name">${doc.label}</div>
-                                <div class="doc-sub">${doc.id}</div>
+                                <div class="doc-name">${escapeHtml(doc.label)}</div>
+                                <div class="doc-sub">${escapeHtml(doc.id)}</div>
                             </div>
                         </div>
                         <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
@@ -1377,31 +1495,40 @@
                     `;
                     container.appendChild(div);
 
-                    const btn = div.querySelector('.kyc-upload-btn');
-                    const input = btn.querySelector('.file-input');
+                    const input = div.querySelector('.file-input');
                     input.addEventListener('change', async function(e) {
                         const file = e.target.files[0];
                         if (!file) return;
-                        const idx = parseInt(this.dataset.kycIdx);
+                        const i = parseInt(this.dataset.kycIdx);
 
-                        // Show pending status while uploading
-                        state.kyc[idx].status = 'pending';
+                        if (!state.user) {
+                            openAuthModal('signin');
+                            const m = $('#authMsg');
+                            m.textContent = '⚠️ Please sign in to upload documents.';
+                            m.className = 'auth-msg error';
+                            return;
+                        }
+
+                        state.kyc[i].status = 'pending';
                         renderKYC();
                         updateKYCStatus();
 
                         try {
                             const publicUrl = await uploadImageToSupabase(file, 'kyc-images');
-                            state.kyc[idx].imageUrl = publicUrl;
+                            state.kyc[i].imageUrl = publicUrl;
+                            state.kyc[i].status = 'verified';
 
-                            // Simulate verification after upload
-                            setTimeout(() => {
-                                state.kyc[idx].status = 'verified';
-                                renderKYC();
-                                updateKYCStatus();
-                            }, 2000);
+                            // Persist KYC array
+                            await supabase.from('profiles').upsert({
+                                id: state.user.id,
+                                kyc: state.kyc
+                            }, { onConflict: 'id' });
+
+                            renderKYC();
+                            updateKYCStatus();
                         } catch (error) {
                             alert('Document upload failed: ' + error.message);
-                            state.kyc[idx].status = 'unverified';
+                            state.kyc[i].status = 'unverified';
                             renderKYC();
                             updateKYCStatus();
                         }
@@ -1414,7 +1541,7 @@
                 const all = state.kyc;
                 const verified = all.filter(d => d.status === 'verified').length;
                 const total = all.length;
-                const overall = document.getElementById('kycOverallStatus');
+                const overall = $('#kycOverallStatus');
                 if (!overall) return;
                 if (verified === total) {
                     overall.textContent = '✅ Fully Verified';
@@ -1439,22 +1566,21 @@
                 const file = event.target.files[0];
                 if (!file) return;
 
-                // Immediate local preview
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     state.sellImagePreview[index] = e.target.result;
                     updateSellBox(index, state.sellImagePreview[index], 'Uploading...');
                 };
                 reader.readAsDataURL(file);
-                event.target.value = ''; // reset input
+                event.target.value = '';
 
-                // Upload to Supabase
                 state.sellImageUploading[index] = true;
                 try {
                     const publicUrl = await uploadImageToSupabase(file, 'product-images');
                     state.sellImages[index] = publicUrl;
                     state.sellImageUploading[index] = false;
-                    updateSellBox(index, state.sellImagePreview[index], index === 1 ? 'Main · Uploaded' : 'Optional · Uploaded');
+                    updateSellBox(index, state.sellImagePreview[index],
+                        index === 1 ? 'Main · Uploaded' : 'Optional · Uploaded');
                 } catch (error) {
                     state.sellImageUploading[index] = false;
                     state.sellImages[index] = null;
@@ -1468,13 +1594,9 @@
                 const box = document.getElementById('uploadBox' + index);
                 if (!box) return;
 
-                // Clean old preview, remove button, and status badge (keep file input)
-                const oldPreview = box.querySelector('.preview-wrap');
-                if (oldPreview) oldPreview.remove();
-                const oldRemove = box.querySelector('.remove-img');
-                if (oldRemove) oldRemove.remove();
-                const oldBadge = box.querySelector('.status-badge');
-                if (oldBadge) oldBadge.remove();
+                const oldPreview = box.querySelector('.preview-wrap'); if (oldPreview) oldPreview.remove();
+                const oldRemove = box.querySelector('.remove-img'); if (oldRemove) oldRemove.remove();
+                const oldBadge = box.querySelector('.status-badge'); if (oldBadge) oldBadge.remove();
 
                 if (dataURL) {
                     const wrap = document.createElement('div');
@@ -1482,17 +1604,12 @@
                     wrap.innerHTML = `<img src="${dataURL}" alt="Preview">`;
                     box.appendChild(wrap);
                     box.classList.add('has-image');
-
-                    const icon = box.querySelector('.icon');
-                    const label = box.querySelector('.label');
-                    if (icon) icon.style.display = 'none';
-                    if (label) label.style.display = 'none';
+                    const icon = box.querySelector('.icon'); if (icon) icon.style.display = 'none';
+                    const label = box.querySelector('.label'); if (label) label.style.display = 'none';
                 } else {
                     box.classList.remove('has-image');
-                    const icon = box.querySelector('.icon');
-                    const label = box.querySelector('.label');
-                    if (icon) icon.style.display = '';
-                    if (label) label.style.display = '';
+                    const icon = box.querySelector('.icon'); if (icon) icon.style.display = '';
+                    const label = box.querySelector('.label'); if (label) label.style.display = '';
                 }
 
                 if (statusText) {
@@ -1507,10 +1624,7 @@
                     rm.className = 'remove-img';
                     rm.innerHTML = '✕';
                     rm.type = 'button';
-                    rm.onclick = function(e) {
-                        e.stopPropagation();
-                        removeSellImage(index);
-                    };
+                    rm.onclick = function(e) { e.stopPropagation(); removeSellImage(index); };
                     box.appendChild(rm);
                 }
             }
@@ -1522,30 +1636,32 @@
 
                 const box = document.getElementById('uploadBox' + index);
                 if (!box) return;
-                const preview = box.querySelector('.preview-wrap');
-                if (preview) preview.remove();
-                const rm = box.querySelector('.remove-img');
-                if (rm) rm.remove();
-                const badge = box.querySelector('.status-badge');
-                if (badge) badge.remove();
+                const preview = box.querySelector('.preview-wrap'); if (preview) preview.remove();
+                const rm = box.querySelector('.remove-img'); if (rm) rm.remove();
+                const badge = box.querySelector('.status-badge'); if (badge) badge.remove();
                 box.classList.remove('has-image');
-                const icon = box.querySelector('.icon');
-                const label = box.querySelector('.label');
-                if (icon) icon.style.display = '';
-                if (label) label.style.display = '';
-                const input = box.querySelector('.file-input');
-                if (input) input.value = '';
+                const icon = box.querySelector('.icon'); if (icon) icon.style.display = '';
+                const label = box.querySelector('.label'); if (label) label.style.display = '';
+                const input = box.querySelector('.file-input'); if (input) input.value = '';
             }
 
             // ─── PUBLISH PRODUCT ──────────────────────────────────
-            window.publishProduct = function() {
-                const category = document.getElementById('sellCategory').value;
-                const title = document.getElementById('sellTitle').value.trim();
-                const price = parseFloat(document.getElementById('sellPrice').value);
-                const desc = document.getElementById('sellDesc').value.trim();
-                const msg = document.getElementById('publishMsg');
+            window.publishProduct = async function() {
+                const msg = $('#publishMsg');
 
-                // Check if any upload is still in progress
+                if (!state.user) {
+                    openAuthModal('signin');
+                    const m = $('#authMsg');
+                    m.textContent = '⚠️ Please sign in to publish a product.';
+                    m.className = 'auth-msg error';
+                    return;
+                }
+
+                const category = $('#sellCategory').value;
+                const title = $('#sellTitle').value.trim();
+                const price = parseFloat($('#sellPrice').value);
+                const desc = $('#sellDesc').value.trim();
+
                 const isUploading = Object.values(state.sellImageUploading).some(v => v);
                 if (isUploading) {
                     msg.textContent = '⚠️ Please wait for image uploads to finish.';
@@ -1555,35 +1671,50 @@
 
                 if (!category) { msg.textContent = '⚠️ Please select a category.'; msg.style.color = '#dc2626'; return; }
                 if (!title) { msg.textContent = '⚠️ Please enter a product title.'; msg.style.color = '#dc2626'; return; }
-                if (isNaN(price) || price < 0) { msg.textContent = '⚠️ Please enter a valid price.'; msg.style.color =
-                    '#dc2626'; return; }
-                if (!state.sellImages[1]) { msg.textContent = '⚠️ Please upload at least the main photo (Image 1).'; msg.style.color =
-                        '#dc2626';
-                    return; }
+                if (isNaN(price) || price < 0) { msg.textContent = '⚠️ Please enter a valid price.'; msg.style.color = '#dc2626'; return; }
+                if (!state.sellImages[1]) { msg.textContent = '⚠️ Please upload at least the main photo (Image 1).'; msg.style.color = '#dc2626'; return; }
 
                 const images = [];
                 for (let i = 1; i <= 3; i++) {
                     if (state.sellImages[i]) images.push(state.sellImages[i]);
                 }
 
-                const product = {
-                    id: Date.now() + '_' + Math.random().toString(36).slice(2, 6),
-                    title: title,
-                    price: price,
-                    category: category,
-                    description: desc || 'No description provided.',
-                    images: images,
-                    createdAt: new Date().toISOString()
-                };
+                msg.textContent = 'Publishing…';
+                msg.style.color = '#64748b';
 
-                state.products.unshift(product);
+                const { data, error } = await supabase.from('products').insert({
+                    user_id: state.user.id,
+                    title,
+                    description: desc || 'No description provided.',
+                    price,
+                    category,
+                    images
+                }).select().single();
+
+                if (error) {
+                    msg.textContent = '⚠️ ' + error.message;
+                    msg.style.color = '#dc2626';
+                    return;
+                }
+
+                // Prepend to state and render
+                state.products.unshift({
+                    id: data.id,
+                    title: data.title,
+                    price: Number(data.price),
+                    category: data.category,
+                    description: data.description,
+                    images: data.images || [],
+                    createdAt: data.created_at,
+                    userId: data.user_id
+                });
                 renderProducts();
 
                 // Reset form
-                document.getElementById('sellCategory').value = '';
-                document.getElementById('sellTitle').value = '';
-                document.getElementById('sellPrice').value = '';
-                document.getElementById('sellDesc').value = '';
+                $('#sellCategory').value = '';
+                $('#sellTitle').value = '';
+                $('#sellPrice').value = '';
+                $('#sellDesc').value = '';
                 for (let i = 1; i <= 3; i++) {
                     removeSellImage(i);
                     state.sellImages[i] = null;
@@ -1600,15 +1731,42 @@
                 }, 800);
             };
 
+            // ─── LOAD PRODUCTS FROM SUPABASE ──────────────────────
+            async function loadProducts() {
+                const { data, error } = await supabase
+                    .from('products')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) {
+                    console.warn('Load products error:', error.message);
+                    renderProducts();
+                    return;
+                }
+
+                state.products = (data || []).map(p => ({
+                    id: p.id,
+                    title: p.title,
+                    price: Number(p.price),
+                    category: p.category,
+                    description: p.description,
+                    images: p.images || [],
+                    createdAt: p.created_at,
+                    userId: p.user_id
+                }));
+
+                renderProducts();
+            }
+
             // ─── RENDER PRODUCTS ──────────────────────────────────
             function renderProducts(filter = '') {
                 let list = state.products;
                 if (filter.trim()) {
                     const q = filter.trim().toLowerCase();
                     list = list.filter(p =>
-                        p.title.toLowerCase().includes(q) ||
-                        p.category.toLowerCase().includes(q) ||
-                        p.description.toLowerCase().includes(q)
+                        (p.title || '').toLowerCase().includes(q) ||
+                        (p.category || '').toLowerCase().includes(q) ||
+                        (p.description || '').toLowerCase().includes(q)
                     );
                 }
 
@@ -1629,18 +1787,20 @@
                     const card = document.createElement('div');
                     card.className = 'card';
                     const imgSrc = p.images && p.images.length > 0 ? p.images[0] : '';
-                    const priceStr = `$${p.price.toFixed(2)}`;
+                    const priceStr = `$${Number(p.price).toFixed(2)}`;
                     const cat = p.category || 'Uncategorized';
-                    const isNew = (Date.now() - new Date(p.createdAt).getTime()) < 60000;
+                    const isNew = p.createdAt
+                        ? (Date.now() - new Date(p.createdAt).getTime()) < 60000
+                        : false;
 
                     card.innerHTML = `
                         ${isNew ? '<span class="badge-new">New</span>' : ''}
                         <div class="img-wrap">
-                            ${imgSrc ? `<img src="${imgSrc}" alt="${p.title}">` : `<span class="placeholder-icon">📷</span>`}
+                            ${imgSrc ? `<img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(p.title)}">` : `<span class="placeholder-icon">📷</span>`}
                         </div>
-                        <span class="category-tag">${cat}</span>
-                        <div class="product-name">${p.title}</div>
-                        <div class="product-desc">${p.description}</div>
+                        <span class="category-tag">${escapeHtml(cat)}</span>
+                        <div class="product-name">${escapeHtml(p.title)}</div>
+                        <div class="product-desc">${escapeHtml(p.description)}</div>
                         <div class="price">${priceStr}</div>
                         <div class="actions">
                             <button onclick="buyProduct('${p.id}')">BUY NOW</button>
@@ -1655,71 +1815,58 @@
             window.buyProduct = function(id) {
                 const p = state.products.find(pr => pr.id === id);
                 if (!p) return;
-                alert(`🛒 You are about to purchase "${p.title}" for $${p.price.toFixed(2)}.\n\nProceed to checkout?`);
+                alert(`🛒 You are about to purchase "${p.title}" for $${Number(p.price).toFixed(2)}.\n\nProceed to checkout?`);
             };
 
             window.showProductDetail = function(id) {
                 const p = state.products.find(pr => pr.id === id);
                 if (!p) return;
-                const imgList = p.images && p.images.length > 0 ?
-                    p.images.map(img => `<img src="${img}" style="max-width:180px;max-height:140px;border-radius:6px;object-fit:cover;border:2px solid #e2e8f0;">`).join('') :
-                    'No images';
+                const imgList = p.images && p.images.length > 0
+                    ? p.images.map(img => `<img src="${img}" style="max-width:180px;max-height:140px;border-radius:6px;object-fit:cover;border:2px solid #e2e8f0;">`).join('')
+                    : 'No images';
                 alert(
-                    `📦 ${p.title}\n\nCategory: ${p.category}\nPrice: $${p.price.toFixed(2)}\n\nDescription:\n${p.description}\n\nImages:\n${imgList}`
+                    `📦 ${p.title}\n\nCategory: ${p.category}\nPrice: $${Number(p.price).toFixed(2)}\n\nDescription:\n${p.description}\n\nImages:\n${imgList}`
                 );
             };
 
             // ─── SEARCH / FILTER ──────────────────────────────────
             window.filterProducts = function() {
-                const query = document.getElementById('searchInput').value;
+                const query = $('#searchInput').value;
                 renderProducts(query);
             };
 
             // ─── INIT ─────────────────────────────────────────────
-            function init() {
-                const demoProducts = [{
-                    id: 'demo1',
-                    title: 'Premium Wireless Headphones',
-                    price: 149.99,
-                    category: 'Electronics',
-                    description: 'Noise-cancelling, 40hr battery, premium sound.',
-                    images: ['https://picsum.photos/seed/headphones/400/300'],
-                    createdAt: new Date(Date.now() - 120000).toISOString()
-                }, {
-                    id: 'demo2',
-                    title: 'Vintage Leather Jacket',
-                    price: 89.50,
-                    category: 'Fashion',
-                    description: 'Genuine leather, classic biker style, size L.',
-                    images: ['https://picsum.photos/seed/jacket/400/300'],
-                    createdAt: new Date(Date.now() - 300000).toISOString()
-                }, {
-                    id: 'demo3',
-                    title: 'Bitcoin Mining Rig',
-                    price: 1299.00,
-                    category: 'Trading',
-                    description: 'High-performance ASIC miner, 90TH/s.',
-                    images: ['https://picsum.photos/seed/miner/400/300'],
-                    createdAt: new Date(Date.now() - 600000).toISOString()
-                }];
-                state.products = [...demoProducts];
+            async function init() {
+                // 1. Restore session (persist across refresh)
+                const { data: { session } } = await supabase.auth.getSession();
+                state.user = session?.user || null;
+                updateAuthUI();
 
-                document.getElementById('profileName').value = state.profile.name;
-                document.getElementById('profileEmail').value = state.profile.email;
-                document.getElementById('profilePhone').value = state.profile.phone;
-                document.getElementById('profileCountry').value = state.profile.country;
+                // 2. Load user profile + KYC if logged in
+                if (state.user) {
+                    await loadUserProfile();
+                    await loadUserKYC();
+                    updateProfileUI();
+                }
 
-                updateProfileUI();
-                renderProducts();
+                // 3. Load all products from Supabase (public)
+                await loadProducts();
+
+                // 4. Initial KYC render (for Me page)
                 renderKYC();
-                productCount.textContent = `${state.products.length} products available`;
             }
 
-            init();
+            // Kick off when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
 
+            // Expose for debugging
             window.__state = state;
         })();
     </script>
 
 </body>
-                </html>
+                            </html>
