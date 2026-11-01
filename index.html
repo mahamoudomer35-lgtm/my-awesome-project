@@ -1,9 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- 1. أيقونة التبويب المصغرة في المتصفح (Favicon) -->
+<link rel="icon" type="image/png" href="https://i.postimg.cc/DzFmbpwn/1787505001070.png">
+
+<!-- 2. تهيئات بطاقة المعاينة كاملة (Open Graph) للواتساب، التليجرام، وفيسبوك -->
+<meta name="google-site-verification" content="bMzQYJ_C70qzGAvtTfXweKClXw3Gtbe43nYvXv1-d-0" />
+<meta property="og:type" content="website">
+<meta property="og:title" content="SomaZon">
+<meta property="og:description" content="مرحباً بكم في منصة SomaZon">
+<meta property="og:image" content="https://i.postimg.cc/DzFmbpwn/1787505001070.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<!-- 3. تهيئات بطاقة منصة X (تويتر سابقاً) -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SomaZon">
+<meta name="twitter:description" content="مرحباً بكم في منصة SomaZon">
+<meta name="twitter:image" content="https://i.postimg.cc/DzFmbpwn/1787505001070.png">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SomaZon Marketplace</title>
+
+    <!-- Supabase JS SDK CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <style>
         /* ── RESET & BASE ── */
         *,
@@ -921,12 +944,13 @@
 <body>
 
     <!-- ═══ HEADER ═══ -->
+    <!-- ═══ HEADER ═══ -->
     <header>
         <div class="logo" onclick="showPage('home')">Soma<span>Zon</span></div>
         <nav>
             <input type="search" id="searchInput" placeholder="Search products..." oninput="filterProducts()">
             <button class="nav-link" onclick="showPage('marketplace')">Marketplace</button>
-            <button class="nav-link support" onclick="window.location.href='mailto:support@somazon.com'">Support</button>
+            <button class="nav-link support" onclick="window.location.href='mailto:supportsomazon@gmail.com'">Support</button>
             <button class="me-btn" onclick="showPage('me-page')" id="meNavBtn">
                 <span class="avatar" id="meAvatar">M</span>
                 <span class="label">Me</span>
@@ -934,6 +958,7 @@
             </button>
         </nav>
     </header>
+
 
     <!-- ═══ PAGES ═══ -->
 
@@ -1048,20 +1073,19 @@
                         <a href="mailto:support@somazon.com" class="btn">Send Email</a>
                     </div>
                     <div class="support-card">
-    <span class="icon">💬</span>
-    <div class="text">
-        <h4>Live Chat</h4>
-        <p>Available Mon–Fri, 9am–6pm EST.</p>
-    </div>
-    <!-- قم بتغيير XXXXXXXXXXX إلى رقم الهاتف مع رمز الدولة بدون + أو 00 -->
-    <a href="https://wa.me/2520672367121?text=Welcome%20to%20somaZone!%20How%20can%20we%20help%20you%20today%3F" target="_blank" class="btn">Start Chat</a>
-</div>
+                        <span class="icon">💬</span>
+                        <div class="text">
+                            <h4>Live Chat</h4>
+                            <p>Available Mon–Fri, 9am–6pm EST.</p>
+                        </div>
+                        <a href="https://wa.me/2520672367121?text=Welcome%20to%20somaZone!%20How%20can%20we%20help%20you%20today%3F" target="_blank" class="btn">Start Chat</a>
+                    </div>
 
                     <div class="support-card">
                         <span class="icon">📞</span>
                         <div class="text">
                             <h4>Phone Support</h4>
-                            <p>+1 (800) 555‑SOMA</p>
+                            <p>+2520672367121</p>
                         </div>
                         <button class="btn" onclick="alert('Call us at +1 (800) 555‑SOMA')">Call Now</button>
                     </div>
@@ -1149,6 +1173,12 @@
         (function() {
             'use strict';
 
+            // ─── SUPABASE CONFIGURATION ─────────────────────────────
+            const SUPABASE_URL = 'https://ywajfrskmmehsgckgnbd.supabase.co';
+            const SUPABASE_ANON_KEY = 'sb_publishable_-djHA95UQyk5DhIF1gtTxA_QD9vnmRa';
+            const STORAGE_BUCKET = 'products';
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
             // ─── STATE ──────────────────────────────────────────────
             const state = {
                 products: [],
@@ -1157,14 +1187,17 @@
                     email: 'john.doe@example.com',
                     phone: '+1 (555) 123-4567',
                     country: 'United States',
-                    avatar: null // dataURL
+                    avatar: null,         // public URL after Supabase upload
+                    avatarPreview: null   // local dataURL during upload
                 },
                 kyc: [
-                    { id: 'passport', label: 'Passport', status: 'unverified' },
-                    { id: 'idcard', label: 'ID Card', status: 'unverified' },
-                    { id: 'license', label: "Driver's License", status: 'unverified' }
+                    { id: 'passport', label: 'Passport', status: 'unverified', imageUrl: null },
+                    { id: 'idcard', label: 'ID Card', status: 'unverified', imageUrl: null },
+                    { id: 'license', label: "Driver's License", status: 'unverified', imageUrl: null }
                 ],
-                sellImages: { 1: null, 2: null, 3: null }
+                sellImages: { 1: null, 2: null, 3: null },          // public URLs
+                sellImagePreview: { 1: null, 2: null, 3: null },    // local dataURLs
+                sellImageUploading: { 1: false, 2: false, 3: false }
             };
 
             // ─── DOM REFS ──────────────────────────────────────────
@@ -1175,29 +1208,51 @@
             const emptyState = $('#emptyState');
             const productCount = $('#productCount');
 
+            // ─── HELPER: Upload image to Supabase Storage ──────────
+            async function uploadImageToSupabase(file, folder) {
+                try {
+                    const fileExt = file.name.split('.').pop() || 'jpg';
+                    const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${fileExt}`;
+                    const filePath = `${folder}/${fileName}`;
+
+                    const { error: uploadError } = await supabase.storage
+                        .from(STORAGE_BUCKET)
+                        .upload(filePath, file, {
+                            cacheControl: '3600',
+                            upsert: false
+                        });
+
+                    if (uploadError) throw uploadError;
+
+                    const { data } = supabase.storage
+                        .from(STORAGE_BUCKET)
+                        .getPublicUrl(filePath);
+
+                    return data.publicUrl;
+                } catch (err) {
+                    console.error('Supabase upload error:', err);
+                    throw err;
+                }
+            }
+
             // ─── PAGE NAVIGATION ──────────────────────────────────
             window.showPage = function(id) {
-                // hide all
                 $$('.page').forEach(p => p.classList.remove('active'));
                 const target = document.getElementById(id);
                 if (target) target.classList.add('active');
 
-                // If navigating to sell, scroll to top
                 if (id === 'sell-page') {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
 
-                // If navigating to me, refresh KYC
                 if (id === 'me-page') {
                     renderKYC();
                 }
 
-                // If navigating to marketplace, refresh grid
                 if (id === 'marketplace') {
                     renderProducts();
                 }
 
-                // close mobile sidebar if needed
                 const sidebar = document.getElementById('meSidebar');
                 if (sidebar) {
                     sidebar.scrollLeft = 0;
@@ -1211,43 +1266,51 @@
                 const tab = item.dataset.tab;
                 if (!tab) return;
 
-                // update sidebar
                 $$('.me-item').forEach(el => el.classList.remove('active'));
                 item.classList.add('active');
 
-                // update panes
                 $$('.tab-pane').forEach(p => p.classList.remove('active'));
                 const pane = document.getElementById('tab-' + tab);
                 if (pane) pane.classList.add('active');
             });
 
             // ─── PROFILE PICTURE ──────────────────────────────────
-            window.handleProfilePic = function(event) {
+            window.handleProfilePic = async function(event) {
                 const file = event.target.files[0];
                 if (!file) return;
+
+                // 1. Local preview
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    const dataURL = e.target.result;
-                    state.profile.avatar = dataURL;
+                    state.profile.avatarPreview = e.target.result;
                     updateProfileUI();
-                    document.getElementById('profileSaveMsg').textContent = '✅ Photo updated!';
-                    setTimeout(() => { document.getElementById('profileSaveMsg').textContent = ''; }, 2000);
                 };
                 reader.readAsDataURL(file);
-                // reset input so same file can be re-uploaded
-                event.target.value = '';
+                event.target.value = ''; // reset input
+
+                // 2. Upload to Supabase
+                try {
+                    const publicUrl = await uploadImageToSupabase(file, 'profile-images');
+                    state.profile.avatar = publicUrl;
+                    state.profile.avatarPreview = null;
+                    updateProfileUI();
+                    document.getElementById('profileSaveMsg').textContent = '✅ Photo uploaded!';
+                    setTimeout(() => { document.getElementById('profileSaveMsg').textContent = ''; }, 2000);
+                } catch (error) {
+                    state.profile.avatarPreview = null;
+                    updateProfileUI();
+                    alert('Profile photo upload failed: ' + error.message);
+                }
             };
 
             function updateProfileUI() {
                 const avatarLarge = document.getElementById('profileAvatarLarge');
-                const placeholder = document.getElementById('avatarPlaceholder');
                 const meAvatar = document.getElementById('meAvatar');
+                const avatarSrc = state.profile.avatarPreview || state.profile.avatar;
 
-                if (state.profile.avatar) {
-                    // large
-                    avatarLarge.innerHTML = `<img src="${state.profile.avatar}" alt="Avatar">`;
-                    // nav
-                    meAvatar.innerHTML = `<img src="${state.profile.avatar}" alt="Avatar">`;
+                if (avatarSrc) {
+                    avatarLarge.innerHTML = `<img src="${avatarSrc}" alt="Avatar">`;
+                    meAvatar.innerHTML = `<img src="${avatarSrc}" alt="Avatar">`;
                 } else {
                     const initial = (state.profile.name || 'M').charAt(0).toUpperCase();
                     avatarLarge.innerHTML = `<span id="avatarPlaceholder">${initial}</span>`;
@@ -1303,23 +1366,34 @@
                     `;
                     container.appendChild(div);
 
-                    // wire upload
                     const btn = div.querySelector('.kyc-upload-btn');
                     const input = btn.querySelector('.file-input');
-                    input.addEventListener('change', function(e) {
+                    input.addEventListener('change', async function(e) {
                         const file = e.target.files[0];
                         if (!file) return;
                         const idx = parseInt(this.dataset.kycIdx);
-                        // simulate upload -> pending then verified after 2s
+
+                        // Show pending status while uploading
                         state.kyc[idx].status = 'pending';
                         renderKYC();
                         updateKYCStatus();
 
-                        setTimeout(() => {
-                            state.kyc[idx].status = 'verified';
+                        try {
+                            const publicUrl = await uploadImageToSupabase(file, 'kyc-images');
+                            state.kyc[idx].imageUrl = publicUrl;
+
+                            // Simulate verification after upload
+                            setTimeout(() => {
+                                state.kyc[idx].status = 'verified';
+                                renderKYC();
+                                updateKYCStatus();
+                            }, 2000);
+                        } catch (error) {
+                            alert('Document upload failed: ' + error.message);
+                            state.kyc[idx].status = 'unverified';
                             renderKYC();
                             updateKYCStatus();
-                        }, 2000);
+                        }
                     });
                 });
                 updateKYCStatus();
@@ -1350,65 +1424,91 @@
             }
 
             // ─── SELL IMAGE HANDLING ──────────────────────────────
-            window.handleSellImage = function(index, event) {
+            window.handleSellImage = async function(index, event) {
                 const file = event.target.files[0];
                 if (!file) return;
+
+                // Immediate local preview
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    const dataURL = e.target.result;
-                    state.sellImages[index] = dataURL;
-                    updateSellBox(index, dataURL);
+                    state.sellImagePreview[index] = e.target.result;
+                    updateSellBox(index, state.sellImagePreview[index], 'Uploading...');
                 };
                 reader.readAsDataURL(file);
-                event.target.value = '';
+                event.target.value = ''; // reset input
+
+                // Upload to Supabase
+                state.sellImageUploading[index] = true;
+                try {
+                    const publicUrl = await uploadImageToSupabase(file, 'product-images');
+                    state.sellImages[index] = publicUrl;
+                    state.sellImageUploading[index] = false;
+                    updateSellBox(index, state.sellImagePreview[index], index === 1 ? 'Main · Uploaded' : 'Optional · Uploaded');
+                } catch (error) {
+                    state.sellImageUploading[index] = false;
+                    state.sellImages[index] = null;
+                    state.sellImagePreview[index] = null;
+                    removeSellImage(index);
+                    alert(`Image ${index} upload failed: ${error.message}`);
+                }
             };
 
-            function updateSellBox(index, dataURL) {
+            function updateSellBox(index, dataURL, statusText) {
                 const box = document.getElementById('uploadBox' + index);
                 if (!box) return;
-                // clear children, keep input
-                const input = box.querySelector('.file-input');
-                // remove old preview
+
+                // Clean old preview, remove button, and status badge (keep file input)
                 const oldPreview = box.querySelector('.preview-wrap');
                 if (oldPreview) oldPreview.remove();
-                const oldBadge = box.querySelector('.status-badge');
-                if (oldBadge) oldBadge.remove();
                 const oldRemove = box.querySelector('.remove-img');
                 if (oldRemove) oldRemove.remove();
+                const oldBadge = box.querySelector('.status-badge');
+                if (oldBadge) oldBadge.remove();
 
-                // add preview
-                const wrap = document.createElement('div');
-                wrap.className = 'preview-wrap';
-                wrap.innerHTML = `<img src="${dataURL}" alt="Preview">`;
-                box.appendChild(wrap);
+                if (dataURL) {
+                    const wrap = document.createElement('div');
+                    wrap.className = 'preview-wrap';
+                    wrap.innerHTML = `<img src="${dataURL}" alt="Preview">`;
+                    box.appendChild(wrap);
+                    box.classList.add('has-image');
 
-                // add remove btn
-                const rm = document.createElement('button');
-                rm.className = 'remove-img';
-                rm.innerHTML = '✕';
-                rm.type = 'button';
-                rm.onclick = function(e) {
-                    e.stopPropagation();
-                    removeSellImage(index);
-                };
-                box.appendChild(rm);
+                    const icon = box.querySelector('.icon');
+                    const label = box.querySelector('.label');
+                    if (icon) icon.style.display = 'none';
+                    if (label) label.style.display = 'none';
+                } else {
+                    box.classList.remove('has-image');
+                    const icon = box.querySelector('.icon');
+                    const label = box.querySelector('.label');
+                    if (icon) icon.style.display = '';
+                    if (label) label.style.display = '';
+                }
 
-                // add badge
-                const badge = document.createElement('div');
-                badge.className = 'status-badge';
-                badge.textContent = index === 1 ? 'Main' : 'Optional';
-                box.appendChild(badge);
+                if (statusText) {
+                    const badge = document.createElement('div');
+                    badge.className = 'status-badge';
+                    badge.textContent = statusText;
+                    box.appendChild(badge);
+                }
 
-                box.classList.add('has-image');
-                // hide icon + label
-                const icon = box.querySelector('.icon');
-                const label = box.querySelector('.label');
-                if (icon) icon.style.display = 'none';
-                if (label) label.style.display = 'none';
+                if (dataURL) {
+                    const rm = document.createElement('button');
+                    rm.className = 'remove-img';
+                    rm.innerHTML = '✕';
+                    rm.type = 'button';
+                    rm.onclick = function(e) {
+                        e.stopPropagation();
+                        removeSellImage(index);
+                    };
+                    box.appendChild(rm);
+                }
             }
 
             function removeSellImage(index) {
                 state.sellImages[index] = null;
+                state.sellImagePreview[index] = null;
+                state.sellImageUploading[index] = false;
+
                 const box = document.getElementById('uploadBox' + index);
                 if (!box) return;
                 const preview = box.querySelector('.preview-wrap');
@@ -1422,7 +1522,6 @@
                 const label = box.querySelector('.label');
                 if (icon) icon.style.display = '';
                 if (label) label.style.display = '';
-                // reset input
                 const input = box.querySelector('.file-input');
                 if (input) input.value = '';
             }
@@ -1433,19 +1532,24 @@
                 const title = document.getElementById('sellTitle').value.trim();
                 const price = parseFloat(document.getElementById('sellPrice').value);
                 const desc = document.getElementById('sellDesc').value.trim();
-                const img1 = state.sellImages[1];
                 const msg = document.getElementById('publishMsg');
 
-                // validation
+                // Check if any upload is still in progress
+                const isUploading = Object.values(state.sellImageUploading).some(v => v);
+                if (isUploading) {
+                    msg.textContent = '⚠️ Please wait for image uploads to finish.';
+                    msg.style.color = '#dc2626';
+                    return;
+                }
+
                 if (!category) { msg.textContent = '⚠️ Please select a category.'; msg.style.color = '#dc2626'; return; }
                 if (!title) { msg.textContent = '⚠️ Please enter a product title.'; msg.style.color = '#dc2626'; return; }
                 if (isNaN(price) || price < 0) { msg.textContent = '⚠️ Please enter a valid price.'; msg.style.color =
                     '#dc2626'; return; }
-                if (!img1) { msg.textContent = '⚠️ Please upload at least the main photo (Image 1).'; msg.style.color =
+                if (!state.sellImages[1]) { msg.textContent = '⚠️ Please upload at least the main photo (Image 1).'; msg.style.color =
                         '#dc2626';
                     return; }
 
-                // build product
                 const images = [];
                 for (let i = 1; i <= 3; i++) {
                     if (state.sellImages[i]) images.push(state.sellImages[i]);
@@ -1464,21 +1568,21 @@
                 state.products.unshift(product);
                 renderProducts();
 
-                // reset form
+                // Reset form
                 document.getElementById('sellCategory').value = '';
                 document.getElementById('sellTitle').value = '';
                 document.getElementById('sellPrice').value = '';
                 document.getElementById('sellDesc').value = '';
-                // reset images
                 for (let i = 1; i <= 3; i++) {
                     removeSellImage(i);
                     state.sellImages[i] = null;
+                    state.sellImagePreview[i] = null;
+                    state.sellImageUploading[i] = false;
                 }
 
                 msg.textContent = '✅ Product published successfully!';
                 msg.style.color = '#166534';
 
-                // navigate to marketplace after a beat
                 setTimeout(() => {
                     showPage('marketplace');
                     msg.textContent = '';
@@ -1497,9 +1601,7 @@
                     );
                 }
 
-                // clear grid, keep empty state
                 const grid = productGrid;
-                // remove all children except emptyState
                 Array.from(grid.children).forEach(child => {
                     if (child.id !== 'emptyState') child.remove();
                 });
@@ -1512,13 +1614,13 @@
                 emptyState.style.display = 'none';
                 productCount.textContent = `${list.length} product${list.length > 1 ? 's' : ''} available`;
 
-                list.forEach((p, idx) => {
+                list.forEach((p) => {
                     const card = document.createElement('div');
                     card.className = 'card';
                     const imgSrc = p.images && p.images.length > 0 ? p.images[0] : '';
                     const priceStr = `$${p.price.toFixed(2)}`;
                     const cat = p.category || 'Uncategorized';
-                    const isNew = (Date.now() - new Date(p.createdAt).getTime()) < 60000; // 1 min
+                    const isNew = (Date.now() - new Date(p.createdAt).getTime()) < 60000;
 
                     card.innerHTML = `
                         ${isNew ? '<span class="badge-new">New</span>' : ''}
@@ -1553,7 +1655,7 @@
                     'No images';
                 alert(
                     `📦 ${p.title}\n\nCategory: ${p.category}\nPrice: $${p.price.toFixed(2)}\n\nDescription:\n${p.description}\n\nImages:\n${imgList}`
-                    );
+                );
             };
 
             // ─── SEARCH / FILTER ──────────────────────────────────
@@ -1564,7 +1666,6 @@
 
             // ─── INIT ─────────────────────────────────────────────
             function init() {
-                // seed with demo products
                 const demoProducts = [{
                     id: 'demo1',
                     title: 'Premium Wireless Headphones',
@@ -1592,7 +1693,6 @@
                 }];
                 state.products = [...demoProducts];
 
-                // set initial profile values in inputs
                 document.getElementById('profileName').value = state.profile.name;
                 document.getElementById('profileEmail').value = state.profile.email;
                 document.getElementById('profilePhone').value = state.profile.phone;
@@ -1601,18 +1701,14 @@
                 updateProfileUI();
                 renderProducts();
                 renderKYC();
-
-                // if on marketplace, show count
                 productCount.textContent = `${state.products.length} products available`;
             }
 
             init();
 
-            // ─── expose state for debugging ──────────────────────
             window.__state = state;
-
         })();
     </script>
 
 </body>
-</html>
+                </html>
