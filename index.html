@@ -206,7 +206,11 @@ input[type=file]{display:none}
 .input-with-icon{position:relative}.input-with-icon>i.input-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--slate);z-index:2;pointer-events:none}.input-with-icon>input{padding-left:40px!important;padding-right:42px!important}.password-toggle{position:absolute;right:9px;top:50%;transform:translateY(-50%);background:transparent;color:var(--slate);width:34px;height:34px;border-radius:var(--radius-btn);z-index:3}.password-toggle:hover{color:var(--gold-dark)}
 .logo{line-height:1;flex-shrink:0}.logo .brand-wordmark{display:inline-flex;align-items:center}.logo .brand-dot{color:var(--gold)}
 </style>
+
+<!-- تم إضافة مكتبة الهاتف هنا لأنها كانت ناقصة -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/css/intlTelInput.css">
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/intlTelInput.min.js"></script>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -519,10 +523,12 @@ let lastAuthEmail = "";
 function getStoredTheme(){ return localStorage.getItem("somazon_theme") || "system"; }
 function getNotifications(){ return localStorage.getItem("somazon_notifications") !== "off"; }
 function isLogged(){ return Boolean(currentSession?.user); }
+
 function requireVerifiedEmail(){
   if(!isLogged()){ openAuth("login"); showToast("Please sign in to continue."); return false; }
   return true;
 }
+
 function userId(){ return currentSession?.user?.id || null; }
 function getUser(){
   if(!currentSession?.user) return null;
@@ -571,10 +577,6 @@ function initPhoneInput(id){
   phoneInputs[id]=iti;
   input.addEventListener("countrychange",()=>syncCountryFromPhone(id));
   input.addEventListener("blur",()=>syncCountryFromPhone(id));
-  input.addEventListener("input",()=>{
-    const raw=input.value.trim();
-    if(raw.startsWith("+")){ try{ iti.setNumber(raw); }catch(_e){} }
-  });
   return iti;
 }
 function syncCountryFromPhone(id){
@@ -621,7 +623,7 @@ async function loadProfile(){
     currentProfile=data || null;
     if(!currentProfile){
       const user=currentSession.user;
-      const fallback={id:user.id,email:user.email||"",full_name:user.user_metadata?.full_name||"SomaZon User",};
+      const fallback={id:user.id,email:user.email||"",full_name:user.user_metadata?.full_name||"SomaZon User"};
       const {data:created,error:createError}=await supabase.from("profiles").upsert(fallback).select().single();
       if(!createError) currentProfile=created;
     }
@@ -777,7 +779,6 @@ function closeCart(){document.getElementById("drawerOverlay").classList.remove("
 async function buyProduct(id){
  if(String(id).startsWith("demo-")){showToast("Connect products table to enable real orders.");return;}
  if(!requireVerifiedEmail()) return;
- 
  await addToCart(id);openCart();
 }
 async function checkout(){
@@ -801,278 +802,4 @@ function startSell(){
 
 /* ---------- Auth ---------- */
 function openAuth(mode="login"){
- setAuthMode(mode);document.getElementById("authOverlay").classList.add("open");document.getElementById("authModal").classList.add("open");
- setTimeout(()=>document.getElementById(mode==="login"?"authEmail":"authName")?.focus(),50);
-}
-function closeAuth(e){if(e&&e.target!==document.getElementById("authOverlay"))return;document.getElementById("authOverlay").classList.remove("open");document.getElementById("authModal").classList.remove("open")}
-function setAuthMode(mode){
- authMode=mode;
- const resend=document.getElementById("resendVerificationBtn");
- if(resend) resend.classList.toggle("hidden", mode!=="login");
- document.getElementById("loginTab").classList.toggle("active",mode==="login");
- document.getElementById("registerTab").classList.toggle("active",mode==="register");
- document.getElementById("authModal").querySelector("h2").textContent=mode==="login"?"Sign In":"Create Account";
- document.getElementById("authSubmit").textContent=mode==="login"?"Sign In":"Create Account";
- document.getElementById("authName").required=mode==="register";
- document.getElementById("authName").style.display=mode==="register"?"block":"none";
- document.getElementById("authName").closest(".field").style.display=mode==="register"?"grid":"none";
- document.getElementById("authPhone").closest(".field").style.display=mode==="register"?"grid":"none";
-}
-async function submitAuth(e){
- e.preventDefault();
- if(!ensureSupabase(authMode==="login"?"sign in":"account registration")) return;
- const name=document.getElementById("authName").value.trim()||"SomaZon User";
- const email=document.getElementById("authEmail").value.trim().toLowerCase();
- const password=document.getElementById("authPassword").value;
- const phone=getPhoneValue("authPhone");
- if(authMode==="register" && phone && !validatePhone("authPhone")) return;
- lastAuthEmail=email;
- const submit=document.getElementById("authSubmit");submit.disabled=true;submit.textContent=authMode==="login"?"Signing In…":"Creating Account…";
- try{
-   if(authMode==="register"){
-     const {data,error}=await supabase.auth.signUp({
-       email,password,
-       options:{ data:{full_name:name,phone,country:phoneInputs.authPhone?.getSelectedCountryData()?.name||""}, emailRedirectTo:window.location.origin+window.location.pathname }
-     });
-     if(error) throw error;
-     if(data?.user){
-       if(data.session){
-         await saveProfileToSupabase({full_name:name,email,phone,country:phoneInputs.authPhone?.getSelectedCountryData()?.name||""});
-         closeAuth();showToast("Account created and signed in.");
-       }else{
-         closeAuth();showToast("Account created. If email confirmation is enabled in Supabase, check your inbox before signing in.");
-       }
-     }
-   }else{
-     const {data,error}=await supabase.auth.signInWithPassword({email,password});
-     if(error) throw error;
-     currentSession=data.session;
-     await refreshUserData();
-     
-     closeAuth();showToast("Signed in successfully");
-   }
- }catch(error){
-   const message=backendMessage(error,authMode==="login"?"Sign in failed.":"Account creation failed.");
-   showToast(message);
- }finally{
-   submit.disabled=false;submit.textContent=authMode==="login"?"Sign In":"Create Account";
- }
-}
-
-async function signOut(){
- if(!SUPABASE_READY){showToast("Supabase is not configured.");return;}
- const {error}=await supabase.auth.signOut();
- if(error){showToast(backendMessage(error,"Could not sign out."));return;}
- currentSession=null;currentProfile=null;cart=[];wishlist=[];orders=[];updateAccountUI();showPage("home");showToast("Signed out");
-}
-function handleAccountAuth(){if(isLogged())signOut();else openAuth("login")}
-async function saveProfileToSupabase(profile){
- if(!isLogged() || !SUPABASE_READY) return null;
- const payload={id:userId(),...profile};
- const {data,error}=await supabase.from("profiles").upsert(payload).select().single();
- if(error) throw error;
- currentProfile=data;return data;
-}
-
-async function updateAccountUI(){
- const user=getUser();
- const initials=(user?.name||"Guest User").trim().charAt(0).toUpperCase()||"M";
- const photo=currentProfile?.avatar_url||"";
- ["sideAvatar","bigAvatar"].forEach(id=>{
-  const el=document.getElementById(id);if(!el)return;
-  el.innerHTML=photo?`<img src="${escapeHtml(photo)}" alt="Profile">`:escapeHtml(initials);
- });
- const mobileAvatar=document.getElementById("mobileAvatar");if(mobileAvatar)mobileAvatar.textContent=photo?"👤":initials;
- document.getElementById("sideName").textContent=user?.name||"Guest User";
- document.getElementById("sideStatus").textContent=user?"Signed in":"Browsing mode";
- document.getElementById("headerAuthBtn").textContent=user?"Account":"Sign In";
- document.getElementById("accountAuthAction").textContent=user?"🚪 Sign Out":"🔐 Sign In";
- const profile=currentProfile||{};
- document.getElementById("fullName").value=profile.full_name||user?.name||"";
- document.getElementById("email").value=profile.email||user?.email||"";
- const phoneInput=document.getElementById("phone");
- if(phoneInputs.phone){
-   phoneInput.value=profile.phone||"";
-   if(profile.phone) try{phoneInputs.phone.setNumber(profile.phone)}catch(_e){}
- }else phoneInput.value=profile.phone||"";
- document.getElementById("country").value=profile.country||"";
- renderOrders();renderWishlist();loadSettings();
-}
-
-/* =========================================================
-   FIXED ROUTING
-   ========================================================= */
-function showPage(id, panel = null){
- if(!id) return;
- document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
- const page=document.getElementById(id);if(page)page.classList.add("active");
- 
- document.querySelectorAll("[data-nav]").forEach(b=>{
-     let isActive = false;
-     if (id === "account" && b.dataset.nav === "support" && panel === "support") isActive = true;
-     else if (id === "marketplace" && b.dataset.nav === "category") isActive = true;
-     else isActive = (b.dataset.nav === id);
-     b.classList.toggle("active", isActive);
- });
- document.querySelectorAll("[data-mobile]").forEach(b=>b.classList.toggle("active",b.dataset.mobile===id));
- 
- if(id==="account"){
-     updateAccountUI();
-     if(panel) selectAccountPanel(panel);
-     else if(!document.querySelector('.account-panel.active')) selectAccountPanel('profile');
- }
- if(id==="deals") renderDeals();
- 
- let hash = panel ? `#${id}/${panel}` : `#${id}`;
- if(window.location.hash !== hash) {
-     history.pushState(null, null, hash);
- }
- 
- window.scrollTo({top:0,behavior:"smooth"});
-}
-
-function selectAccountPanel(name){
- document.querySelectorAll(".account-panel").forEach(p=>p.classList.remove("active"));
- const target=document.getElementById("panel-"+name);if(target)target.classList.add("active");
- document.querySelectorAll(".account-menu button[data-panel]").forEach(b=>b.classList.toggle("active",b.dataset.panel===name));
- if(name==="orders")renderOrders();
- if(name==="wishlist")renderWishlist();
- updateAccountUI();
- 
- if(document.getElementById("account").classList.contains("active")){
-     history.pushState(null, null, `#account/${name}`);
- }
-}
-
-window.addEventListener("popstate", handleRouting);
-
-function handleRouting(){
-    let hash = window.location.hash.replace("#", "");
-    if(!hash) { showPage("home"); return; }
-    const parts = hash.split("/");
-    showPage(parts[0], parts[1] || null);
-}
-/* ========================================================= */
-
-async function saveProfile(e){
- e.preventDefault();
- if(!isLogged()){openAuth("login");showToast("Sign in to save your profile.");return;}
- if(!ensureSupabase("profile updates"))return;
- if(!validatePhone("phone"))return;
- const phone=getPhoneValue("phone");
- const country=phoneInputs.phone?.getSelectedCountryData()?.name||document.getElementById("country").value.trim();
- const payload={full_name:document.getElementById("fullName").value.trim(),email:currentSession.user.email||document.getElementById("email").value.trim(),phone,country};
- try{await saveProfileToSupabase(payload);updateAccountUI();showToast("Profile saved successfully");}
- catch(error){showToast(backendMessage(error,"Profile could not be saved."));}
-}
-async function handleProfilePhoto(e){
- const file=e.target.files[0];if(!file)return;
- if(file.size>5*1024*1024){showToast("Photo must be 5MB or smaller");return;}
- if(!isLogged()){openAuth("login");return;}
- if(!ensureSupabase("profile photo uploads"))return;
- try{
-   const path=`${userId()}/${Date.now()}-${safeFileName(file.name)}`;
-   const storedPath=await uploadToBucket(STORAGE_BUCKETS.avatars,file,path);
-   const url=publicStorageUrl(STORAGE_BUCKETS.avatars,storedPath);
-   await saveProfileToSupabase({avatar_url:url,avatar_path:storedPath});
-   updateAccountUI();showToast("Profile photo updated");
- }catch(error){showToast(backendMessage(error,"Profile photo upload failed."));}
-}
-
-async function toggleWishlist(id){
- if(!requireVerifiedEmail()) return
- const sid=String(id);
- wishlist=wishlist.includes(sid)?wishlist.filter(x=>x!==sid):[...wishlist,sid];
- try{
-   if(!ensureSupabase("wishlist actions"))return;
-   const {error}=await supabase.from("profiles").update({wishlist_ids:wishlist}).eq("id",userId());
-   if(error)throw error;
-   if(currentProfile)currentProfile.wishlist_ids=wishlist;
-   renderProducts();renderWishlist();showToast(wishlist.includes(sid)?"Saved to wishlist":"Removed from wishlist");
- }catch(error){showToast(backendMessage(error,"Wishlist could not be updated."));}
-}
-function renderWishlist(){
- const list=wishlist.map(id=>products.find(p=>String(p.id)===String(id))).filter(Boolean);
- document.getElementById("wishlistList").innerHTML=list.length?list.map(renderCard).join(""):`<div class="empty" style="grid-column:1/-1"><h3>Your wishlist is empty</h3><p>Save products while browsing the marketplace.</p></div>`;
-}
-
-function renderOrders(){
- const el=document.getElementById("ordersList");
- if(!orders.length){el.innerHTML=`<div class="empty"><h3>No orders yet</h3><p>Your completed and pending marketplace orders will appear here.</p></div>`;return}
- el.innerHTML=orders.map(o=>`<div class="order-card"><div class="order-top"><strong>Order ${escapeHtml(o.id)}</strong><span class="badge badge-warning">${escapeHtml(o.status||"pending")}</span></div><div style="color:var(--text-muted);font-size:13px">Placed ${escapeHtml(new Date(o.created_at||Date.now()).toLocaleDateString())}</div><div style="font-weight:900;margin-top:8px">$${Number(o.total||0).toFixed(2)}</div></div>`).join("");
-}
-
-function toggleFaq(btn){btn.parentElement.classList.toggle("open");btn.querySelector("span").textContent=btn.parentElement.classList.contains("open")?"−":"+"}
-function setTheme(theme){localStorage.setItem("somazon_theme",theme);applyTheme();updateThemeButtons();}
-function applyTheme(){
- const theme=getStoredTheme();
- const dark=theme==="dark"||(theme==="system"&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches);
- document.body.classList.toggle("dark",dark);
-}
-function updateThemeButtons(){
- const t=getStoredTheme();
- document.querySelectorAll("#themeButtons button").forEach(b=>b.classList.toggle("active",b.textContent.toLowerCase()===t));
-}
-function toggleNotifications(){
- const on=getNotifications();
- localStorage.setItem("somazon_notifications",on?"off":"on");
- loadSettings();showToast(on?"Notifications turned off":"Notifications turned on");
-}
-function saveSettings(){
- const lang=document.getElementById("languageSetting").value;
- localStorage.setItem("somazon_language",lang);
- if(lang!=="en"){
-   document.getElementById("languageSetting").value="en";
-   localStorage.setItem("somazon_language","en");
-   showToast("English is the official language; additional languages are coming soon");
- }
- updateThemeButtons();
-}
-function loadSettings(){
- document.getElementById("languageSetting").value="en";
- document.getElementById("notificationToggle").textContent=getNotifications()?"ON":"OFF";
- applyTheme();updateThemeButtons();
-}
-function togglePassword(id,button){
- const input=document.getElementById(id);if(!input)return;
- const visible=input.type==="text";input.type=visible?"password":"text";
- button.innerHTML=visible?'<i class="fa-regular fa-eye"></i>':'<i class="fa-regular fa-eye-slash"></i>';
- button.setAttribute("aria-label",visible?"Show password":"Hide password");
-}
-
-async function initSupabaseApp(){
- applyTheme();loadSettings();
- initPhoneInput("phone");initPhoneInput("authPhone");
- renderProducts();renderDeals();updateCartUI();updateAccountUI();
- 
- handleRouting();
-
- if(!SUPABASE_READY){
-   showToast("Supabase is not configured yet. Add your URL and anon key to activate production mode.");
-   initialLoadComplete=true;return;
- }
- try{
-   const {data:{session}}=await supabase.auth.getSession();
-   currentSession=session;
-   await loadProducts();
-   renderProducts();renderDeals();
-   await refreshUserData();
-   initialLoadComplete=true;
- }catch(error){
-   showToast(backendMessage(error,"Supabase connection could not be established."));
- }
- supabase.auth.onAuthStateChange((event,session)=>{
-   currentSession=session;
-   setTimeout(async()=>{
-     if(event==="SIGNED_OUT"){currentProfile=null;wishlist=[];orders=[];cart=[];}
-     else await refreshUserData();
-     updateAccountUI();
-   },0);
- });
-}
-
-window.matchMedia?.("(prefers-color-scheme: dark)").addEventListener?.("change",()=>{if(getStoredTheme()==="system")applyTheme();});
-initSupabaseApp();
-</script>
-</body>
-          </html>
+ setAuthMode(mode);document.getElementById
