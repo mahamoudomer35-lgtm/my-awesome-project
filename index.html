@@ -202,13 +202,10 @@ input[type=file]{display:none}
  .footer-grid{grid-template-columns:1fr}.footer-bottom{flex-direction:column}
  .hero h1{font-size:34px}.hero p{font-size:16px}
 }
-
-/* Surgical enhancements: external phone selector + auth icons only. Existing layout/colors remain unchanged. */
 .iti{width:100%}.iti input{width:100%!important}.iti__country-list{z-index:300!important}
 .input-with-icon{position:relative}.input-with-icon>i.input-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--slate);z-index:2;pointer-events:none}.input-with-icon>input{padding-left:40px!important;padding-right:42px!important}.password-toggle{position:absolute;right:9px;top:50%;transform:translateY(-50%);background:transparent;color:var(--slate);width:34px;height:34px;border-radius:var(--radius-btn);z-index:3}.password-toggle:hover{color:var(--gold-dark)}
 .logo{line-height:1;flex-shrink:0}.logo .brand-wordmark{display:inline-flex;align-items:center}.logo .brand-dot{color:var(--gold)}
 </style>
-
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/css/intlTelInput.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -489,42 +486,22 @@ input[type=file]{display:none}
 /* =========================================================
    SomaZon Core V2 — Supabase Production Backend Layer
    UI/HTML structure remains the Core V2 baseline.
-   Replace only local demo auth/data/storage operations with Supabase.
    ========================================================= */
 
-/* ---------- Supabase configuration ----------
-   IMPORTANT: Use only the public anon/publishable key here.
-   NEVER place a Supabase service_role key or a Resend API key in this file.
-   Configure Resend SMTP inside Supabase Dashboard → Authentication → SMTP.
------------------------------------------------------------- */
-const SUPABASE_URL = "YOUR_SUPABASE_URL";
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
-const SUPABASE_READY = Boolean(
-  SUPABASE_URL &&
-  SUPABASE_ANON_KEY &&
-  !SUPABASE_URL.includes("YOUR_SUPABASE") &&
-  !SUPABASE_ANON_KEY.includes("YOUR_SUPABASE")
-);
+/* ---------- Supabase configuration ---------- */
+const SUPABASE_URL = "https://ywajfrskmmehsgckgnbd.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_-djHA95UQyk5DhIF1gtTxA_QD9vnmRa";
+const SUPABASE_READY = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY && !SUPABASE_URL.includes("YOUR_SUPABASE"));
 
 const supabase = SUPABASE_READY
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-        detectSessionInUrl: true
-      }
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
     })
   : null;
 
 /* ---------- Production configuration ---------- */
-const STORAGE_BUCKETS = {
-  avatars: "avatars",
-  products: "products",
-  kyc: "kyc-documents"
-};
+const STORAGE_BUCKETS = { avatars: "avatars", products: "products", kyc: "kyc-documents" };
 
-// Compliance is implemented as an allow-list rather than a sanctions guess.
-// Review this list against SomaZon's actual legal/compliance policy before launch.
 const ACCEPTED_COUNTRIES = [
   "so","ch","sa","ae","pl","us","gb","fr","de","it","es","nl","be","se","no","dk","fi",
   "at","ie","pt","gr","ro","bg","cz","sk","hu","hr","si","ee","lv","lt","lu","mt","cy",
@@ -534,7 +511,7 @@ const ACCEPTED_COUNTRIES = [
 
 const DEFAULT_PLATFORM_COMMISSION_RATE = 0.05;
 const ALTERNATIVE_PLATFORM_COMMISSION_RATE = 0.02;
-const PLATFORM_COMMISSION_MODE = "standard"; // "standard" = 5%, "payment_plus" = 2% + payment processor fees
+const PLATFORM_COMMISSION_MODE = "standard";
 
 const DEMO_PRODUCTS = [
  {id:"demo-1",name:"Premium Smartphone",category:"Electronics",price:599,old:699,icon:"📱",rating:4.8,badge:"SALE",desc:"Powerful everyday smartphone with a premium display."},
@@ -559,19 +536,20 @@ let phoneInputs = {};
 let initialLoadComplete = false;
 let lastAuthEmail = "";
 
-/* ---------- Small utilities ---------- */
+/* ---------- Utilities ---------- */
 function getStoredTheme(){ return localStorage.getItem("somazon_theme") || "system"; }
 function getNotifications(){ return localStorage.getItem("somazon_notifications") !== "off"; }
 function isLogged(){ return Boolean(currentSession?.user); }
 function isEmailVerified(){ return Boolean(currentSession?.user?.email_confirmed_at); }
 function isVerified(){ return currentProfile?.kyc === "verified"; }
+
 function requireVerifiedEmail(){
   if(!isLogged()){ openAuth("login"); showToast("Sign in is required to continue"); return false; }
   if(!isEmailVerified()){
     lastAuthEmail=currentSession?.user?.email||lastAuthEmail;
     openAuth("login");
     document.getElementById("resendVerificationBtn")?.classList.remove("hidden");
-    showToast("Please verify your email before continuing. You can resend the verification email here.");
+    showToast("Please verify your email before continuing.");
     return false;
   }
   return true;
@@ -598,11 +576,10 @@ function showToast(msg){
 }
 function backendMessage(error, fallback="Something went wrong. Please try again."){
   const message = error?.message || error?.error_description || "";
-  if(/email.*not.*confirm|email_not_confirmed/i.test(message)) return "Please verify your email before signing in. Check your inbox or resend the verification email.";
-  if(/smtp|email.*send|mail.*send|rate.?limit/i.test(message)) return "Email delivery could not be completed. If your Supabase project uses Resend sandbox SMTP, verify the recipient/domain configuration or use a verified sender domain in Supabase SMTP settings.";
+  if(/email.*not.*confirm|email_not_confirmed/i.test(message)) return "Please verify your email before signing in.";
   if(/invalid.*login|invalid.*credentials/i.test(message)) return "The email or password is incorrect.";
-  if(/already.*registered|user.*already/i.test(message)) return "An account with this email already exists. Try signing in instead.";
-  if(/password/i.test(message) && /short|weak|least/i.test(message)) return "Use a stronger password with at least 6 characters.";
+  if(/already.*registered|user.*already/i.test(message)) return "An account with this email already exists.";
+  if(/password/i.test(message) && /short|weak|least/i.test(message)) return "Use a stronger password.";
   return message || fallback;
 }
 function ensureSupabase(action="this action"){
@@ -611,18 +588,14 @@ function ensureSupabase(action="this action"){
   return false;
 }
 
-/* ---------- Phone / country selector ---------- */
+/* ---------- Phone / Country selector ---------- */
 function initPhoneInput(id){
   const input=document.getElementById(id);
   if(!input || !window.intlTelInput) return null;
   if(phoneInputs[id]) return phoneInputs[id];
   const iti=window.intlTelInput(input,{
-    onlyCountries:ACCEPTED_COUNTRIES,
-    separateDialCode:true,
-    nationalMode:false,
-    autoPlaceholder:"aggressive",
-    formatOnDisplay:true,
-    initialCountry:"so",
+    onlyCountries:ACCEPTED_COUNTRIES, separateDialCode:true, nationalMode:false,
+    autoPlaceholder:"aggressive", formatOnDisplay:true, initialCountry:"so",
     preferredCountries:["so","ae","sa","ch","pl","us","gb"],
     utilsScript:"https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/utils.js"
   });
@@ -631,15 +604,12 @@ function initPhoneInput(id){
   input.addEventListener("blur",()=>syncCountryFromPhone(id));
   input.addEventListener("input",()=>{
     const raw=input.value.trim();
-    if(raw.startsWith("+")){
-      try{ iti.setNumber(raw); }catch(_e){}
-    }
+    if(raw.startsWith("+")){ try{ iti.setNumber(raw); }catch(_e){} }
   });
   return iti;
 }
 function syncCountryFromPhone(id){
-  const iti=phoneInputs[id];
-  if(!iti) return;
+  const iti=phoneInputs[id]; if(!iti) return;
   const data=iti.getSelectedCountryData();
   if(id==="phone" && data?.name) document.getElementById("country").value=data.name;
 }
@@ -650,49 +620,27 @@ function getPhoneValue(id){
   return iti.getNumber();
 }
 function validatePhone(id){
-  const iti=phoneInputs[id];
-  if(!iti) return true;
+  const iti=phoneInputs[id]; if(!iti) return true;
   const value=iti.getNumber();
   if(!value) return true;
-  if(!iti.isValidNumber()){
-    showToast("Please enter a valid phone number for the selected country.");
-    return false;
-  }
+  if(!iti.isValidNumber()){ showToast("Please enter a valid phone number."); return false; }
   return true;
 }
 
-/* ---------- Supabase data loading ---------- */
+/* ---------- Data Loaders ---------- */
 async function loadProducts(){
-  if(!SUPABASE_READY){
-    products=[...DEMO_PRODUCTS];
-    return;
-  }
+  if(!SUPABASE_READY){ products=[...DEMO_PRODUCTS]; return; }
   try{
-    const {data,error}=await supabase.from("products")
-      .select("id,title,description,price,compare_at_price,category,images,rating,badge,vendor_id,stock,is_active")
-      .eq("is_active",true)
-      .order("created_at",{ascending:false});
+    const {data,error}=await supabase.from("products").select("id,title,description,price,compare_at_price,category,images,rating,badge,vendor_id,stock,is_active").eq("is_active",true).order("created_at",{ascending:false});
     if(error) throw error;
     products=(data||[]).map(row=>({
-      id:String(row.id),
-      name:row.title || "Untitled Product",
-      category:row.category || "Other",
-      price:Number(row.price||0),
-      old:Number(row.compare_at_price||row.price||0),
-      icon:row.icon || "🛍️",
-      rating:Number(row.rating||0),
-      badge:row.badge || "NEW",
-      desc:row.description || "",
-      images:Array.isArray(row.images)?row.images:[],
-      vendor_id:row.vendor_id || null,
-      stock:row.stock ?? null
+      id:String(row.id), name:row.title || "Untitled Product", category:row.category || "Other",
+      price:Number(row.price||0), old:Number(row.compare_at_price||row.price||0),
+      icon:row.icon || "🛍️", rating:Number(row.rating||0), badge:row.badge || "NEW", desc:row.description || "",
+      images:Array.isArray(row.images)?row.images:[], vendor_id:row.vendor_id || null, stock:row.stock ?? null
     }));
     if(!products.length) products=[...DEMO_PRODUCTS];
-  }catch(error){
-    console.error("Supabase products error:",error);
-    products=[...DEMO_PRODUCTS];
-    showToast("Marketplace data could not be loaded. Showing temporary products.");
-  }
+  }catch(error){ products=[...DEMO_PRODUCTS]; }
 }
 
 async function loadProfile(){
@@ -708,16 +656,11 @@ async function loadProfile(){
       const {data:created,error:createError}=await supabase.from("profiles").upsert(fallback).select().single();
       if(!createError) currentProfile=created;
     }
-  }catch(error){
-    console.error("Profile load error:",error);
-    showToast(backendMessage(error,"Your profile could not be loaded."));
-  }
+  }catch(error){ }
 }
 
 async function loadWishlist(){
   if(!isLogged() || !SUPABASE_READY){ wishlist=[]; return; }
-  // Wishlist is kept in the user's profile metadata for this Core V2 schema.
-  // This avoids introducing another required table before the production schema is expanded.
   const ids=Array.isArray(currentProfile?.wishlist_ids)?currentProfile.wishlist_ids:[];
   wishlist=ids.map(String);
 }
@@ -726,30 +669,18 @@ async function loadOrders(){
   orders=[];
   if(!isLogged() || !SUPABASE_READY) return;
   try{
-    const {data,error}=await supabase.from("orders")
-      .select("id,created_at,total,status,payment_method")
-      .eq("user_id",userId())
-      .order("created_at",{ascending:false});
+    const {data,error}=await supabase.from("orders").select("id,created_at,total,status,payment_method").eq("user_id",userId()).order("created_at",{ascending:false});
     if(error) throw error;
     orders=data||[];
-  }catch(error){
-    console.error("Orders load error:",error);
-    showToast(backendMessage(error,"Orders could not be loaded."));
-  }
+  }catch(error){ }
 }
 
 async function refreshUserData(){
-  if(!isLogged()){
-    currentProfile=null;wishlist=[];orders=[];cart=[];updateAccountUI();return;
-  }
-  await loadProfile();
-  await loadWishlist();
-  await loadOrders();
-  await loadCart();
-  updateAccountUI();
+  if(!isLogged()){ currentProfile=null;wishlist=[];orders=[];cart=[];updateAccountUI();return; }
+  await loadProfile(); await loadWishlist(); await loadOrders(); await loadCart(); updateAccountUI();
 }
 
-/* ---------- Supabase Storage ---------- */
+/* ---------- Storage ---------- */
 async function uploadToBucket(bucket,file,path){
   if(!ensureSupabase("file uploads")) return null;
   const {data,error}=await supabase.storage.from(bucket).upload(path,file,{cacheControl:"3600",upsert:false,contentType:file.type || undefined});
@@ -763,66 +694,7 @@ function publicStorageUrl(bucket,path){
   return data?.publicUrl || "";
 }
 
-/* ---------- Vendor / product backend helpers ---------- */
-async function getVendorProfile(){
-  if(!isLogged() || !SUPABASE_READY) return null;
-  const {data,error}=await supabase.from("vendors").select("id,user_id,business_name,status,commission_rate,payment_processing_rate").eq("user_id",userId()).maybeSingle();
-  if(error){console.error("Vendor load error:",error);return null;}
-  return data;
-}
-async function createVendorProfile(businessName){
-  if(!requireVerifiedEmail()) return null;
-  if(!isVerified()){showPage("account");selectAccountPanel("verification");showToast("KYC verification is required before creating a vendor profile.");return null;}
-  if(!ensureSupabase("vendor registration")) return null;
-  try{
-    const existing=await getVendorProfile();
-    if(existing) return existing;
-    const {data,error}=await supabase.from("vendors").insert({user_id:userId(),business_name:String(businessName||"SomaZon Seller").trim(),status:"pending",commission_rate:DEFAULT_PLATFORM_COMMISSION_RATE,payment_processing_rate:0}).select().single();
-    if(error) throw error;
-    return data;
-  }catch(error){showToast(backendMessage(error,"Vendor profile could not be created."));return null;}
-}
-async function uploadProductImage(file, productId="new"){
-  if(!file) throw new Error("No product image selected.");
-  if(!isLogged()) throw new Error("Sign in is required for product image uploads.");
-  if(!isVerified()) throw new Error("KYC verification is required for product image uploads.");
-  if(!ensureSupabase("product image uploads")) return null;
-  if(file.size>10*1024*1024) throw new Error("Product image must be 10MB or smaller.");
-  const path=`${userId()}/${String(productId)}/${Date.now()}-${safeFileName(file.name)}`;
-  const storedPath=await uploadToBucket(STORAGE_BUCKETS.products,file,path);
-  return {path:storedPath,url:publicStorageUrl(STORAGE_BUCKETS.products,storedPath)};
-}
-async function createProductRecord({title,description,price,compare_at_price,category,images=[],stock=null,badge="NEW"}){
-  if(!requireVerifiedEmail()) return null;
-  if(!isVerified()){showPage("account");selectAccountPanel("verification");showToast("KYC verification is required before publishing products.");return null;}
-  if(!ensureSupabase("product publishing")) return null;
-  try{
-    const vendor=await getVendorProfile();
-    if(!vendor){showToast("Create your vendor profile before publishing a product.");return null;}
-    if(vendor.status!=="approved"){showToast("Your vendor profile must be approved before publishing products.");return null;}
-    const payload={vendor_id:vendor.id,user_id:userId(),title:String(title||"").trim(),description:String(description||"").trim(),price:Number(price||0),compare_at_price:compare_at_price==null?null:Number(compare_at_price),category,images,badge,stock:stock==null?null:Number(stock),is_active:true};
-    const {data,error}=await supabase.from("products").insert(payload).select().single();
-    if(error) throw error;
-    await loadProducts();renderProducts();renderDeals();showToast("Product published successfully");return data;
-  }catch(error){showToast(backendMessage(error,"Product could not be published."));return null;}
-}
-async function getCommissionForItems(items){
-  if(!SUPABASE_READY || !items.length) return {items,defaultRate:PLATFORM_COMMISSION_MODE==="payment_plus"?ALTERNATIVE_PLATFORM_COMMISSION_RATE:DEFAULT_PLATFORM_COMMISSION_RATE};
-  const vendorIds=[...new Set(items.map(x=>x.vendor_id).filter(Boolean))];
-  const rates=new Map();
-  if(vendorIds.length){
-    const {data,error}=await supabase.from("vendors").select("id,commission_rate,payment_processing_rate").in("id",vendorIds);
-    if(!error) (data||[]).forEach(v=>rates.set(String(v.id),v));
-  }
-  const enriched=items.map(item=>{
-    const vendor=rates.get(String(item.vendor_id));
-    const rate=vendor?.commission_rate!=null?Number(vendor.commission_rate):(PLATFORM_COMMISSION_MODE==="payment_plus"?ALTERNATIVE_PLATFORM_COMMISSION_RATE:DEFAULT_PLATFORM_COMMISSION_RATE);
-    return {...item,commission_rate:rate,commission:Number(item.price)*Number(item.quantity)*rate,payment_processing_rate:Number(vendor?.payment_processing_rate||0)};
-  });
-  return {items:enriched,defaultRate:PLATFORM_COMMISSION_MODE==="payment_plus"?ALTERNATIVE_PLATFORM_COMMISSION_RATE:DEFAULT_PLATFORM_COMMISSION_RATE};
-}
-
-/* ---------- Product rendering ---------- */
+/* ---------- Rendering ---------- */
 function productImageMarkup(p){
   const path=p.images?.[0];
   if(path && SUPABASE_READY){
@@ -870,7 +742,7 @@ function renderDeals(){
 function filterCategory(cat){currentCategory=cat;showPage("marketplace");renderProducts();}
 function resetProducts(){currentCategory="All";document.getElementById("searchInput").value="";renderProducts();showPage("marketplace");}
 
-/* ---------- Cart: Supabase for signed-in users ---------- */
+/* ---------- Cart ---------- */
 async function loadCart(){
   cart=[];
   if(!isLogged() || !SUPABASE_READY) return;
@@ -878,9 +750,7 @@ async function loadCart(){
     const {data,error}=await supabase.from("carts").select("id,product_id,quantity").eq("user_id",userId());
     if(error) throw error;
     cart=(data||[]).map(row=>({rowId:row.id,id:String(row.product_id),qty:Number(row.quantity||1)}));
-  }catch(error){
-    console.error("Cart load error:",error);
-  }
+  }catch(error){ }
   updateCartUI();
 }
 async function addToCart(id){
@@ -901,7 +771,7 @@ async function addToCart(id){
       cart.push({rowId:data.id,id:String(data.product_id),qty:data.quantity});
     }
     updateCartUI();showToast("Added to cart");
-  }catch(error){showToast(backendMessage(error,"Could not add the product to your cart."));}
+  }catch(error){showToast(backendMessage(error,"Could not add to cart."));}
 }
 async function changeQuantity(id,d){
  const item=cart.find(x=>String(x.id)===String(id));if(!item)return;
@@ -911,7 +781,7 @@ async function changeQuantity(id,d){
    const {error}=await supabase.from("carts").update({quantity:next}).eq("id",item.rowId).eq("user_id",userId());
    if(error) throw error;
    item.qty=next;updateCartUI();
- }catch(error){showToast(backendMessage(error,"Could not update your cart."));}
+ }catch(error){showToast(backendMessage(error,"Could not update cart."));}
 }
 async function removeFromCart(id){
  const item=cart.find(x=>String(x.id)===String(id));if(!item)return;
@@ -919,7 +789,7 @@ async function removeFromCart(id){
    const {error}=await supabase.from("carts").delete().eq("id",item.rowId).eq("user_id",userId());
    if(error) throw error;
    cart=cart.filter(x=>String(x.id)!==String(id));updateCartUI();
- }catch(error){showToast(backendMessage(error,"Could not remove the product."));}
+ }catch(error){showToast(backendMessage(error,"Could not remove product."));}
 }
 function updateCartUI(){
  const body=document.getElementById("cartBody");
@@ -936,46 +806,34 @@ function updateCartUI(){
 function openCart(){document.getElementById("drawerOverlay").classList.add("open");document.getElementById("cartDrawer").classList.add("open");updateCartUI();}
 function closeCart(){document.getElementById("drawerOverlay").classList.remove("open");document.getElementById("cartDrawer").classList.remove("open")}
 
-/* ---------- Protected marketplace actions ---------- */
 async function buyProduct(id){
- if(String(id).startsWith("demo-")){showToast("This is a temporary preview product. Connect your products table to enable real orders.");return;}
+ if(String(id).startsWith("demo-")){showToast("Connect products table to enable real orders.");return;}
  if(!requireVerifiedEmail()) return;
- if(!isVerified()){showPage("account");selectAccountPanel("verification");showToast("Verification is required to complete a purchase");return}
+ if(!isVerified()){showPage("account", "verification");showToast("Verification is required to complete a purchase");return;}
  await addToCart(id);openCart();
 }
-function calculateCommission(total, paymentProcessingFee=0, mode=PLATFORM_COMMISSION_MODE){
- const rate=mode==="payment_plus"?ALTERNATIVE_PLATFORM_COMMISSION_RATE:DEFAULT_PLATFORM_COMMISSION_RATE;
- const commission=Number(total||0)*rate;
- return {rate,commission,paymentProcessingFee:Number(paymentProcessingFee||0),platformFee:commission+Number(paymentProcessingFee||0)};
-}
 async function checkout(){
- if(!cart.length){showToast("Your cart is empty");return}
- if(!requireVerifiedEmail()){closeCart();return}
- if(!isVerified()){closeCart();showPage("account");selectAccountPanel("verification");showToast("Verify your identity before placing a real order");return}
+ if(!cart.length){showToast("Your cart is empty");return;}
+ if(!requireVerifiedEmail()){closeCart();return;}
+ if(!isVerified()){closeCart();showPage("account", "verification");showToast("Verify your identity before placing a real order");return;}
  if(!ensureSupabase("checkout")) return;
  const baseItems=cart.map(item=>{const p=products.find(x=>String(x.id)===String(item.id));return p?{product_id:p.id,title:p.name,price:Number(p.price),quantity:item.qty,image_url:p.images?.[0]||"",vendor_id:p.vendor_id||null}:null;}).filter(Boolean);
- if(!baseItems.length){showToast("Your cart contains no orderable products.");return}
- const commissionData=await getCommissionForItems(baseItems);
- const items=commissionData.items;
- const total=items.reduce((s,item)=>s+(item.price*item.quantity),0);
- const commission=calculateCommission(total,0,PLATFORM_COMMISSION_MODE);
- const vendorCommissionTotal=items.reduce((s,item)=>s+Number(item.commission||0),0);
+ if(!baseItems.length){showToast("Your cart contains no orderable products.");return;}
+ const total=baseItems.reduce((s,item)=>s+(item.price*item.quantity),0);
  try{
-   const {data,error}=await supabase.from("orders").insert({
-     user_id:userId(),total,status:"pending",payment_method:"pending",items,platform_commission_rate:commission.rate,platform_commission:vendorCommissionTotal || commission.commission,payment_processing_fee:commission.paymentProcessingFee
-   }).select("id,created_at,total,status,payment_method").single();
+   const {data,error}=await supabase.from("orders").insert({user_id:userId(),total,status:"pending",payment_method:"pending",items:baseItems}).select("id,created_at,total,status,payment_method").single();
    if(error) throw error;
    await supabase.from("carts").delete().eq("user_id",userId());
-   cart=[];updateCartUI();closeCart();orders.unshift(data);showPage("account");selectAccountPanel("orders");showToast("Order created successfully");
- }catch(error){showToast(backendMessage(error,"The order could not be created. Check your database policies and try again."));}
+   cart=[];updateCartUI();closeCart();orders.unshift(data);showPage("account", "orders");showToast("Order created successfully");
+ }catch(error){showToast(backendMessage(error,"Order creation failed."));}
 }
 function startSell(){
  if(!requireVerifiedEmail()) return;
- if(!isVerified()){showPage("account");selectAccountPanel("verification");showToast("Verification is required before selling or publishing");return}
+ if(!isVerified()){showPage("account", "verification");showToast("Verification is required before selling.");return;}
  showToast("Seller dashboard is ready for the next backend phase");
 }
 
-/* ---------- Authentication ---------- */
+/* ---------- Auth ---------- */
 function openAuth(mode="login"){
  setAuthMode(mode);document.getElementById("authOverlay").classList.add("open");document.getElementById("authModal").classList.add("open");
  setTimeout(()=>document.getElementById(mode==="login"?"authEmail":"authName")?.focus(),50);
@@ -1008,18 +866,15 @@ async function submitAuth(e){
    if(authMode==="register"){
      const {data,error}=await supabase.auth.signUp({
        email,password,
-       options:{
-         data:{full_name:name,phone,country:phoneInputs.authPhone?.getSelectedCountryData()?.name||""},
-         emailRedirectTo:window.location.origin+window.location.pathname
-       }
+       options:{ data:{full_name:name,phone,country:phoneInputs.authPhone?.getSelectedCountryData()?.name||""}, emailRedirectTo:window.location.origin+window.location.pathname }
      });
      if(error) throw error;
      if(data?.user){
        if(data.session){
          await saveProfileToSupabase({full_name:name,email,phone,country:phoneInputs.authPhone?.getSelectedCountryData()?.name||""});
-         closeAuth();showToast("Account created and signed in successfully.");
+         closeAuth();showToast("Account created and signed in.");
        }else{
-         closeAuth();showToast("Account created. Check your email and click the verification link before signing in.");
+         closeAuth();showToast("Account created. Check your email and click the link before signing in.");
        }
      }
    }else{
@@ -1031,7 +886,6 @@ async function submitAuth(e){
      closeAuth();showToast("Signed in successfully");
    }
  }catch(error){
-   console.error("Auth error:",error);
    const message=backendMessage(error,authMode==="login"?"Sign in failed.":"Account creation failed.");
    if(/email.*not.*confirm/i.test(error?.message||"")){
      showToast(message);
@@ -1048,16 +902,13 @@ async function resendVerification(email=lastAuthEmail){
  try{
    const {error}=await supabase.auth.resend({type:"signup",email:target,options:{emailRedirectTo:window.location.origin+window.location.pathname}});
    if(error) throw error;
-   showToast("Verification email sent. Check your inbox and spam folder.");
- }catch(error){
-   console.error("Resend verification error:",error);
-   showToast(backendMessage(error,"Verification email could not be sent. Check your Supabase SMTP/Resend configuration."));
- }
+   showToast("Verification email sent.");
+ }catch(error){showToast(backendMessage(error,"Verification email could not be sent."));}
 }
 async function signOut(){
- if(!SUPABASE_READY){showToast("Supabase is not configured.");return}
+ if(!SUPABASE_READY){showToast("Supabase is not configured.");return;}
  const {error}=await supabase.auth.signOut();
- if(error){showToast(backendMessage(error,"Could not sign out."));return}
+ if(error){showToast(backendMessage(error,"Could not sign out."));return;}
  currentSession=null;currentProfile=null;cart=[];wishlist=[];orders=[];updateAccountUI();showPage("home");showToast("Signed out");
 }
 function handleAccountAuth(){if(isLogged())signOut();else openAuth("login")}
@@ -1069,7 +920,6 @@ async function saveProfileToSupabase(profile){
  currentProfile=data;return data;
 }
 
-/* ---------- Account / profile ---------- */
 async function updateAccountUI(){
  const user=getUser();
  const initials=(user?.name||"Guest User").trim().charAt(0).toUpperCase()||"M";
@@ -1094,15 +944,39 @@ async function updateAccountUI(){
  document.getElementById("country").value=profile.country||"";
  renderVerification();renderOrders();renderWishlist();loadSettings();
 }
-function showPage(id){
+
+/* =========================================================
+   FIXED ROUTING
+   ========================================================= */
+function showPage(id, panel = null){
+ if(!id) return;
  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
  const page=document.getElementById(id);if(page)page.classList.add("active");
- document.querySelectorAll("[data-nav]").forEach(b=>b.classList.toggle("active",b.dataset.nav===id));
+ 
+ document.querySelectorAll("[data-nav]").forEach(b=>{
+     let isActive = false;
+     if (id === "account" && b.dataset.nav === "support" && panel === "support") isActive = true;
+     else if (id === "marketplace" && b.dataset.nav === "category") isActive = true;
+     else isActive = (b.dataset.nav === id);
+     b.classList.toggle("active", isActive);
+ });
  document.querySelectorAll("[data-mobile]").forEach(b=>b.classList.toggle("active",b.dataset.mobile===id));
+ 
+ if(id==="account"){
+     updateAccountUI();
+     if(panel) selectAccountPanel(panel);
+     else if(!document.querySelector('.account-panel.active')) selectAccountPanel('profile');
+ }
+ if(id==="deals") renderDeals();
+ 
+ let hash = panel ? `#${id}/${panel}` : `#${id}`;
+ if(window.location.hash !== hash) {
+     history.pushState(null, null, hash);
+ }
+ 
  window.scrollTo({top:0,behavior:"smooth"});
- if(id==="account")updateAccountUI();
- if(id==="deals")renderDeals();
 }
+
 function selectAccountPanel(name){
  document.querySelectorAll(".account-panel").forEach(p=>p.classList.remove("active"));
  const target=document.getElementById("panel-"+name);if(target)target.classList.add("active");
@@ -1111,10 +985,25 @@ function selectAccountPanel(name){
  if(name==="orders")renderOrders();
  if(name==="wishlist")renderWishlist();
  updateAccountUI();
+ 
+ if(document.getElementById("account").classList.contains("active")){
+     history.pushState(null, null, `#account/${name}`);
+ }
 }
+
+window.addEventListener("popstate", handleRouting);
+
+function handleRouting(){
+    let hash = window.location.hash.replace("#", "");
+    if(!hash) { showPage("home"); return; }
+    const parts = hash.split("/");
+    showPage(parts[0], parts[1] || null);
+}
+/* ========================================================= */
+
 async function saveProfile(e){
  e.preventDefault();
- if(!isLogged()){openAuth("login");showToast("Sign in to save your profile.");return}
+ if(!isLogged()){openAuth("login");showToast("Sign in to save your profile.");return;}
  if(!ensureSupabase("profile updates"))return;
  if(!validatePhone("phone"))return;
  const phone=getPhoneValue("phone");
@@ -1125,8 +1014,8 @@ async function saveProfile(e){
 }
 async function handleProfilePhoto(e){
  const file=e.target.files[0];if(!file)return;
- if(file.size>5*1024*1024){showToast("Photo must be 5MB or smaller");return}
- if(!isLogged()){openAuth("login");return}
+ if(file.size>5*1024*1024){showToast("Photo must be 5MB or smaller");return;}
+ if(!isLogged()){openAuth("login");return;}
  if(!ensureSupabase("profile photo uploads"))return;
  try{
    const path=`${userId()}/${Date.now()}-${safeFileName(file.name)}`;
@@ -1134,10 +1023,9 @@ async function handleProfilePhoto(e){
    const url=publicStorageUrl(STORAGE_BUCKETS.avatars,storedPath);
    await saveProfileToSupabase({avatar_url:url,avatar_path:storedPath});
    updateAccountUI();showToast("Profile photo updated");
- }catch(error){console.error(error);showToast(backendMessage(error,"Profile photo upload failed."));}
+ }catch(error){showToast(backendMessage(error,"Profile photo upload failed."));}
 }
 
-/* ---------- Verification / KYC ---------- */
 function renderVerification(){
  const status=currentProfile?.kyc||"not_verified",box=document.getElementById("verificationStatus"),btn=document.getElementById("verifyActionBtn");
  if(status==="verified"){
@@ -1168,12 +1056,11 @@ async function submitKyc(){
    const storedPath=await uploadToBucket(STORAGE_BUCKETS.kyc,file,path);
    const {data,error}=await supabase.from("profiles").update({kyc:"pending",kyc_document_type:type,kyc_document_path:storedPath,kyc_submitted_at:new Date().toISOString()}).eq("id",userId()).select().single();
    if(error)throw error;
-   currentProfile=data;closeKyc();updateAccountUI();showPage("account");selectAccountPanel("verification");showToast("Verification submitted successfully");
- }catch(error){console.error(error);showToast(backendMessage(error,"Verification upload failed. Check Storage and RLS policies."));}
+   currentProfile=data;closeKyc();updateAccountUI();showPage("account", "verification");showToast("Verification submitted successfully");
+ }catch(error){showToast(backendMessage(error,"Verification upload failed."));}
 }
 document.getElementById("kycFile").addEventListener("change",e=>document.getElementById("kycFileName").textContent=e.target.files[0]?.name||"No file selected");
 
-/* ---------- Wishlist ---------- */
 async function toggleWishlist(id){
  if(!requireVerifiedEmail()) return
  const sid=String(id);
@@ -1191,14 +1078,12 @@ function renderWishlist(){
  document.getElementById("wishlistList").innerHTML=list.length?list.map(renderCard).join(""):`<div class="empty" style="grid-column:1/-1"><h3>Your wishlist is empty</h3><p>Save products while browsing the marketplace.</p></div>`;
 }
 
-/* ---------- Orders ---------- */
 function renderOrders(){
  const el=document.getElementById("ordersList");
  if(!orders.length){el.innerHTML=`<div class="empty"><h3>No orders yet</h3><p>Your completed and pending marketplace orders will appear here.</p></div>`;return}
  el.innerHTML=orders.map(o=>`<div class="order-card"><div class="order-top"><strong>Order ${escapeHtml(o.id)}</strong><span class="badge badge-warning">${escapeHtml(o.status||"pending")}</span></div><div style="color:var(--text-muted);font-size:13px">Placed ${escapeHtml(new Date(o.created_at||Date.now()).toLocaleDateString())}</div><div style="font-weight:900;margin-top:8px">$${Number(o.total||0).toFixed(2)}</div></div>`).join("");
 }
 
-/* ---------- FAQ / settings ---------- */
 function toggleFaq(btn){btn.parentElement.classList.toggle("open");btn.querySelector("span").textContent=btn.parentElement.classList.contains("open")?"−":"+"}
 function setTheme(theme){localStorage.setItem("somazon_theme",theme);applyTheme();updateThemeButtons();}
 function applyTheme(){
@@ -1237,11 +1122,13 @@ function togglePassword(id,button){
  button.setAttribute("aria-label",visible?"Show password":"Hide password");
 }
 
-/* ---------- Startup / auth events ---------- */
 async function initSupabaseApp(){
  applyTheme();loadSettings();
  initPhoneInput("phone");initPhoneInput("authPhone");
- renderProducts();renderDeals();updateCartUI();updateAccountUI();selectAccountPanel("profile");
+ renderProducts();renderDeals();updateCartUI();updateAccountUI();
+ 
+ handleRouting();
+
  if(!SUPABASE_READY){
    showToast("Supabase is not configured yet. Add your URL and anon key to activate production mode.");
    initialLoadComplete=true;return;
@@ -1254,7 +1141,6 @@ async function initSupabaseApp(){
    await refreshUserData();
    initialLoadComplete=true;
  }catch(error){
-   console.error("Supabase startup error:",error);
    showToast(backendMessage(error,"Supabase connection could not be established."));
  }
  supabase.auth.onAuthStateChange((event,session)=>{
@@ -1269,7 +1155,6 @@ async function initSupabaseApp(){
 
 window.matchMedia?.("(prefers-color-scheme: dark)").addEventListener?.("change",()=>{if(getStoredTheme()==="system")applyTheme();});
 initSupabaseApp();
-
 </script>
 </body>
-</html>
+          </html>
