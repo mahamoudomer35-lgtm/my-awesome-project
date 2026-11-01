@@ -1,1382 +1,1618 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
-<meta name="somazon-version" content="0.1">
-<!-- SomaZon v0.1 — surgical Phone + Country input upgrade -->
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#000000">
-<title>SomaZon Marketplace</title>
-<style>
-:root{
-  --gold:#eab308;--gold-light:#facc15;--gold-bright:#fde047;--gold-dark:#ca8a04;--gold-deep:#a16207;
-  --black:#000;--ink:#0a0a0a;--charcoal:#1a1a1a;--charcoal-light:#262626;
-  --slate:#64748b;--slate-light:#94a3b8;--slate-pale:#cbd5e1;
-  --bg:#f8fafc;--bg-alt:#f1f5f9;--card:#fff;--border:#e2e8f0;--border-dark:#cbd5e1;
-  --text:#0f172a;--text-muted:#475569;
-  --success:#16a34a;--success-bg:#dcfce7;--success-text:#166534;
-  --danger:#dc2626;--danger-bg:#fef2f2;
-  --warning:#ca8a04;--warning-bg:#fef9c3;--warning-text:#854d0e;
-  --info:#1e40af;--info-bg:#dbeafe;
-  --radius-sm:8px;--radius-btn:10px;--radius-md:14px;--radius-lg:18px;--radius-xl:20px;--radius-pill:60px;
-  --shadow-sm:0 1px 3px rgba(0,0,0,.06);--shadow-md:0 4px 12px rgba(0,0,0,.06);
-  --shadow-lg:0 12px 28px rgba(0,0,0,.08);--shadow-xl:0 20px 60px rgba(0,0,0,.15);
-  --shadow-gold:0 8px 24px rgba(234,179,8,.25);
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:Arial,"Helvetica Neue",sans-serif;background:var(--bg);color:var(--text);line-height:1.5;min-height:100vh}
-body.dark{
-  --bg:#0a0a0a;--bg-alt:#111;--card:#171717;--border:#303030;--border-dark:#404040;
-  --text:#f8fafc;--text-muted:#cbd5e1;--slate:#94a3b8;
-}
-button,input,select,textarea{font:inherit}
-button{cursor:pointer;border:0}
-a{text-decoration:none;color:inherit}
-img{max-width:100%;display:block}
-.hidden{display:none!important}
-.container{width:min(1400px,calc(100% - 40px));margin:auto}
-.page{display:none;min-height:calc(100vh - 170px)}
-.page.active{display:block}
-.header{position:sticky;top:0;z-index:50;background:#000;color:#fff;border-bottom:1px solid #222}
-.header-main{height:82px;display:flex;align-items:center;gap:22px;width:min(1400px,calc(100% - 40px));margin:auto}
-.logo{display:flex;align-items:center;gap:7px;font-size:30px;font-weight:900;letter-spacing:-1.5px;white-space:nowrap}
-.logo .soma{color:var(--gold)}
-.logo .zon{color:#fff}
-.logo-mark{width:34px;height:34px;border:2px solid var(--gold);border-radius:10px;display:grid;place-items:center;color:var(--gold);font-size:17px}
-.search-wrap{flex:1;position:relative;max-width:610px;margin:auto}
-.search-wrap input{width:100%;height:48px;background:#181818;border:1px solid #303030;border-radius:var(--radius-btn);color:#fff;padding:0 48px 0 48px;outline:none}
-.search-wrap input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(234,179,8,.15)}
-.search-icon{position:absolute;left:16px;top:13px;font-size:20px;color:var(--slate-light)}
-.header-actions{display:flex;align-items:center;gap:10px}
-.header-link{color:#fff;font-weight:700;background:transparent;padding:10px 8px}
-.header-link:hover{color:var(--gold)}
-.profile-btn{background:#0c0c0c;color:#fff;border:1px solid var(--gold);border-radius:50%;width:48px;height:48px;display:grid;place-items:center;font-weight:900;font-size:17px;overflow:hidden}
-.profile-btn img{width:100%;height:100%;object-fit:cover}
-.desktop-nav{background:#0b0b0b;border-top:1px solid #191919}
-.desktop-nav-inner{width:min(1400px,calc(100% - 40px));margin:auto;height:44px;display:flex;align-items:center;gap:28px}
-.desktop-nav button{background:none;color:#ddd;font-weight:700}
-.desktop-nav button:hover,.desktop-nav button.active{color:var(--gold)}
-main{padding:30px 0 100px}
-.hero{background:linear-gradient(135deg,#fff,#f1f5f9);border:1.5px solid var(--border);border-radius:var(--radius-xl);padding:48px 34px;display:grid;grid-template-columns:1.4fr .8fr;gap:30px;align-items:center;box-shadow:var(--shadow-md)}
-.dark .hero{background:linear-gradient(135deg,#171717,#101010)}
-.eyebrow{font-size:13px;font-weight:900;color:var(--gold-dark);letter-spacing:1.3px;text-transform:uppercase;margin-bottom:10px}
-.hero h1{font-size:clamp(32px,5vw,54px);line-height:1.05;letter-spacing:-1.8px;margin-bottom:15px}
-.hero p{font-size:18px;color:var(--text-muted);max-width:680px;margin-bottom:24px}
-.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
-.btn{min-height:44px;padding:11px 18px;border-radius:var(--radius-btn);font-weight:800;transition:.2s}
-.btn:hover{transform:translateY(-1px)}
-.btn-gold{background:var(--gold);color:#000;box-shadow:var(--shadow-gold)}
-.btn-black{background:#000;color:#fff}
-.btn-outline{background:transparent;color:var(--text);border:1.5px solid var(--border-dark)}
-.btn-danger{background:var(--danger);color:#fff}
-.btn-full{width:100%}
-.hero-visual{min-height:240px;border-radius:var(--radius-xl);background:#000;color:#fff;display:grid;place-items:center;position:relative;overflow:hidden}
-.hero-visual:before{content:"";position:absolute;width:220px;height:220px;border:2px solid var(--gold);border-radius:50%;opacity:.45}
-.hero-visual .rocket{font-size:80px;position:relative;z-index:1}
-.section{margin-top:42px}
-.section-head{display:flex;align-items:end;justify-content:space-between;gap:15px;margin-bottom:18px}
-.section-head h2{font-size:28px;letter-spacing:-.7px}
-.section-head p{color:var(--text-muted)}
-.categories{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
-.category{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-md);padding:20px 12px;text-align:center;font-weight:800;transition:.2s}
-.category:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:var(--shadow-md)}
-.category .emoji{font-size:30px;margin-bottom:7px}
-.product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-.product-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-md);overflow:hidden;position:relative;transition:.2s}
-.product-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:var(--border-dark)}
-.product-image{height:190px;background:var(--bg-alt);display:grid;place-items:center;font-size:65px;position:relative}
-.product-badge{position:absolute;top:10px;left:10px;background:#000;color:#fff;border-radius:var(--radius-sm);padding:4px 8px;font-size:11px;font-weight:900}
-.product-body{padding:15px}
-.product-category{font-size:12px;color:var(--slate);font-weight:800;margin-bottom:4px}
-.product-name{font-size:17px;font-weight:900;margin-bottom:5px}
-.product-desc{font-size:13px;color:var(--text-muted);min-height:40px}
-.rating{margin:9px 0;color:var(--gold-dark);font-size:13px;font-weight:800}
-.product-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.price{font-size:20px;font-weight:900}
-.old-price{text-decoration:line-through;color:var(--slate);font-size:12px;margin-left:5px}
-.icon-btn{width:40px;height:40px;border-radius:var(--radius-btn);background:var(--bg-alt);border:1px solid var(--border);font-size:18px}
-.icon-btn:hover{border-color:var(--gold)}
-.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.trust-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-md);padding:20px}
-.trust-card strong{display:block;margin-bottom:5px}.trust-card p{font-size:13px;color:var(--text-muted)}
-.promo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.promo{padding:24px;border-radius:var(--radius-lg);background:#000;color:#fff;min-height:150px;display:flex;flex-direction:column;justify-content:space-between}
-.promo h3{font-size:21px}.promo p{color:#cbd5e1;font-size:14px}
-.empty{padding:45px 20px;text-align:center;border:1.5px dashed var(--border-dark);border-radius:var(--radius-xl);color:var(--text-muted);background:var(--card)}
-.account-layout{display:grid;grid-template-columns:280px 1fr;gap:22px}
-.account-sidebar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:18px;height:max-content;position:sticky;top:120px}
-.account-user{display:flex;align-items:center;gap:12px;padding:8px 5px 18px;border-bottom:1px solid var(--border);margin-bottom:10px}
-.avatar{width:54px;height:54px;border-radius:50%;border:2px solid var(--gold);display:grid;place-items:center;background:var(--bg-alt);font-weight:900;font-size:20px;overflow:hidden}
-.avatar img{width:100%;height:100%;object-fit:cover}
-.account-user small{display:block;color:var(--slate);margin-top:2px}
-.account-menu{display:grid;gap:5px}
-.account-menu button{background:transparent;text-align:left;padding:12px;border-radius:var(--radius-sm);font-weight:800;color:var(--text)}
-.account-menu button:hover,.account-menu button.active{background:rgba(234,179,8,.12);color:var(--gold-deep)}
-.account-content{min-width:0}
-.account-panel{display:none;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:28px}
-.account-panel.active{display:block}
-.panel-head{margin-bottom:24px}.panel-head h2{font-size:27px}.panel-head p{color:var(--text-muted);margin-top:4px}
-.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
-.field{display:grid;gap:7px}.field.full{grid-column:1/-1}
-.field label{font-weight:800;font-size:14px}
-.field input,.field select,.field textarea{width:100%;background:var(--card);color:var(--text);border:1.5px solid var(--border);border-radius:var(--radius-btn);padding:12px 13px;outline:none}
-.field textarea{min-height:110px;resize:vertical}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(234,179,8,.12)}
-.profile-upload{display:flex;align-items:center;gap:18px;margin-bottom:25px}
-.big-avatar{width:105px;height:105px;border-radius:50%;border:3px solid var(--gold);background:var(--bg-alt);display:grid;place-items:center;font-size:40px;font-weight:900;overflow:hidden}
-.big-avatar img{width:100%;height:100%;object-fit:cover}
-.status-box{border-radius:var(--radius-md);padding:16px;border:1.5px solid var(--border);margin-bottom:20px}
-.status-box.pending{background:var(--warning-bg);border-color:#facc15}
-.status-box.verified{background:var(--success-bg);border-color:#86efac}
-.status-box.notverified{background:var(--info-bg);border-color:#93c5fd}
-.status-title{font-weight:900;margin-bottom:3px}
-.steps{display:grid;gap:10px;margin:20px 0}
-.step{display:flex;gap:10px;align-items:flex-start;padding:12px;border:1px solid var(--border);border-radius:var(--radius-sm)}
-.step b{width:28px;height:28px;border-radius:50%;background:#000;color:#fff;display:grid;place-items:center;flex:none}
-.setting-row{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:18px 0;border-bottom:1px solid var(--border)}
-.setting-row:last-child{border-bottom:0}
-.setting-row p{font-size:13px;color:var(--text-muted);margin-top:3px}
-.segmented{display:flex;border:1px solid var(--border);border-radius:var(--radius-btn);overflow:hidden}
-.segmented button{background:var(--card);color:var(--text);padding:9px 12px;border-right:1px solid var(--border);font-weight:800}
-.segmented button:last-child{border-right:0}.segmented button.active{background:#000;color:#fff}
-.order-card{border:1.5px solid var(--border);border-radius:var(--radius-md);padding:16px;margin-bottom:12px}
-.order-top{display:flex;justify-content:space-between;gap:10px;margin-bottom:8px}
-.badge{display:inline-flex;padding:4px 8px;border-radius:var(--radius-sm);font-size:11px;font-weight:900}
-.badge-success{background:var(--success-bg);color:var(--success-text)}
-.badge-warning{background:var(--warning-bg);color:var(--warning-text)}
-.badge-muted{background:var(--bg-alt);color:var(--text-muted)}
-.faq-item{border:1.5px solid var(--border);border-radius:var(--radius-md);margin-bottom:10px;overflow:hidden}
-.faq-q{width:100%;background:var(--card);color:var(--text);padding:16px;text-align:left;font-weight:900;display:flex;justify-content:space-between}
-.faq-a{display:none;padding:0 16px 16px;color:var(--text-muted)}.faq-item.open .faq-a{display:block}
-.footer{background:#0b0b0b;color:#fff;padding:40px 0 90px;margin-top:20px}
-.footer-grid{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:30px}
-.footer h3{margin-bottom:12px}.footer p,.footer a{color:#a1a1aa;font-size:14px}.footer a{display:block;margin:7px 0}.footer a:hover{color:var(--gold)}
-.footer-bottom{border-top:1px solid #252525;margin-top:28px;padding-top:20px;color:#888;display:flex;justify-content:space-between;gap:10px}
-.mobile-nav{display:none}
-.drawer-overlay,.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.58);z-index:100;opacity:0;pointer-events:none;transition:.2s}
-.drawer-overlay.open,.modal-overlay.open{opacity:1;pointer-events:auto}
-.cart-drawer{position:fixed;right:0;top:0;height:100%;width:min(440px,94vw);background:var(--card);z-index:101;transform:translateX(100%);transition:.25s;display:flex;flex-direction:column}
-.cart-drawer.open{transform:translateX(0)}
-.drawer-head{padding:20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-.drawer-body{padding:18px;overflow:auto;flex:1}
-.cart-item{display:grid;grid-template-columns:55px 1fr auto;gap:12px;align-items:center;border-bottom:1px solid var(--border);padding:12px 0}
-.cart-thumb{width:55px;height:55px;border-radius:var(--radius-sm);background:var(--bg-alt);display:grid;place-items:center;font-size:28px}
-.qty{display:flex;align-items:center;gap:7px;margin-top:5px}.qty button{width:27px;height:27px;border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:6px}
-.drawer-foot{padding:18px;border-top:1px solid var(--border)}
-.total-line{display:flex;justify-content:space-between;font-size:19px;font-weight:900;margin-bottom:13px}
-.modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-45%);width:min(500px,94vw);background:var(--card);z-index:102;border-radius:var(--radius-lg);padding:24px;opacity:0;pointer-events:none;transition:.2s;box-shadow:var(--shadow-xl)}
-.modal.open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}
-.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-.close{width:36px;height:36px;border-radius:var(--radius-btn);background:var(--bg-alt);color:var(--text);font-size:20px}
-.auth-tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:18px}.auth-tabs button{flex:1;background:transparent;color:var(--text-muted);padding:10px;font-weight:900}.auth-tabs button.active{color:var(--text);border-bottom:3px solid var(--gold)}
-.auth-note{font-size:13px;color:var(--text-muted);margin:10px 0 16px}
-.file-label{display:inline-flex;align-items:center;gap:8px;background:#000;color:#fff;border-radius:var(--radius-btn);padding:10px 14px;font-weight:800}
-input[type=file]{display:none}
-.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:#000;color:#fff;border:1px solid #333;padding:12px 16px;border-radius:var(--radius-btn);z-index:200;opacity:0;pointer-events:none;transition:.25s;max-width:90%;text-align:center}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.buy-gate{margin-top:14px;padding:12px;border-radius:var(--radius-sm);background:var(--bg-alt);font-size:13px;color:var(--text-muted)}
-@media(max-width:1200px){
- .product-grid{grid-template-columns:repeat(3,1fr)}.categories{grid-template-columns:repeat(3,1fr)}
- .trust-grid{grid-template-columns:repeat(2,1fr)}
-}
-@media(max-width:860px){
- .container,.header-main,.desktop-nav-inner{width:min(100% - 28px,1400px)}
- .header-main{height:74px;gap:10px}.logo{font-size:23px}.logo-mark{display:none}
- .header-link{display:none}.search-wrap{max-width:none}.search-wrap input{height:42px;font-size:13px;padding-left:40px}
- .profile-btn{width:43px;height:43px}.desktop-nav{display:none}
- .hero{grid-template-columns:1fr;padding:30px 20px}.hero-visual{min-height:170px}
- .product-grid{grid-template-columns:repeat(2,1fr);gap:12px}.product-image{height:155px}
- .account-layout{grid-template-columns:1fr}.account-sidebar{position:static}.account-menu{grid-template-columns:repeat(2,1fr)}
- .footer-grid{grid-template-columns:1fr 1fr}
- .mobile-nav{position:fixed;bottom:0;left:0;right:0;height:66px;background:#080808;z-index:60;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid #292929}
- .mobile-nav button{background:transparent;color:#aaa;font-size:11px;font-weight:800}.mobile-nav button.active{color:var(--gold)}
- .mobile-nav span{display:block;font-size:20px;margin-bottom:2px}
-}
-@media(max-width:480px){
- .container{width:calc(100% - 24px)}main{padding-top:20px}
- .logo{font-size:20px}.header-main{gap:7px}.search-wrap{flex:1}
- .product-grid{grid-template-columns:1fr 1fr}.product-image{height:135px;font-size:50px}.product-name{font-size:15px}
- .product-desc{font-size:12px}.price{font-size:17px}.product-bottom .btn{padding:9px 10px;font-size:12px}
- .categories{grid-template-columns:repeat(2,1fr)}.trust-grid,.promo-grid{grid-template-columns:1fr}
- .form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}
- .account-menu{grid-template-columns:1fr 1fr}.account-panel{padding:18px}
- .footer-grid{grid-template-columns:1fr}.footer-bottom{flex-direction:column}
- .hero h1{font-size:34px}.hero p{font-size:16px}
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SomaZon Marketplace</title>
+    <style>
+        /* ── RESET & BASE ── */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', 'Inter', system-ui, sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-/* Surgical enhancements: external phone selector + auth icons only. Existing layout/colors remain unchanged. */
-.iti{width:100%}.iti input{width:100%!important}.iti__country-list{z-index:300!important}
+        /* ── SCROLLBAR ── */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #eab308;
+            border-radius: 8px;
+        }
 
-.country-picker{position:relative;width:100%}.country-picker-btn{width:100%;min-height:46px;display:flex;align-items:center;gap:10px;padding:0 12px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-md);color:var(--text);font:600 14px Manrope,sans-serif;text-align:left}.country-picker-btn:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(234,179,8,.14)}.country-picker-flag{display:inline-flex;align-items:center;justify-content:center;width:28px}.country-picker-name{flex:1}.country-picker-code{color:var(--text-muted);font-size:13px}.country-picker-arrow{font-size:18px;color:var(--slate)}.country-picker-menu{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:500;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-lg);overflow:hidden}.country-search-wrap{display:flex;align-items:center;gap:9px;padding:9px;border-bottom:1px solid var(--border);background:var(--bg)}.country-search-wrap i{color:var(--slate)}.country-search-wrap input{border:0!important;outline:0!important;box-shadow:none!important;background:transparent!important;padding:8px 0!important;min-height:34px}.country-options{max-height:260px;overflow:auto;padding:5px}.country-option{width:100%;display:flex;align-items:center;gap:10px;padding:9px 10px;border:0;background:transparent;color:var(--text);border-radius:8px;text-align:left;font:600 13px Manrope,sans-serif}.country-option:hover,.country-option.active{background:var(--bg-alt)}.country-option .country-flag{width:25px;display:inline-flex;justify-content:center}.country-option .country-name{flex:1}.country-option .country-dial{color:var(--text-muted);font-size:12px}.country-empty{padding:16px 10px;text-align:center;color:var(--text-muted);font-size:13px}
-.input-with-icon{position:relative}.input-with-icon>i.input-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--slate);z-index:2;pointer-events:none}.input-with-icon>input{padding-left:40px!important;padding-right:42px!important}.password-toggle{position:absolute;right:9px;top:50%;transform:translateY(-50%);background:transparent;color:var(--slate);width:34px;height:34px;border-radius:var(--radius-btn);z-index:3}.password-toggle:hover{color:var(--gold-dark)}
-.logo{line-height:1;flex-shrink:0}.logo .brand-wordmark{display:inline-flex;align-items:center}.logo .brand-dot{color:var(--gold)}
-</style>
+        /* ── HEADER ── */
+        header {
+            background: #000000;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            color: #eab308;
+            cursor: pointer;
+            letter-spacing: -0.5px;
+            user-select: none;
+        }
+        .logo span {
+            color: #ffffff;
+            font-weight: 300;
+        }
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+        nav input[type="search"] {
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: none;
+            background: #1a1a1a;
+            color: #fff;
+            width: 180px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+        nav input[type="search"]::placeholder {
+            color: #888;
+        }
+        nav input[type="search"]:focus {
+            outline: 2px solid #eab308;
+            background: #222;
+        }
+        .nav-link {
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 6px 2px;
+            border-bottom: 2px solid transparent;
+            transition: 0.2s;
+            text-decoration: none;
+            background: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+        }
+        .nav-link:hover {
+            border-bottom-color: #eab308;
+            color: #eab308;
+        }
+        .nav-link.support {
+            color: #eab308;
+            font-weight: 600;
+        }
+        .nav-link.support:hover {
+            color: #facc15;
+        }
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/css/intlTelInput.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/intlTelInput.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        /* ── "ME" BUTTON ── */
+        .me-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            padding: 2px 8px;
+            border-radius: 8px;
+            transition: 0.2s;
+            position: relative;
+            gap: 2px;
+        }
+        .me-btn:hover {
+            background: rgba(234, 179, 8, 0.12);
+        }
+        .me-btn .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #1a1a1a;
+            border: 2px solid #eab308;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: #eab308;
+            overflow: hidden;
+            transition: 0.2s;
+        }
+        .me-btn .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .me-btn .label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.8;
+        }
+        .me-btn .badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 12px;
+            height: 12px;
+            background: #eab308;
+            border-radius: 50%;
+            border: 2px solid #000;
+        }
+
+        /* ── PAGE CONTAINER ── */
+        .page {
+            display: none;
+            padding: 28px 32px 60px;
+            flex: 1;
+            animation: fadeUp 0.3s ease;
+        }
+        .page.active {
+            display: block;
+        }
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+        .page-sub {
+            color: #64748b;
+            margin-bottom: 24px;
+            font-size: 15px;
+        }
+
+        /* ── GRID ── */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 28px;
+            margin-top: 8px;
+        }
+
+        /* ── PRODUCT CARD ── */
+        .card {
+            background: #ffffff;
+            padding: 16px 16px 18px;
+            border-radius: 14px;
+            border: 2px dashed #cbd5e1;
+            transition: 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            cursor: default;
+            position: relative;
+        }
+        .card:hover {
+            border-color: #eab308;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+        }
+        .card .img-wrap {
+            width: 100%;
+            height: 190px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 12px;
+        }
+        .card .img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .card .img-wrap .placeholder-icon {
+            font-size: 42px;
+            color: #94a3b8;
+        }
+        .card .category-tag {
+            display: inline-block;
+            background: #f1f5f9;
+            color: #334155;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 8px;
+            align-self: flex-start;
+        }
+        .card .product-name {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+        .card .product-desc {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .card .price {
+            font-weight: 700;
+            color: #eab308;
+            font-size: 20px;
+            margin: 4px 0 12px;
+        }
+        .card .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: auto;
+        }
+        .card .actions button {
+            flex: 1;
+            background: #000000;
+            color: #fff;
+            border: none;
+            padding: 10px 0;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .card .actions button:hover {
+            background: #eab308;
+            color: #000;
+        }
+        .card .actions button.outline {
+            background: transparent;
+            color: #000;
+            border: 2px solid #000;
+        }
+        .card .actions button.outline:hover {
+            background: #000;
+            color: #fff;
+        }
+        .card .badge-new {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #eab308;
+            color: #000;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        /* ── EMPTY STATE ── */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: #94a3b8;
+        }
+        .empty-state .icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        .empty-state h3 {
+            font-size: 20px;
+            color: #334155;
+        }
+        .empty-state p {
+            font-size: 15px;
+            max-width: 400px;
+            margin: 8px auto 0;
+        }
+
+        /* ── SELL FLOATING BUTTON ── */
+        .sell-fab {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            z-index: 200;
+            background: #000000;
+            color: #fff;
+            border: none;
+            padding: 16px 28px;
+            border-radius: 60px;
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+            transition: 0.25s ease;
+            border: 2px solid #eab308;
+        }
+        .sell-fab:hover {
+            transform: scale(1.04);
+            background: #eab308;
+            color: #000;
+            border-color: #000;
+        }
+        .sell-fab .plus {
+            font-size: 24px;
+            line-height: 1;
+            font-weight: 300;
+        }
+
+        /* ── SELL PAGE / FORM ── */
+        .sell-form-wrap {
+            max-width: 720px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 32px 36px;
+            border-radius: 18px;
+            border: 2px dashed #cbd5e1;
+        }
+        .sell-form-wrap h2 {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+        .sell-form-wrap .sub {
+            color: #64748b;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #0f172a;
+        }
+        .form-group label .required {
+            color: #eab308;
+            margin-left: 2px;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: 0.2s;
+            background: #fafcff;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #eab308;
+            box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.15);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* ── IMAGE UPLOAD BOXES ── */
+        .upload-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 4px;
+        }
+        .upload-box {
+            border: 2px dashed #cbd5e1;
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            background: #fafcff;
+            min-height: 130px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            position: relative;
+        }
+        .upload-box:hover {
+            border-color: #eab308;
+            background: #fefce8;
+        }
+        .upload-box .icon {
+            font-size: 28px;
+            opacity: 0.5;
+        }
+        .upload-box .label {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 500;
+        }
+        .upload-box .label .req {
+            color: #eab308;
+        }
+        .upload-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 6px;
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+        .upload-box .preview-wrap {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            inset: 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .upload-box .remove-img {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 14px;
+            cursor: pointer;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+        .upload-box .remove-img:hover {
+            background: #dc2626;
+        }
+        .upload-box .file-input {
+            display: none;
+        }
+        .upload-box.has-image {
+            border-color: #eab308;
+            background: #fff;
+        }
+        .upload-box .status-badge {
+            position: absolute;
+            bottom: 6px;
+            right: 6px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            font-size: 9px;
+            padding: 2px 10px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .publish-btn {
+            background: #000000;
+            color: #fff;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100%;
+            margin-top: 8px;
+        }
+        .publish-btn:hover {
+            background: #eab308;
+            color: #000;
+        }
+
+        /* ── ME PAGE ── */
+        .me-layout {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 32px;
+            margin-top: 8px;
+            align-items: start;
+        }
+        .me-sidebar {
+            background: #ffffff;
+            border-radius: 14px;
+            border: 2px dashed #cbd5e1;
+            padding: 16px 0;
+            position: sticky;
+            top: 90px;
+        }
+        .me-sidebar .me-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+            color: #334155;
+            border-left: 3px solid transparent;
+            transition: 0.2s;
+            background: none;
+            border-top: none;
+            border-right: none;
+            border-bottom: none;
+            width: 100%;
+            text-align: left;
+        }
+        .me-sidebar .me-item:hover {
+            background: #f8fafc;
+            color: #000;
+        }
+        .me-sidebar .me-item.active {
+            border-left-color: #eab308;
+            background: #fefce8;
+            color: #000;
+            font-weight: 600;
+        }
+        .me-sidebar .me-item .icon {
+            font-size: 18px;
+            width: 28px;
+            text-align: center;
+        }
+        .me-content {
+            background: #ffffff;
+            border-radius: 14px;
+            border: 2px dashed #cbd5e1;
+            padding: 28px 32px;
+            min-height: 400px;
+        }
+        .me-content .tab-pane {
+            display: none;
+            animation: fadeUp 0.25s ease;
+        }
+        .me-content .tab-pane.active {
+            display: block;
+        }
+        .me-content .tab-pane h3 {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+        .me-content .tab-pane .desc {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        /* Profile pic upload */
+        .profile-pic-wrap {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .profile-pic-wrap .avatar-large {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            border: 3px solid #eab308;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: 700;
+            color: #eab308;
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+        }
+        .profile-pic-wrap .avatar-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .profile-pic-wrap .upload-btn {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+        .profile-pic-wrap .upload-btn:hover {
+            background: #eab308;
+            color: #000;
+        }
+        .profile-pic-wrap .file-input {
+            display: none;
+        }
+
+        .me-form .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .me-form .form-group {
+            margin-bottom: 16px;
+        }
+        .me-form .form-group label {
+            font-weight: 500;
+            font-size: 13px;
+            color: #334155;
+        }
+        .me-form .form-group input {
+            padding: 9px 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            width: 100%;
+            font-size: 14px;
+            font-family: inherit;
+            transition: 0.2s;
+            background: #fafcff;
+        }
+        .me-form .form-group input:focus {
+            border-color: #eab308;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.12);
+        }
+
+        /* KYC */
+        .kyc-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid #f1f5f9;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .kyc-item:last-child {
+            border-bottom: none;
+        }
+        .kyc-item .info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .kyc-item .info .doc-icon {
+            font-size: 28px;
+        }
+        .kyc-item .info .doc-name {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .kyc-item .info .doc-sub {
+            font-size: 13px;
+            color: #64748b;
+        }
+        .kyc-item .status {
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .status.verified {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .status.pending {
+            background: #fef9c3;
+            color: #854d0e;
+        }
+        .status.unverified {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        .kyc-upload-btn {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .kyc-upload-btn:hover {
+            background: #eab308;
+            color: #000;
+        }
+        .kyc-upload-btn .file-input {
+            display: none;
+        }
+
+        /* Support */
+        .support-card {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 20px 24px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            border: 1px solid #e2e8f0;
+        }
+        .support-card .icon {
+            font-size: 28px;
+        }
+        .support-card .text {
+            flex: 1;
+        }
+        .support-card .text h4 {
+            font-size: 16px;
+        }
+        .support-card .text p {
+            font-size: 13px;
+            color: #64748b;
+            margin: 0;
+        }
+        .support-card .btn {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .support-card .btn:hover {
+            background: #eab308;
+            color: #000;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            padding: 32px 40px;
+            background: #111111;
+            color: #94a3b8;
+            text-align: center;
+            font-size: 14px;
+            margin-top: auto;
+            border-top: 2px solid #1a1a1a;
+        }
+        footer .gold {
+            color: #eab308;
+            font-weight: 600;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 820px) {
+            header {
+                padding: 12px 16px;
+            }
+            nav input[type="search"] {
+                width: 130px;
+            }
+            .page {
+                padding: 16px 16px 80px;
+            }
+            .me-layout {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .me-sidebar {
+                position: static;
+                display: flex;
+                overflow-x: auto;
+                padding: 8px 12px;
+                gap: 4px;
+                border-radius: 10px;
+            }
+            .me-sidebar .me-item {
+                padding: 8px 14px;
+                white-space: nowrap;
+                border-left: none;
+                border-bottom: 3px solid transparent;
+                font-size: 13px;
+            }
+            .me-sidebar .me-item.active {
+                border-left: none;
+                border-bottom-color: #eab308;
+            }
+            .me-content {
+                padding: 20px;
+            }
+            .me-form .form-row {
+                grid-template-columns: 1fr;
+            }
+            .upload-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .sell-form-wrap {
+                padding: 20px 18px;
+            }
+            .profile-pic-wrap {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .card .actions {
+                flex-direction: column;
+            }
+            .sell-fab {
+                padding: 12px 20px;
+                font-size: 14px;
+                bottom: 20px;
+                right: 20px;
+            }
+            .grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+                gap: 18px;
+            }
+        }
+        @media (max-width: 480px) {
+            .upload-grid {
+                grid-template-columns: 1fr;
+            }
+            nav {
+                gap: 10px;
+            }
+            nav input[type="search"] {
+                width: 100px;
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+            .logo {
+                font-size: 22px;
+            }
+            .me-btn .avatar {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+            }
+            .me-btn .label {
+                font-size: 8px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<header class="header">
-  <div class="header-main">
-    <button class="logo" onclick="showPage('home')"><span class="logo-mark">S</span><span class="soma">Soma</span><span class="zon">Zon</span></button>
-    <div class="search-wrap">
-      <span class="search-icon">⌕</span>
-      <input id="searchInput" type="search" placeholder="Search products, brands, categories..." oninput="renderProducts()">
-    </div>
-    <div class="header-actions">
-      <button class="header-link" onclick="showPage('marketplace')">Marketplace</button>
-      <button class="header-link" id="headerAuthBtn" onclick="openAuth()">Sign In</button>
-      <button class="profile-btn" id="profileBtn" onclick="showPage('account');selectAccountPanel('profile')" aria-label="My Account">M</button>
-    </div>
-  </div>
-  <nav class="desktop-nav">
-    <div class="desktop-nav-inner">
-      <button onclick="showPage('home')" data-nav="home">Home</button>
-      <button onclick="showPage('marketplace')" data-nav="marketplace">Marketplace</button>
-      <button onclick="filterCategory('Electronics')" data-nav="category">Categories</button>
-      <button onclick="showPage('deals')" data-nav="deals">Deals</button>
-      <button onclick="startSell()" data-nav="sell">Sell</button>
-      <button onclick="showPage('account');selectAccountPanel('support')" data-nav="support">Support</button>
-    </div>
-  </nav>
-</header>
+    <!-- ═══ HEADER ═══ -->
+    <header>
+        <div class="logo" onclick="showPage('home')">Soma<span>Zon</span></div>
+        <nav>
+            <input type="search" id="searchInput" placeholder="Search products..." oninput="filterProducts()">
+            <button class="nav-link" onclick="showPage('marketplace')">Marketplace</button>
+            <button class="nav-link support" onclick="window.location.href='mailto:support@somazon.com'">Support</button>
+            <button class="me-btn" onclick="showPage('me-page')" id="meNavBtn">
+                <span class="avatar" id="meAvatar">M</span>
+                <span class="label">Me</span>
+                <span class="badge"></span>
+            </button>
+        </nav>
+    </header>
 
-<main>
-<section id="home" class="page active">
-  <div class="container">
-    <div class="hero">
-      <div>
-        <div class="eyebrow">SomaZon Marketplace</div>
-        <h1>Welcome to the Future of Trading</h1>
-        <p>Discover, buy, sell, and connect with confidence on SomaZon — The Zone Where Trade Happens.</p>
-        <div class="hero-actions">
-          <button class="btn btn-gold" onclick="showPage('marketplace')">Start Shopping</button>
-          <button class="btn btn-black" onclick="startSell()">Start Selling</button>
+    <!-- ═══ PAGES ═══ -->
+
+    <!-- HOME -->
+    <section id="home" class="page active">
+        <h1 class="page-title">Welcome to the Future of Trading</h1>
+        <p class="page-sub">Discover, buy, and sell with confidence on SomaZon.</p>
+        <div style="background:#ffffff;border-radius:14px;border:2px dashed #cbd5e1;padding:40px 32px;text-align:center;max-width:600px;">
+            <div style="font-size:48px;margin-bottom:12px;">🚀</div>
+            <h3 style="font-size:22px;">Your marketplace starts here</h3>
+            <p style="color:#64748b;max-width:400px;margin:8px auto 20px;">Browse products, list your own items, and connect with buyers instantly.</p>
+            <button onclick="showPage('marketplace')" style="background:#000;color:#fff;border:none;padding:12px 32px;border-radius:8px;font-weight:600;cursor:pointer;">Explore Marketplace</button>
         </div>
-      </div>
-      <div class="hero-visual"><div class="rocket">🚀</div></div>
-    </div>
+    </section>
 
-    <div class="section">
-      <div class="section-head"><div><h2>Shop by Category</h2><p>Explore the SomaZon marketplace.</p></div></div>
-      <div class="categories">
-        <button class="category" onclick="filterCategory('Electronics')"><div class="emoji">📱</div>Electronics</button>
-        <button class="category" onclick="filterCategory('Fashion')"><div class="emoji">👟</div>Fashion</button>
-        <button class="category" onclick="filterCategory('Home')"><div class="emoji">🏠</div>Home</button>
-        <button class="category" onclick="filterCategory('Beauty')"><div class="emoji">✨</div>Beauty</button>
-        <button class="category" onclick="filterCategory('Trading Assets')"><div class="emoji">📈</div>Trading Assets</button>
-        <button class="category" onclick="filterCategory('Services')"><div class="emoji">🛠️</div>Services</button>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="section-head"><div><h2>Featured Products</h2><p>Curated picks from the marketplace.</p></div><button class="btn btn-outline" onclick="showPage('marketplace')">View All</button></div>
-      <div id="homeProducts" class="product-grid"></div>
-    </div>
-
-    <div class="section">
-      <div class="promo-grid">
-        <div class="promo"><div><h3>Shop with Confidence</h3><p>Verification and account protection for real transactions.</p></div><button class="btn btn-gold" onclick="showPage('account');selectAccountPanel('verification')">Learn About Verification</button></div>
-        <div class="promo"><div><h3>Start Selling</h3><p>Build your presence and publish products on SomaZon.</p></div><button class="btn btn-gold" onclick="startSell()">Become a Seller</button></div>
-        <div class="promo"><div><h3>Need Help?</h3><p>Find answers or contact SomaZon support.</p></div><button class="btn btn-gold" onclick="showPage('account');selectAccountPanel('support')">Get Support</button></div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="trust-grid">
-        <div class="trust-card"><strong>🔒 Secure Shopping</strong><p>Your real transaction actions are protected behind account and verification gates.</p></div>
-        <div class="trust-card"><strong>🛡️ KYC Verification</strong><p>Verification is required when an account needs to complete protected marketplace actions.</p></div>
-        <div class="trust-card"><strong>📦 Order Tracking</strong><p>Keep your order history and transaction status in your account.</p></div>
-        <div class="trust-card"><strong>💬 Customer Support</strong><p>Get help through the SomaZon support section.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="marketplace" class="page">
-  <div class="container">
-    <div class="section-head">
-      <div><h1>Marketplace</h1><p>Browse products freely. Login and verification are only requested when you perform a protected action.</p></div>
-      <button class="btn btn-outline" onclick="resetProducts()">All Products</button>
-    </div>
-    <div class="categories" style="margin-bottom:22px">
-      <button class="category" onclick="filterCategory('All')">🌐 All</button>
-      <button class="category" onclick="filterCategory('Electronics')">📱 Electronics</button>
-      <button class="category" onclick="filterCategory('Fashion')">👟 Fashion</button>
-      <button class="category" onclick="filterCategory('Home')">🏠 Home</button>
-      <button class="category" onclick="filterCategory('Trading Assets')">📈 Trading</button>
-      <button class="category" onclick="filterCategory('Services')">🛠️ Services</button>
-    </div>
-    <div id="marketProducts" class="product-grid"></div>
-  </div>
-</section>
-
-<section id="deals" class="page">
-  <div class="container">
-    <div class="section-head"><div><h1>Deals</h1><p>Current marketplace offers.</p></div></div>
-    <div id="dealProducts" class="product-grid"></div>
-  </div>
-</section>
-
-<section id="account" class="page">
-  <div class="container">
-    <div style="margin-bottom:22px">
-      <div class="eyebrow">Personal Area</div>
-      <h1>My Account</h1>
-      <p style="color:var(--text-muted)">Manage your profile, verification, orders, support, and settings.</p>
-    </div>
-    <div class="account-layout">
-      <aside class="account-sidebar">
-        <div class="account-user">
-          <div class="avatar" id="sideAvatar">M</div>
-          <div><strong id="sideName">Guest User</strong><small id="sideStatus">Browsing mode</small></div>
-        </div>
-        <div class="account-menu">
-          <button class="active" data-panel="profile" onclick="selectAccountPanel('profile')">👤 My Profile</button>
-          <button data-panel="verification" onclick="selectAccountPanel('verification')">🛡️ Verification</button>
-          <button data-panel="orders" onclick="selectAccountPanel('orders')">📦 My Orders</button>
-          <button data-panel="wishlist" onclick="selectAccountPanel('wishlist')">❤️ Wishlist</button>
-          <button data-panel="support" onclick="selectAccountPanel('support')">💬 Support</button>
-          <button data-panel="faq" onclick="selectAccountPanel('faq')">❓ FAQ & Q&A</button>
-          <button data-panel="settings" onclick="selectAccountPanel('settings')">⚙️ Settings</button>
-          <button id="accountAuthAction" onclick="handleAccountAuth()">🔐 Sign In</button>
-        </div>
-      </aside>
-
-      <div class="account-content">
-        <div id="panel-profile" class="account-panel active">
-          <div class="panel-head"><h2>My Profile</h2><p>Update your personal information and profile picture.</p></div>
-          <div class="profile-upload">
-            <div class="big-avatar" id="bigAvatar">M</div>
-            <div>
-              <label class="file-label">📷 Upload Photo<input id="profilePhoto" type="file" accept="image/png,image/jpeg,image/gif" onchange="handleProfilePhoto(event)"></label>
-              <p style="font-size:12px;color:var(--slate);margin-top:7px">JPG, PNG, GIF · Max 5MB</p>
+    <!-- MARKETPLACE -->
+    <section id="marketplace" class="page">
+        <h1 class="page-title">Marketplace</h1>
+        <p class="page-sub" id="productCount">0 products available</p>
+        <div class="grid" id="productGrid">
+            <!-- Products rendered by JS -->
+            <div class="empty-state" id="emptyState">
+                <div class="icon">📦</div>
+                <h3>No products yet</h3>
+                <p>Be the first to list a product! Click the <strong>Sell</strong> button to get started.</p>
             </div>
-          </div>
-          <form onsubmit="saveProfile(event)">
-            <div class="form-grid">
-              <div class="field"><label>Full Name</label><input id="fullName" placeholder="Your full name"></div>
-              <div class="field"><label>Email</label><input id="email" type="email" placeholder="Your email"></div>
-              <div class="field"><label>Phone</label><input id="phone" type="tel" autocomplete="tel" placeholder="Phone number"></div>
-              <div class="field"><label>Country</label>
-  <div class="country-picker" id="countryPicker">
-    <button type="button" class="country-picker-btn" id="countryPickerBtn" aria-haspopup="listbox" aria-expanded="false">
-      <span class="country-picker-flag" id="countryPickerFlag"><span class="iti__flag iti__so"></span></span>
-      <span class="country-picker-name" id="countryPickerName">Somalia</span>
-      <span class="country-picker-code" id="countryPickerCode">+252</span>
-      <span class="country-picker-arrow">⌄</span>
+        </div>
+    </section>
+
+    <!-- ME PAGE -->
+    <section id="me-page" class="page">
+        <h1 class="page-title">My Account</h1>
+        <p class="page-sub">Manage your profile, verification, and support.</p>
+
+        <div class="me-layout">
+            <!-- Sidebar -->
+            <div class="me-sidebar" id="meSidebar">
+                <button class="me-item active" data-tab="profile"><span class="icon">👤</span> My Profile</button>
+                <button class="me-item" data-tab="kyc"><span class="icon">🛡️</span> Verification</button>
+                <button class="me-item" data-tab="support"><span class="icon">💬</span> Support</button>
+            </div>
+
+            <!-- Content -->
+            <div class="me-content">
+                <!-- PROFILE TAB -->
+                <div class="tab-pane active" id="tab-profile">
+                    <h3>My Profile</h3>
+                    <p class="desc">Update your personal information and profile picture.</p>
+
+                    <div class="profile-pic-wrap">
+                        <div class="avatar-large" id="profileAvatarLarge">
+                            <span id="avatarPlaceholder">M</span>
+                        </div>
+                        <div>
+                            <button class="upload-btn" onclick="document.getElementById('profilePicInput').click()">📸 Upload Photo</button>
+                            <input type="file" id="profilePicInput" accept="image/*" class="file-input" onchange="handleProfilePic(event)">
+                            <div style="font-size:12px;color:#94a3b8;margin-top:6px;">JPG, PNG, GIF · Max 5MB</div>
+                        </div>
+                    </div>
+
+                    <div class="me-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="profileName" value="John Doe" placeholder="Your full name">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="profileEmail" value="john.doe@example.com" placeholder="Your email">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Phone</label>
+                                <input type="tel" id="profilePhone" value="+1 (555) 123-4567" placeholder="Phone number">
+                            </div>
+                            <div class="form-group">
+                                <label>Country</label>
+                                <input type="text" id="profileCountry" value="United States" placeholder="Country">
+                            </div>
+                        </div>
+                        <button onclick="saveProfile()" style="background:#000;color:#fff;border:none;padding:10px 28px;border-radius:6px;font-weight:600;cursor:pointer;margin-top:4px;">Save Changes</button>
+                        <span id="profileSaveMsg" style="margin-left:16px;font-size:14px;color:#eab308;"></span>
+                    </div>
+                </div>
+
+                <!-- KYC TAB -->
+                <div class="tab-pane" id="tab-kyc">
+                    <h3>Verification (KYC)</h3>
+                    <p class="desc">Complete your identity verification to unlock full trading access.</p>
+
+                    <div id="kycList">
+                        <!-- Rendered by JS -->
+                    </div>
+                    <div style="margin-top:20px;padding:16px 20px;background:#fefce8;border-radius:8px;border:1px solid #fde68a;">
+                        <strong style="color:#854d0e;">⏳ Overall Status:</strong>
+                        <span id="kycOverallStatus" style="font-weight:700;color:#64748b;">Not Verified</span>
+                    </div>
+                </div>
+
+                <!-- SUPPORT TAB -->
+                <div class="tab-pane" id="tab-support">
+                    <h3>Support &amp; Help</h3>
+                    <p class="desc">Get in touch with our team for assistance.</p>
+
+                    <div class="support-card">
+                        <span class="icon">📧</span>
+                        <div class="text">
+                            <h4>Email Support</h4>
+                            <p>We'll respond within 24 hours.</p>
+                        </div>
+                        <a href="mailto:support@somazon.com" class="btn">Send Email</a>
+                    </div>
+                    <div class="support-card">
+    <span class="icon">💬</span>
+    <div class="text">
+        <h4>Live Chat</h4>
+        <p>Available Mon–Fri, 9am–6pm EST.</p>
+    </div>
+    <!-- قم بتغيير XXXXXXXXXXX إلى رقم الهاتف مع رمز الدولة بدون + أو 00 -->
+    <a href="https://wa.me/2520672367121?text=Welcome%20to%20somaZone!%20How%20can%20we%20help%20you%20today%3F" target="_blank" class="btn">Start Chat</a>
+</div>
+
+                    <div class="support-card">
+                        <span class="icon">📞</span>
+                        <div class="text">
+                            <h4>Phone Support</h4>
+                            <p>+1 (800) 555‑SOMA</p>
+                        </div>
+                        <button class="btn" onclick="alert('Call us at +1 (800) 555‑SOMA')">Call Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SELL PAGE -->
+    <section id="sell-page" class="page">
+        <div class="sell-form-wrap">
+            <h2>📦 List a New Product</h2>
+            <p class="sub">Fill in the details below and publish to the marketplace.</p>
+
+            <div class="form-group">
+                <label>Category <span class="required">*</span></label>
+                <select id="sellCategory">
+                    <option value="">Select a category…</option>
+                    <option value="Electronics">Electronics / Technology</option>
+                    <option value="Fashion">Fashion &amp; Apparel</option>
+                    <option value="Trading">Trading Assets</option>
+                    <option value="Services">Services</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Product Title <span class="required">*</span></label>
+                <input type="text" id="sellTitle" placeholder="e.g. Premium Wireless Headphones">
+            </div>
+
+            <div class="form-group">
+                <label>Price (USD) <span class="required">*</span></label>
+                <input type="number" id="sellPrice" placeholder="0.00" step="0.01" min="0">
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="sellDesc" placeholder="Describe your product…"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Product Photos <span class="required">*</span> <span style="font-weight:400;color:#64748b;font-size:13px;">(Image 1 required)</span></label>
+                <div class="upload-grid" id="uploadGrid">
+                    <!-- Image 1 -->
+                    <div class="upload-box" id="uploadBox1" onclick="document.getElementById('fileInput1').click()">
+                        <div class="icon">📷</div>
+                        <div class="label">Image 1 <span class="req">*</span></div>
+                        <input type="file" id="fileInput1" class="file-input" accept="image/*" onchange="handleSellImage(1, event)">
+                    </div>
+                    <!-- Image 2 -->
+                    <div class="upload-box" id="uploadBox2" onclick="document.getElementById('fileInput2').click()">
+                        <div class="icon">🖼️</div>
+                        <div class="label">Image 2 <span style="color:#94a3b8;">(optional)</span></div>
+                        <input type="file" id="fileInput2" class="file-input" accept="image/*" onchange="handleSellImage(2, event)">
+                    </div>
+                    <!-- Image 3 -->
+                    <div class="upload-box" id="uploadBox3" onclick="document.getElementById('fileInput3').click()">
+                        <div class="icon">🖼️</div>
+                        <div class="label">Image 3 <span style="color:#94a3b8;">(optional)</span></div>
+                        <input type="file" id="fileInput3" class="file-input" accept="image/*" onchange="handleSellImage(3, event)">
+                    </div>
+                </div>
+            </div>
+
+            <button class="publish-btn" onclick="publishProduct()">🚀 Publish Product</button>
+            <div id="publishMsg" style="margin-top:12px;font-weight:600;text-align:center;"></div>
+        </div>
+    </section>
+
+    <!-- ═══ SELL FLOATING BUTTON ═══ -->
+    <button class="sell-fab" onclick="showPage('sell-page')">
+        <span class="plus">+</span> Sell
     </button>
-    <div class="country-picker-menu" id="countryPickerMenu" hidden>
-      <div class="country-search-wrap"><i class="fa-solid fa-magnifying-glass"></i><input id="countrySearch" type="search" autocomplete="off" placeholder="Search country or code..."></div>
-      <div class="country-options" id="countryOptions" role="listbox" aria-label="Countries"></div>
-    </div>
-    <input id="country" type="hidden" value="Somalia">
-  </div>
-</div>
-            </div>
-            <div style="margin-top:20px"><button class="btn btn-black" type="submit">Save Changes</button></div>
-          </form>
-        </div>
 
-        <div id="panel-verification" class="account-panel">
-          <div class="panel-head"><h2>Verification</h2><p>Verification protects important marketplace actions.</p></div>
-          <div id="verificationStatus"></div>
-          <div class="steps">
-            <div class="step"><b>1</b><div><strong>Account</strong><p style="color:var(--text-muted);font-size:13px">Sign in before starting protected account actions.</p></div></div>
-            <div class="step"><b>2</b><div><strong>Identity information</strong><p style="color:var(--text-muted);font-size:13px">Submit the required identity details or document.</p></div></div>
-            <div class="step"><b>3</b><div><strong>Review</strong><p style="color:var(--text-muted);font-size:13px">Your verification status becomes Pending until reviewed.</p></div></div>
-          </div>
-          <button id="verifyActionBtn" class="btn btn-gold" onclick="startVerification()">Start Verification</button>
-        </div>
+    <!-- ═══ FOOTER ═══ -->
+    <footer>
+        <p>© 2026 <span class="gold">SomaZon</span> — Built with ❤️ for the future of trading.</p>
+    </footer>
 
-        <div id="panel-orders" class="account-panel">
-          <div class="panel-head"><h2>My Orders</h2><p>Your completed and pending marketplace orders.</p></div>
-          <div id="ordersList"></div>
-        </div>
+    <!-- ═══════════════════════════════════════ -->
+    <!-- ═══ JAVASCRIPT — FULL STATE ═══ -->
+    <!-- ═══════════════════════════════════════ -->
+    <script>
+        (function() {
+            'use strict';
 
-        <div id="panel-wishlist" class="account-panel">
-          <div class="panel-head"><h2>Wishlist</h2><p>Products you saved for later.</p></div>
-          <div id="wishlistList" class="product-grid"></div>
-        </div>
+            // ─── STATE ──────────────────────────────────────────────
+            const state = {
+                products: [],
+                profile: {
+                    name: 'John Doe',
+                    email: 'john.doe@example.com',
+                    phone: '+1 (555) 123-4567',
+                    country: 'United States',
+                    avatar: null // dataURL
+                },
+                kyc: [
+                    { id: 'passport', label: 'Passport', status: 'unverified' },
+                    { id: 'idcard', label: 'ID Card', status: 'unverified' },
+                    { id: 'license', label: "Driver's License", status: 'unverified' }
+                ],
+                sellImages: { 1: null, 2: null, 3: null }
+            };
 
-        <div id="panel-support" class="account-panel">
-          <div class="panel-head"><h2>Support</h2><p>Need help? Contact the SomaZon team.</p></div>
-          <div class="status-box notverified">
-            <div class="status-title">SomaZon Support</div>
-            <div style="color:var(--text-muted);font-size:14px">Email: mahamoudsa6122@gmail.com</div>
-            <div style="color:var(--text-muted);font-size:14px">WhatsApp: +2520672367121</div>
-            <div style="color:var(--text-muted);font-size:14px">Telegram: @Walith_1</div>
-          </div>
-          <div class="form-grid">
-            <div class="field full"><label>Subject</label><input placeholder="How can we help?"></div>
-            <div class="field full"><label>Message</label><textarea placeholder="Describe your question or issue..."></textarea></div>
-          </div>
-          <button class="btn btn-black" style="margin-top:18px" onclick="showToast('Support request prepared. Connect the backend to send it.')">Send Support Request</button>
-        </div>
+            // ─── DOM REFS ──────────────────────────────────────────
+            const $ = (sel) => document.querySelector(sel);
+            const $$ = (sel) => document.querySelectorAll(sel);
 
-        <div id="panel-faq" class="account-panel">
-          <div class="panel-head"><h2>FAQ & Q&A</h2><p>Common questions about using SomaZon.</p></div>
-          <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Can I browse SomaZon without an account?<span>+</span></button><div class="faq-a">Yes. Browsing, searching, and viewing products remain open. An account is requested when you need to perform a protected action.</div></div>
-          <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">When is Login required?<span>+</span></button><div class="faq-a">Login is requested when you start an action that requires a user account, such as checkout, placing a real order, selling, or publishing a product.</div></div>
-          <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">When is Verification required?<span>+</span></button><div class="faq-a">Verification is required before completing protected real transactions, including completing a purchase or publishing/selling a product.</div></div>
-          <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Can I change the interface language?<span>+</span></button><div class="faq-a">Yes. English is the official default language. The Settings area is prepared for additional languages.</div></div>
-          <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Can I switch between Light and Dark mode?<span>+</span></button><div class="faq-a">Yes. Open My Account → Settings → Appearance and choose Light, Dark, or System.</div></div>
-        </div>
+            const productGrid = $('#productGrid');
+            const emptyState = $('#emptyState');
+            const productCount = $('#productCount');
 
-        <div id="panel-settings" class="account-panel">
-          <div class="panel-head"><h2>Settings</h2><p>Control your SomaZon interface and account preferences.</p></div>
-          <div class="setting-row">
-            <div><strong>Language</strong><p>Official default: English.</p></div>
-            <select id="languageSetting" onchange="saveSettings()"><option value="en">English</option><option value="ar">Arabic (Coming Soon)</option><option value="so">Somali (Coming Soon)</option></select>
-          </div>
-          <div class="setting-row">
-            <div><strong>Appearance</strong><p>Choose how SomaZon looks on your device.</p></div>
-            <div class="segmented" id="themeButtons">
-              <button onclick="setTheme('light')">Light</button><button onclick="setTheme('dark')">Dark</button><button onclick="setTheme('system')">System</button>
-            </div>
-          </div>
-          <div class="setting-row">
-            <div><strong>Notifications</strong><p>Receive marketplace updates in the future.</p></div>
-            <button id="notificationToggle" class="btn btn-outline" onclick="toggleNotifications()">ON</button>
-          </div>
-          <div style="margin-top:22px"><button class="btn btn-gold" onclick="saveSettings();showToast('Settings saved')">Save Settings</button></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-</main>
+            // ─── PAGE NAVIGATION ──────────────────────────────────
+            window.showPage = function(id) {
+                // hide all
+                $$('.page').forEach(p => p.classList.remove('active'));
+                const target = document.getElementById(id);
+                if (target) target.classList.add('active');
 
-<footer class="footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div><div class="logo" style="margin-bottom:12px"><span class="soma">Soma</span><span class="zon">Zon</span></div><p>The Zone Where Trade Happens.</p><p style="margin-top:8px">Shop. Sell. Trade. Connect.</p></div>
-      <div><h3>Marketplace</h3><a href="#" onclick="showPage('marketplace');return false">All Products</a><a href="#" onclick="showPage('deals');return false">Deals</a><a href="#" onclick="startSell();return false">Sell</a></div>
-      <div><h3>Account</h3><a href="#" onclick="showPage('account');return false">My Account</a><a href="#" onclick="showPage('account');selectAccountPanel('verification');return false">Verification</a><a href="#" onclick="showPage('account');selectAccountPanel('settings');return false">Settings</a></div>
-      <div><h3>Support</h3><a href="mailto:mahamoudsa6122@gmail.com">Email Support</a><a href="https://wa.me/2520672367121" target="_blank">WhatsApp</a><a href="#" onclick="showPage('account');selectAccountPanel('faq');return false">FAQ & Q&A</a></div>
-    </div>
-    <div class="footer-bottom"><span>© 2026 <b style="color:var(--gold)">SomaZon</b> — The Zone Where Trade Happens.</span><span>Built for the future of trade ❤️</span></div>
-  </div>
-</footer>
+                // If navigating to sell, scroll to top
+                if (id === 'sell-page') {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
 
-<nav class="mobile-nav">
-  <button onclick="showPage('home')" data-mobile="home"><span>⌂</span>Home</button>
-  <button onclick="showPage('marketplace')" data-mobile="marketplace"><span>🛍</span>Market</button>
-  <button onclick="openCart()"><span>🛒</span>Cart <sup id="cartCountMobile">0</sup></button>
-  <button onclick="showPage('account');selectAccountPanel('profile')" data-mobile="account"><span id="mobileAvatar">M</span>Account</button>
-</nav>
+                // If navigating to me, refresh KYC
+                if (id === 'me-page') {
+                    renderKYC();
+                }
 
-<div id="drawerOverlay" class="drawer-overlay" onclick="closeCart()"></div>
-<aside id="cartDrawer" class="cart-drawer">
-  <div class="drawer-head"><h2>Your Cart</h2><button class="close" onclick="closeCart()">×</button></div>
-  <div id="cartBody" class="drawer-body"></div>
-  <div class="drawer-foot"><div class="total-line"><span>Total</span><span id="cartTotal">$0.00</span></div><button class="btn btn-gold btn-full" onclick="checkout()">Proceed to Checkout</button></div>
-</aside>
+                // If navigating to marketplace, refresh grid
+                if (id === 'marketplace') {
+                    renderProducts();
+                }
 
-<div id="authOverlay" class="modal-overlay" onclick="closeAuth(event)"></div>
-<div id="authModal" class="modal">
-  <div class="modal-head"><h2>Sign In</h2><button class="close" onclick="closeAuth()">×</button></div>
-  <div class="auth-tabs"><button id="loginTab" class="active" onclick="setAuthMode('login')">Sign In</button><button id="registerTab" onclick="setAuthMode('register')">Create Account</button></div>
-  <form onsubmit="submitAuth(event)">
-    <div class="field"><label>Full Name</label><div class="input-with-icon"><i class="fa-solid fa-user input-icon" aria-hidden="true"></i><input id="authName" placeholder="Your full name" autocomplete="name"></div></div>
-    <div class="field" style="margin-top:12px"><label>Email</label><div class="input-with-icon"><i class="fa-solid fa-envelope input-icon" aria-hidden="true"></i><input id="authEmail" type="email" required placeholder="you@example.com" autocomplete="email"></div></div>
-    <div class="field" style="margin-top:12px"><label>Phone</label><input id="authPhone" type="tel" placeholder="Phone number" autocomplete="tel"></div>
-    <div class="field" style="margin-top:12px"><label>Password</label><div class="input-with-icon"><i class="fa-solid fa-lock input-icon" aria-hidden="true"></i><input id="authPassword" type="password" required placeholder="Password" autocomplete="new-password"><button type="button" class="password-toggle" onclick="togglePassword('authPassword',this)" aria-label="Show password"><i class="fa-regular fa-eye"></i></button></div></div>
-    <p class="auth-note">You can browse SomaZon without signing in. Sign in is only required when you start a protected account action.</p>
-    <button type="button" id="resendVerificationBtn" class="btn btn-outline btn-full hidden" style="margin-bottom:10px" onclick="resendVerification()">Resend Verification Email</button>
-    <button class="btn btn-black btn-full" id="authSubmit">Sign In</button>
-  </form>
-</div>
+                // close mobile sidebar if needed
+                const sidebar = document.getElementById('meSidebar');
+                if (sidebar) {
+                    sidebar.scrollLeft = 0;
+                }
+            };
 
-<div id="kycOverlay" class="modal-overlay" onclick="closeKyc(event)"></div>
-<div id="kycModal" class="modal">
-  <div class="modal-head"><h2>Identity Verification</h2><button class="close" onclick="closeKyc()">×</button></div>
-  <p style="color:var(--text-muted);margin-bottom:16px">To complete this protected action, submit your verification details.</p>
-  <div class="field"><label>Document Type</label><select id="kycType"><option>ID Card</option><option>Passport</option></select></div>
-  <div class="field" style="margin-top:12px"><label>Document Photo</label><label class="file-label">📄 Upload Document<input id="kycFile" type="file" accept="image/*,.pdf"></label><p id="kycFileName" style="font-size:12px;color:var(--slate);margin-top:6px">No file selected</p></div>
-  <div class="buy-gate">Your document is uploaded securely to the Supabase kyc-documents bucket and your verification request is saved to your profile.</div>
-  <button class="btn btn-gold btn-full" style="margin-top:18px" onclick="submitKyc()">Submit Verification</button>
-</div>
+            // ─── ME SIDEBAR TABS ──────────────────────────────────
+            document.addEventListener('click', function(e) {
+                const item = e.target.closest('.me-item');
+                if (!item) return;
+                const tab = item.dataset.tab;
+                if (!tab) return;
 
-<div id="toast" class="toast"></div>
+                // update sidebar
+                $$('.me-item').forEach(el => el.classList.remove('active'));
+                item.classList.add('active');
 
-<script>
-/* =========================================================
-   SomaZon Core V2 — Supabase Production Backend Layer
-   UI/HTML structure remains the Core V2 baseline.
-   Replace only local demo auth/data/storage operations with Supabase.
-   ========================================================= */
+                // update panes
+                $$('.tab-pane').forEach(p => p.classList.remove('active'));
+                const pane = document.getElementById('tab-' + tab);
+                if (pane) pane.classList.add('active');
+            });
 
-/* ---------- Supabase configuration ----------
-   Project URL is prefilled for this SomaZon project.
-   IMPORTANT: Use only the public anon/publishable key here.
-   NEVER place a Supabase service_role key or a Resend API key in this file.
-   Configure Resend SMTP inside Supabase Dashboard → Authentication → SMTP.
------------------------------------------------------------- */
-const SUPABASE_URL = "https://ywajfrskmmehsgckgnbd.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_-djHA95UQyk5DhIF1gtTxA_QD9vnmRa";
+            // ─── PROFILE PICTURE ──────────────────────────────────
+            window.handleProfilePic = function(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const dataURL = e.target.result;
+                    state.profile.avatar = dataURL;
+                    updateProfileUI();
+                    document.getElementById('profileSaveMsg').textContent = '✅ Photo updated!';
+                    setTimeout(() => { document.getElementById('profileSaveMsg').textContent = ''; }, 2000);
+                };
+                reader.readAsDataURL(file);
+                // reset input so same file can be re-uploaded
+                event.target.value = '';
+            };
 
-const SUPABASE_CONFIGURED = Boolean(
-  SUPABASE_URL &&
-  SUPABASE_ANON_KEY &&
-  !SUPABASE_URL.includes("YOUR_SUPABASE") &&
-  !SUPABASE_ANON_KEY.includes("YOUR_SUPABASE")
-);
-const SUPABASE_READY = Boolean(SUPABASE_CONFIGURED && window.supabase?.createClient);
+            function updateProfileUI() {
+                const avatarLarge = document.getElementById('profileAvatarLarge');
+                const placeholder = document.getElementById('avatarPlaceholder');
+                const meAvatar = document.getElementById('meAvatar');
 
-const sbClient = SUPABASE_READY
-  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-        detectSessionInUrl: true
-      }
-    })
-  : null;
+                if (state.profile.avatar) {
+                    // large
+                    avatarLarge.innerHTML = `<img src="${state.profile.avatar}" alt="Avatar">`;
+                    // nav
+                    meAvatar.innerHTML = `<img src="${state.profile.avatar}" alt="Avatar">`;
+                } else {
+                    const initial = (state.profile.name || 'M').charAt(0).toUpperCase();
+                    avatarLarge.innerHTML = `<span id="avatarPlaceholder">${initial}</span>`;
+                    meAvatar.textContent = initial;
+                }
+            }
 
-/* ---------- Production configuration ---------- */
-const STORAGE_BUCKETS = {
-  avatars: "avatars",
-  products: "products",
-  kyc: "kyc-documents"
-};
+            // ─── SAVE PROFILE ──────────────────────────────────────
+            window.saveProfile = function() {
+                state.profile.name = document.getElementById('profileName').value.trim() || 'John Doe';
+                state.profile.email = document.getElementById('profileEmail').value.trim() || 'john.doe@example.com';
+                state.profile.phone = document.getElementById('profilePhone').value.trim() || '+1 (555) 123-4567';
+                state.profile.country = document.getElementById('profileCountry').value.trim() || 'United States';
 
-// Compliance is implemented as an allow-list rather than a sanctions guess.
-// Review this list against SomaZon's actual legal/compliance policy before launch.
-const ACCEPTED_COUNTRIES = [
-  "so","ch","sa","ae","pl","us","gb","fr","de","it","es","nl","be","se","no","dk","fi",
-  "at","ie","pt","gr","ro","bg","cz","sk","hu","hr","si","ee","lv","lt","lu","mt","cy",
-  "is","li","mc","ca","au","nz","tr","ke","ug","et","tz","rw","dj","eg","ma","dz","tn",
-  "qa","kw","bh","om","jo","iq","pk","in","my","id","jp","kr","sg","za","ng","gh","sn"
-];
+                updateProfileUI();
+                document.getElementById('profileSaveMsg').textContent = '✅ Profile saved!';
+                setTimeout(() => { document.getElementById('profileSaveMsg').textContent = ''; }, 2000);
+            };
 
-const DEFAULT_PLATFORM_COMMISSION_RATE = 0.05;
-const ALTERNATIVE_PLATFORM_COMMISSION_RATE = 0.02;
-const PLATFORM_COMMISSION_MODE = "standard"; // "standard" = 5%, "payment_plus" = 2% + payment processor fees
+            // ─── KYC ───────────────────────────────────────────────
+            function renderKYC() {
+                const container = document.getElementById('kycList');
+                if (!container) return;
+                container.innerHTML = '';
+                state.kyc.forEach((doc, idx) => {
+                    const statusMap = {
+                        'unverified': 'Not Verified',
+                        'pending': 'Pending Review',
+                        'verified': '✅ Verified'
+                    };
+                    const clsMap = {
+                        'unverified': 'unverified',
+                        'pending': 'pending',
+                        'verified': 'verified'
+                    };
+                    const div = document.createElement('div');
+                    div.className = 'kyc-item';
+                    div.innerHTML = `
+                        <div class="info">
+                            <span class="doc-icon">📄</span>
+                            <div>
+                                <div class="doc-name">${doc.label}</div>
+                                <div class="doc-sub">${doc.id}</div>
+                            </div>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                            <span class="status ${clsMap[doc.status]}">${statusMap[doc.status] || 'Unknown'}</span>
+                            <button class="kyc-upload-btn" data-kyc-idx="${idx}">
+                                📤 Upload
+                                <input type="file" class="file-input" accept="image/*" data-kyc-idx="${idx}">
+                            </button>
+                        </div>
+                    `;
+                    container.appendChild(div);
 
-const DEMO_PRODUCTS = [
- {id:"demo-1",name:"Premium Smartphone",category:"Electronics",price:599,old:699,icon:"📱",rating:4.8,badge:"SALE",desc:"Powerful everyday smartphone with a premium display."},
- {id:"demo-2",name:"Wireless Headphones",category:"Electronics",price:89,old:119,icon:"🎧",rating:4.7,badge:"HOT",desc:"Comfortable wireless audio for work and travel."},
- {id:"demo-3",name:"Classic Fashion Watch",category:"Fashion",price:129,old:159,icon:"⌚",rating:4.6,badge:"NEW",desc:"Clean classic design for everyday style."},
- {id:"demo-4",name:"Modern Sneakers",category:"Fashion",price:74,old:99,icon:"👟",rating:4.5,badge:"SALE",desc:"Lightweight sneakers built for everyday movement."},
- {id:"demo-5",name:"Smart Home Device",category:"Home",price:49,old:65,icon:"🏠",rating:4.4,badge:"NEW",desc:"A practical smart device for a connected home."},
- {id:"demo-6",name:"Trading Monitor",category:"Trading Assets",price:329,old:399,icon:"📈",rating:4.9,badge:"TOP",desc:"Wide display setup for charts, work, and productivity."},
- {id:"demo-7",name:"Professional Service",category:"Services",price:35,old:50,icon:"🛠️",rating:4.8,badge:"FEATURED",desc:"Professional service offered by a marketplace seller."},
- {id:"demo-8",name:"Beauty Essentials",category:"Beauty",price:42,old:55,icon:"✨",rating:4.6,badge:"HOT",desc:"Everyday beauty essentials from marketplace sellers."}
-];
+                    // wire upload
+                    const btn = div.querySelector('.kyc-upload-btn');
+                    const input = btn.querySelector('.file-input');
+                    input.addEventListener('change', function(e) {
+                        const file = e.target.files[0];
+                        if (!file) return;
+                        const idx = parseInt(this.dataset.kycIdx);
+                        // simulate upload -> pending then verified after 2s
+                        state.kyc[idx].status = 'pending';
+                        renderKYC();
+                        updateKYCStatus();
 
-let products = [];
-let cart = [];
-let wishlist = [];
-let orders = [];
-let currentCategory = "All";
-let authMode = "login";
-let currentSession = null;
-let currentProfile = null;
-let phoneInputs = {};
-let initialLoadComplete = false;
-let lastAuthEmail = "";
+                        setTimeout(() => {
+                            state.kyc[idx].status = 'verified';
+                            renderKYC();
+                            updateKYCStatus();
+                        }, 2000);
+                    });
+                });
+                updateKYCStatus();
+            }
 
-/* ---------- Small utilities ---------- */
-function getStoredTheme(){ return localStorage.getItem("somazon_theme") || "system"; }
-function getNotifications(){ return localStorage.getItem("somazon_notifications") !== "off"; }
-function isLogged(){ return Boolean(currentSession?.user); }
-function isEmailVerified(){ return Boolean(currentSession?.user?.email_confirmed_at); }
-function isVerified(){ return currentProfile?.kyc === "verified"; }
-function requireVerifiedEmail(){
-  if(!isLogged()){ openAuth("login"); showToast("Sign in is required to continue"); return false; }
-  if(!isEmailVerified()){
-    lastAuthEmail=currentSession?.user?.email||lastAuthEmail;
-    openAuth("login");
-    document.getElementById("resendVerificationBtn")?.classList.remove("hidden");
-    showToast("Please verify your email before continuing. You can resend the verification email here.");
-    return false;
-  }
-  return true;
-}
-function userId(){ return currentSession?.user?.id || null; }
-function getUser(){
-  if(!currentSession?.user) return null;
-  return {
-    id: currentSession.user.id,
-    email: currentSession.user.email || "",
-    name: currentProfile?.full_name || currentSession.user.user_metadata?.full_name || "SomaZon User"
-  };
-}
-function escapeHtml(value){
-  return String(value ?? "").replace(/[&<>'"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;","\"":"&quot;"}[c]));
-}
-function safeFileName(name){ return String(name || "file").replace(/[^a-zA-Z0-9._-]/g,"-").toLowerCase(); }
-function showToast(msg){
-  const t=document.getElementById("toast");
-  t.textContent=msg;
-  t.classList.add("show");
-  clearTimeout(window.toastTimer);
-  window.toastTimer=setTimeout(()=>t.classList.remove("show"),3200);
-}
-function backendMessage(error, fallback="Something went wrong. Please try again."){
-  const message = error?.message || error?.error_description || "";
-  if(/email.*not.*confirm|email_not_confirmed/i.test(message)) return "Please verify your email before signing in. Check your inbox or resend the verification email.";
-  if(/smtp|email.*send|mail.*send|rate.?limit/i.test(message)) return "Email delivery could not be completed. If your Supabase project uses Resend sandbox SMTP, verify the recipient/domain configuration or use a verified sender domain in Supabase SMTP settings.";
-  if(/invalid.*login|invalid.*credentials/i.test(message)) return "The email or password is incorrect.";
-  if(/already.*registered|user.*already/i.test(message)) return "An account with this email already exists. Try signing in instead.";
-  if(/password/i.test(message) && /short|weak|least/i.test(message)) return "Use a stronger password with at least 6 characters.";
-  return message || fallback;
-}
-function ensureSupabase(action="this action"){
-  if(SUPABASE_READY && sbClient) return true;
-  if(SUPABASE_CONFIGURED && !window.supabase?.createClient){
-    showToast("Supabase library could not load. Check your internet connection and reopen the page.");
-  }else{
-    showToast(`Supabase anon/publishable key is still missing. Add it to use ${action}.`);
-  }
-  return false;
-}
+            function updateKYCStatus() {
+                const all = state.kyc;
+                const verified = all.filter(d => d.status === 'verified').length;
+                const total = all.length;
+                const overall = document.getElementById('kycOverallStatus');
+                if (!overall) return;
+                if (verified === total) {
+                    overall.textContent = '✅ Fully Verified';
+                    overall.style.color = '#166534';
+                } else if (verified > 0) {
+                    overall.textContent = `⚠️ Partially Verified (${verified}/${total})`;
+                    overall.style.color = '#854d0e';
+                } else {
+                    const pending = all.filter(d => d.status === 'pending').length;
+                    if (pending > 0) {
+                        overall.textContent = '⏳ Pending Review';
+                        overall.style.color = '#854d0e';
+                    } else {
+                        overall.textContent = '❌ Not Verified';
+                        overall.style.color = '#64748b';
+                    }
+                }
+            }
 
-/* ---------- Country picker + Phone selector ---------- */
-let selectedCountryIso = "so";
-let countryPickerData = [];
-function countryDataSource(){
-  try{
-    if(window.intlTelInput && typeof window.intlTelInput.getCountryData === "function") return window.intlTelInput.getCountryData();
-  }catch(_e){}
-  try{
-    if(window.intlTelInputGlobals?.getCountryData) return window.intlTelInputGlobals.getCountryData();
-  }catch(_e){}
-  return [];
-}
-function flagMarkup(iso){ return `<span class="iti__flag iti__${String(iso||"").toLowerCase()}"></span>`; }
-function initCountryPicker(){
-  const btn=document.getElementById("countryPickerBtn"), menu=document.getElementById("countryPickerMenu"), search=document.getElementById("countrySearch");
-  if(!btn||!menu||!search) return;
-  const all=countryDataSource();
-  countryPickerData=all.filter(c=>ACCEPTED_COUNTRIES.includes(c.iso2)).sort((a,b)=>a.name.localeCompare(b.name));
-  if(!countryPickerData.length) return;
-  renderCountryOptions();
-  btn.onclick=()=>{ const open=!menu.hidden; menu.hidden=open; btn.setAttribute("aria-expanded",String(!open)); if(open===false){setTimeout(()=>search.focus(),0);} };
-  search.oninput=()=>renderCountryOptions(search.value);
-  document.addEventListener("click",e=>{if(!e.target.closest("#countryPicker")){menu.hidden=true;btn.setAttribute("aria-expanded","false");}});
-  setCountryPicker(selectedCountryIso || "so", false);
-}
-function renderCountryOptions(query=""){
-  const box=document.getElementById("countryOptions");if(!box)return;
-  const q=String(query).trim().toLowerCase().replace(/^\+/,'');
-  const rows=countryPickerData.filter(c=>!q || c.name.toLowerCase().includes(q) || c.iso2.toLowerCase().includes(q) || String(c.dialCode).includes(q));
-  box.innerHTML=rows.length?rows.map(c=>`<button type="button" class="country-option ${c.iso2===selectedCountryIso?"active":""}" data-country="${c.iso2}"><span class="country-flag">${flagMarkup(c.iso2)}</span><span class="country-name">${escapeHtml(c.name)}</span><span class="country-dial">+${c.dialCode}</span></button>`).join(""):`<div class="country-empty">No country found</div>`;
-  box.querySelectorAll(".country-option").forEach(b=>b.onclick=()=>selectCountry(b.dataset.country));
-}
-function selectCountry(iso){
-  const code=String(iso||"").toLowerCase();
-  if(!countryPickerData.some(c=>c.iso2===code)) return;
-  selectedCountryIso=code;
-  setCountryPicker(code,true);
-  const menu=document.getElementById("countryPickerMenu"),btn=document.getElementById("countryPickerBtn");if(menu)menu.hidden=true;if(btn)btn.setAttribute("aria-expanded","false");
-  const iti=phoneInputs.phone;if(iti){try{iti.setCountry(code);}catch(_e){}}
-  const authIti=phoneInputs.authPhone;if(authIti){try{authIti.setCountry(code);}catch(_e){}}
-  renderCountryOptions(document.getElementById("countrySearch")?.value||"");
-}
-function setCountryPicker(iso, syncPhone=true){
-  const c=countryPickerData.find(x=>x.iso2===String(iso||"").toLowerCase()) || countryPickerData.find(x=>x.iso2==="so");
-  if(!c)return;
-  selectedCountryIso=c.iso2;
-  const flag=document.getElementById("countryPickerFlag"),name=document.getElementById("countryPickerName"),dial=document.getElementById("countryPickerCode"),hidden=document.getElementById("country");
-  if(flag)flag.innerHTML=flagMarkup(c.iso2);if(name)name.textContent=c.name;if(dial)dial.textContent=`+${c.dialCode}`;if(hidden)hidden.value=c.name;
-  if(syncPhone && phoneInputs.phone){try{phoneInputs.phone.setCountry(c.iso2)}catch(_e){}}
-}
-function setCountryPickerByName(name){
-  const c=countryPickerData.find(x=>x.name.toLowerCase()===String(name||"").toLowerCase());
-  if(c) setCountryPicker(c.iso2,false);
-}
+            // ─── SELL IMAGE HANDLING ──────────────────────────────
+            window.handleSellImage = function(index, event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const dataURL = e.target.result;
+                    state.sellImages[index] = dataURL;
+                    updateSellBox(index, dataURL);
+                };
+                reader.readAsDataURL(file);
+                event.target.value = '';
+            };
 
-/* ---------- Phone / country selector ---------- */
-function initPhoneInput(id){
-  const input=document.getElementById(id);
-  if(!input || !window.intlTelInput) return null;
-  if(phoneInputs[id]) return phoneInputs[id];
-  const iti=window.intlTelInput(input,{
-    onlyCountries:ACCEPTED_COUNTRIES,
-    separateDialCode:true,
-    nationalMode:false,
-    autoPlaceholder:"aggressive",
-    formatOnDisplay:true,
-    initialCountry:"so",
-    preferredCountries:["so","ae","sa","ch","pl","us","gb"],
-    utilsScript:"https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/utils.js"
-  });
-  phoneInputs[id]=iti;
-  input.addEventListener("countrychange",()=>syncCountryFromPhone(id));
-  input.addEventListener("blur",()=>syncCountryFromPhone(id));
-  input.addEventListener("input",()=>{
-    const raw=input.value.trim();
-    if(raw.startsWith("+")){
-      try{ iti.setNumber(raw); }catch(_e){}
-    }
-  });
-  return iti;
-}
-function syncCountryFromPhone(id){
-  const iti=phoneInputs[id];
-  if(!iti) return;
-  const data=iti.getSelectedCountryData();
-  if(data?.iso2){
-    if(id==="phone") setCountryPicker(data.iso2,false);
-    if(id==="authPhone" && phoneInputs.phone && !document.getElementById("countryPickerMenu")?.contains(document.activeElement)){
-      try{phoneInputs.phone.setCountry(data.iso2)}catch(_e){}
-      setCountryPicker(data.iso2,false);
-    }
-  }
-}
-function getPhoneValue(id){
-  const iti=phoneInputs[id];
-  if(!iti) return document.getElementById(id)?.value?.trim() || "";
-  if(!iti.getNumber()) return "";
-  return iti.getNumber();
-}
-function validatePhone(id){
-  const iti=phoneInputs[id];
-  if(!iti) return true;
-  const value=iti.getNumber();
-  if(!value) return true;
-  if(!iti.isValidNumber()){
-    showToast("Please enter a valid phone number for the selected country.");
-    return false;
-  }
-  return true;
-}
+            function updateSellBox(index, dataURL) {
+                const box = document.getElementById('uploadBox' + index);
+                if (!box) return;
+                // clear children, keep input
+                const input = box.querySelector('.file-input');
+                // remove old preview
+                const oldPreview = box.querySelector('.preview-wrap');
+                if (oldPreview) oldPreview.remove();
+                const oldBadge = box.querySelector('.status-badge');
+                if (oldBadge) oldBadge.remove();
+                const oldRemove = box.querySelector('.remove-img');
+                if (oldRemove) oldRemove.remove();
 
-/* ---------- Supabase data loading ---------- */
-async function loadProducts(){
-  if(!SUPABASE_READY){
-    products=[...DEMO_PRODUCTS];
-    return;
-  }
-  try{
-    const {data,error}=await sbClient.from("products")
-      .select("id,title,description,price,compare_at_price,category,images,rating,badge,vendor_id,stock,is_active")
-      .eq("is_active",true)
-      .order("created_at",{ascending:false});
-    if(error) throw error;
-    products=(data||[]).map(row=>({
-      id:String(row.id),
-      name:row.title || "Untitled Product",
-      category:row.category || "Other",
-      price:Number(row.price||0),
-      old:Number(row.compare_at_price||row.price||0),
-      icon:row.icon || "🛍️",
-      rating:Number(row.rating||0),
-      badge:row.badge || "NEW",
-      desc:row.description || "",
-      images:Array.isArray(row.images)?row.images:[],
-      vendor_id:row.vendor_id || null,
-      stock:row.stock ?? null
-    }));
-    if(!products.length) products=[...DEMO_PRODUCTS];
-  }catch(error){
-    console.error("Supabase products error:",error);
-    products=[...DEMO_PRODUCTS];
-    showToast("Marketplace data could not be loaded. Showing temporary products.");
-  }
-}
+                // add preview
+                const wrap = document.createElement('div');
+                wrap.className = 'preview-wrap';
+                wrap.innerHTML = `<img src="${dataURL}" alt="Preview">`;
+                box.appendChild(wrap);
 
-async function loadProfile(){
-  currentProfile=null;
-  if(!isLogged() || !SUPABASE_READY) return;
-  try{
-    const {data,error}=await sbClient.from("profiles").select("*").eq("id",userId()).maybeSingle();
-    if(error) throw error;
-    currentProfile=data || null;
-    if(!currentProfile){
-      const user=currentSession.user;
-      const fallback={id:user.id,email:user.email||"",full_name:user.user_metadata?.full_name||"SomaZon User",kyc:"not_verified"};
-      const {data:created,error:createError}=await sbClient.from("profiles").upsert(fallback).select().single();
-      if(!createError) currentProfile=created;
-    }
-  }catch(error){
-    console.error("Profile load error:",error);
-    showToast(backendMessage(error,"Your profile could not be loaded."));
-  }
-}
+                // add remove btn
+                const rm = document.createElement('button');
+                rm.className = 'remove-img';
+                rm.innerHTML = '✕';
+                rm.type = 'button';
+                rm.onclick = function(e) {
+                    e.stopPropagation();
+                    removeSellImage(index);
+                };
+                box.appendChild(rm);
 
-async function loadWishlist(){
-  if(!isLogged() || !SUPABASE_READY){ wishlist=[]; return; }
-  // Wishlist is kept in the user's profile metadata for this Core V2 schema.
-  // This avoids introducing another required table before the production schema is expanded.
-  const ids=Array.isArray(currentProfile?.wishlist_ids)?currentProfile.wishlist_ids:[];
-  wishlist=ids.map(String);
-}
+                // add badge
+                const badge = document.createElement('div');
+                badge.className = 'status-badge';
+                badge.textContent = index === 1 ? 'Main' : 'Optional';
+                box.appendChild(badge);
 
-async function loadOrders(){
-  orders=[];
-  if(!isLogged() || !SUPABASE_READY) return;
-  try{
-    const {data,error}=await sbClient.from("orders")
-      .select("id,created_at,total,status,payment_method")
-      .eq("user_id",userId())
-      .order("created_at",{ascending:false});
-    if(error) throw error;
-    orders=data||[];
-  }catch(error){
-    console.error("Orders load error:",error);
-    showToast(backendMessage(error,"Orders could not be loaded."));
-  }
-}
+                box.classList.add('has-image');
+                // hide icon + label
+                const icon = box.querySelector('.icon');
+                const label = box.querySelector('.label');
+                if (icon) icon.style.display = 'none';
+                if (label) label.style.display = 'none';
+            }
 
-async function refreshUserData(){
-  if(!isLogged()){
-    currentProfile=null;wishlist=[];orders=[];cart=[];updateAccountUI();return;
-  }
-  await loadProfile();
-  await loadWishlist();
-  await loadOrders();
-  await loadCart();
-  updateAccountUI();
-}
+            function removeSellImage(index) {
+                state.sellImages[index] = null;
+                const box = document.getElementById('uploadBox' + index);
+                if (!box) return;
+                const preview = box.querySelector('.preview-wrap');
+                if (preview) preview.remove();
+                const rm = box.querySelector('.remove-img');
+                if (rm) rm.remove();
+                const badge = box.querySelector('.status-badge');
+                if (badge) badge.remove();
+                box.classList.remove('has-image');
+                const icon = box.querySelector('.icon');
+                const label = box.querySelector('.label');
+                if (icon) icon.style.display = '';
+                if (label) label.style.display = '';
+                // reset input
+                const input = box.querySelector('.file-input');
+                if (input) input.value = '';
+            }
 
-/* ---------- Supabase Storage ---------- */
-async function uploadToBucket(bucket,file,path){
-  if(!ensureSupabase("file uploads")) return null;
-  const {data,error}=await sbClient.storage.from(bucket).upload(path,file,{cacheControl:"3600",upsert:false,contentType:file.type || undefined});
-  if(error) throw error;
-  return data?.path || path;
-}
-function publicStorageUrl(bucket,path){
-  if(!path) return "";
-  if(/^https?:\/\//i.test(path)) return path;
-  const {data}=sbClient.storage.from(bucket).getPublicUrl(path);
-  return data?.publicUrl || "";
-}
+            // ─── PUBLISH PRODUCT ──────────────────────────────────
+            window.publishProduct = function() {
+                const category = document.getElementById('sellCategory').value;
+                const title = document.getElementById('sellTitle').value.trim();
+                const price = parseFloat(document.getElementById('sellPrice').value);
+                const desc = document.getElementById('sellDesc').value.trim();
+                const img1 = state.sellImages[1];
+                const msg = document.getElementById('publishMsg');
 
-/* ---------- Vendor / product backend helpers ---------- */
-async function getVendorProfile(){
-  if(!isLogged() || !SUPABASE_READY) return null;
-  const {data,error}=await sbClient.from("vendors").select("id,user_id,business_name,status,commission_rate,payment_processing_rate").eq("user_id",userId()).maybeSingle();
-  if(error){console.error("Vendor load error:",error);return null;}
-  return data;
-}
-async function createVendorProfile(businessName){
-  if(!requireVerifiedEmail()) return null;
-  if(!isVerified()){showPage("account");selectAccountPanel("verification");showToast("KYC verification is required before creating a vendor profile.");return null;}
-  if(!ensureSupabase("vendor registration")) return null;
-  try{
-    const existing=await getVendorProfile();
-    if(existing) return existing;
-    const {data,error}=await sbClient.from("vendors").insert({user_id:userId(),business_name:String(businessName||"SomaZon Seller").trim(),status:"pending",commission_rate:DEFAULT_PLATFORM_COMMISSION_RATE,payment_processing_rate:0}).select().single();
-    if(error) throw error;
-    return data;
-  }catch(error){showToast(backendMessage(error,"Vendor profile could not be created."));return null;}
-}
-async function uploadProductImage(file, productId="new"){
-  if(!file) throw new Error("No product image selected.");
-  if(!isLogged()) throw new Error("Sign in is required for product image uploads.");
-  if(!isVerified()) throw new Error("KYC verification is required for product image uploads.");
-  if(!ensureSupabase("product image uploads")) return null;
-  if(file.size>10*1024*1024) throw new Error("Product image must be 10MB or smaller.");
-  const path=`${userId()}/${String(productId)}/${Date.now()}-${safeFileName(file.name)}`;
-  const storedPath=await uploadToBucket(STORAGE_BUCKETS.products,file,path);
-  return {path:storedPath,url:publicStorageUrl(STORAGE_BUCKETS.products,storedPath)};
-}
-async function createProductRecord({title,description,price,compare_at_price,category,images=[],stock=null,badge="NEW"}){
-  if(!requireVerifiedEmail()) return null;
-  if(!isVerified()){showPage("account");selectAccountPanel("verification");showToast("KYC verification is required before publishing products.");return null;}
-  if(!ensureSupabase("product publishing")) return null;
-  try{
-    const vendor=await getVendorProfile();
-    if(!vendor){showToast("Create your vendor profile before publishing a product.");return null;}
-    if(vendor.status!=="approved"){showToast("Your vendor profile must be approved before publishing products.");return null;}
-    const payload={vendor_id:vendor.id,user_id:userId(),title:String(title||"").trim(),description:String(description||"").trim(),price:Number(price||0),compare_at_price:compare_at_price==null?null:Number(compare_at_price),category,images,badge,stock:stock==null?null:Number(stock),is_active:true};
-    const {data,error}=await sbClient.from("products").insert(payload).select().single();
-    if(error) throw error;
-    await loadProducts();renderProducts();renderDeals();showToast("Product published successfully");return data;
-  }catch(error){showToast(backendMessage(error,"Product could not be published."));return null;}
-}
-async function getCommissionForItems(items){
-  if(!SUPABASE_READY || !items.length) return {items,defaultRate:PLATFORM_COMMISSION_MODE==="payment_plus"?ALTERNATIVE_PLATFORM_COMMISSION_RATE:DEFAULT_PLATFORM_COMMISSION_RATE};
-  const vendorIds=[...new Set(items.map(x=>x.vendor_id).filter(Boolean))];
-  const rates=new Map();
-  if(vendorIds.length){
-    const {data,error}=await sbClient.from("vendors").select("id,commission_rate,payment_processing_rate").in("id",vendorIds);
-    if(!error) (data||[]).forEach(v=>rates.set(String(v.id),v));
-  }
-  const enriched=items.map(item=>{
-    const vendor=rates.get(String(item.vendor_id));
-    const rate=vendor?.commission_rate!=null?Number(vendor.commission_rate):(PLATFORM_COMMISSION_MODE==="payment_plus"?ALTERNATIVE_PLATFORM_COMMISSION_RATE:DEFAULT_PLATFORM_COMMISSION_RATE);
-    return {...item,commission_rate:rate,commission:Number(item.price)*Number(item.quantity)*rate,payment_processing_rate:Number(vendor?.payment_processing_rate||0)};
-  });
-  return {items:enriched,defaultRate:PLATFORM_COMMISSION_MODE==="payment_plus"?ALTERNATIVE_PLATFORM_COMMISSION_RATE:DEFAULT_PLATFORM_COMMISSION_RATE};
-}
+                // validation
+                if (!category) { msg.textContent = '⚠️ Please select a category.'; msg.style.color = '#dc2626'; return; }
+                if (!title) { msg.textContent = '⚠️ Please enter a product title.'; msg.style.color = '#dc2626'; return; }
+                if (isNaN(price) || price < 0) { msg.textContent = '⚠️ Please enter a valid price.'; msg.style.color =
+                    '#dc2626'; return; }
+                if (!img1) { msg.textContent = '⚠️ Please upload at least the main photo (Image 1).'; msg.style.color =
+                        '#dc2626';
+                    return; }
 
-/* ---------- Product rendering ---------- */
-function productImageMarkup(p){
-  const path=p.images?.[0];
-  if(path && SUPABASE_READY){
-    const url=publicStorageUrl(STORAGE_BUCKETS.products,path);
-    if(url) return `<img src="${escapeHtml(url)}" alt="${escapeHtml(p.name)}" loading="lazy" style="width:100%;height:100%;object-fit:cover">`;
-  }
-  return `<span>${escapeHtml(p.icon || "🛍️")}</span>`;
-}
-function renderCard(p){
-  const wished=wishlist.includes(String(p.id));
-  const canBuy = !String(p.id).startsWith("demo-");
-  return `<article class="product-card">
-   <div class="product-image">${productImageMarkup(p)}<span class="product-badge">${escapeHtml(p.badge)}</span></div>
-   <div class="product-body">
-    <div class="product-category">${escapeHtml(p.category)}</div>
-    <div class="product-name">${escapeHtml(p.name)}</div>
-    <div class="product-desc">${escapeHtml(p.desc)}</div>
-    <div class="rating">★ ${Number(p.rating||0).toFixed(1)} · Trusted listing</div>
-    <div class="product-bottom">
-      <div><span class="price">$${Number(p.price).toFixed(2)}</span>${Number(p.old)>Number(p.price)?`<span class="old-price">$${Number(p.old).toFixed(2)}</span>`:""}</div>
-      <div style="display:flex;gap:6px">
-       <button class="icon-btn" onclick="toggleWishlist('${escapeHtml(String(p.id))}')">${wished?"❤️":"♡"}</button>
-       <button class="btn btn-black" onclick="buyProduct('${escapeHtml(String(p.id))}')">${canBuy?"Buy":"Demo"}</button>
-      </div>
-    </div>
-   </div>
- </article>`;
-}
-function renderProducts(){
- const q=(document.getElementById("searchInput")?.value||"").toLowerCase().trim();
- let list=products.filter(p=>{
-   const matchesCategory=currentCategory==="All"||p.category===currentCategory;
-   const text=(p.name+" "+p.category+" "+p.desc).toLowerCase();
-   return matchesCategory && (!q||text.includes(q));
- });
- const html=list.length?list.map(renderCard).join(""):`<div class="empty" style="grid-column:1/-1"><h3>No products found</h3><p>Try another search or category.</p></div>`;
- document.getElementById("homeProducts").innerHTML=products.slice(0,4).map(renderCard).join("");
- document.getElementById("marketProducts").innerHTML=html;
- renderWishlist();
-}
-function renderDeals(){
- const deals=products.filter(p=>Number(p.old)>Number(p.price));
- document.getElementById("dealProducts").innerHTML=deals.map(renderCard).join("");
-}
-function filterCategory(cat){currentCategory=cat;showPage("marketplace");renderProducts();}
-function resetProducts(){currentCategory="All";document.getElementById("searchInput").value="";renderProducts();showPage("marketplace");}
+                // build product
+                const images = [];
+                for (let i = 1; i <= 3; i++) {
+                    if (state.sellImages[i]) images.push(state.sellImages[i]);
+                }
 
-/* ---------- Cart: Supabase for signed-in users ---------- */
-async function loadCart(){
-  cart=[];
-  if(!isLogged() || !SUPABASE_READY) return;
-  try{
-    const {data,error}=await sbClient.from("carts").select("id,product_id,quantity").eq("user_id",userId());
-    if(error) throw error;
-    cart=(data||[]).map(row=>({rowId:row.id,id:String(row.product_id),qty:Number(row.quantity||1)}));
-  }catch(error){
-    console.error("Cart load error:",error);
-  }
-  updateCartUI();
-}
-async function addToCart(id){
-  if(!requireVerifiedEmail()) return;
-  if(!isVerified()){openKyc();showToast("Verification is required to complete a purchase");return;}
-  const p=products.find(x=>String(x.id)===String(id));
-  if(!p || String(p.id).startsWith("demo-")){showToast("This temporary demo product is not orderable.");return;}
-  if(!ensureSupabase("cart actions")) return;
-  try{
-    const existing=cart.find(x=>String(x.id)===String(id));
-    if(existing){
-      const {error}=await sbClient.from("carts").update({quantity:existing.qty+1}).eq("id",existing.rowId).eq("user_id",userId());
-      if(error) throw error;
-      existing.qty++;
-    }else{
-      const {data,error}=await sbClient.from("carts").insert({user_id:userId(),product_id:p.id,quantity:1}).select("id,product_id,quantity").single();
-      if(error) throw error;
-      cart.push({rowId:data.id,id:String(data.product_id),qty:data.quantity});
-    }
-    updateCartUI();showToast("Added to cart");
-  }catch(error){showToast(backendMessage(error,"Could not add the product to your cart."));}
-}
-async function changeQuantity(id,d){
- const item=cart.find(x=>String(x.id)===String(id));if(!item)return;
- const next=item.qty+d;
- try{
-   if(next<=0){await removeFromCart(id);return;}
-   const {error}=await sbClient.from("carts").update({quantity:next}).eq("id",item.rowId).eq("user_id",userId());
-   if(error) throw error;
-   item.qty=next;updateCartUI();
- }catch(error){showToast(backendMessage(error,"Could not update your cart."));}
-}
-async function removeFromCart(id){
- const item=cart.find(x=>String(x.id)===String(id));if(!item)return;
- try{
-   const {error}=await sbClient.from("carts").delete().eq("id",item.rowId).eq("user_id",userId());
-   if(error) throw error;
-   cart=cart.filter(x=>String(x.id)!==String(id));updateCartUI();
- }catch(error){showToast(backendMessage(error,"Could not remove the product."));}
-}
-function updateCartUI(){
- const body=document.getElementById("cartBody");
- let total=0,count=0;
- if(!cart.length) body.innerHTML=`<div class="empty"><h3>Your cart is empty</h3><p>Browse the marketplace and add products here.</p></div>`;
- else body.innerHTML=cart.map(item=>{
-   const p=products.find(x=>String(x.id)===String(item.id));if(!p)return "";
-   total+=Number(p.price)*item.qty;count+=item.qty;
-   return `<div class="cart-item"><div class="cart-thumb">${productImageMarkup(p)}</div><div><strong>${escapeHtml(p.name)}</strong><div style="color:var(--text-muted);font-size:13px">$${Number(p.price).toFixed(2)} each</div><div class="qty"><button onclick="changeQuantity('${escapeHtml(String(p.id))}',-1)">−</button><b>${item.qty}</b><button onclick="changeQuantity('${escapeHtml(String(p.id))}',1)">+</button></div></div><button class="icon-btn" onclick="removeFromCart('${escapeHtml(String(p.id))}')">🗑</button></div>`;
- }).join("");
- document.getElementById("cartTotal").textContent="$"+total.toFixed(2);
- document.getElementById("cartCountMobile").textContent=count;
-}
-function openCart(){document.getElementById("drawerOverlay").classList.add("open");document.getElementById("cartDrawer").classList.add("open");updateCartUI();}
-function closeCart(){document.getElementById("drawerOverlay").classList.remove("open");document.getElementById("cartDrawer").classList.remove("open")}
+                const product = {
+                    id: Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+                    title: title,
+                    price: price,
+                    category: category,
+                    description: desc || 'No description provided.',
+                    images: images,
+                    createdAt: new Date().toISOString()
+                };
 
-/* ---------- Protected marketplace actions ---------- */
-async function buyProduct(id){
- if(String(id).startsWith("demo-")){showToast("This is a temporary preview product. Connect your products table to enable real orders.");return;}
- if(!requireVerifiedEmail()) return;
- if(!isVerified()){showPage("account");selectAccountPanel("verification");showToast("Verification is required to complete a purchase");return}
- await addToCart(id);openCart();
-}
-function calculateCommission(total, paymentProcessingFee=0, mode=PLATFORM_COMMISSION_MODE){
- const rate=mode==="payment_plus"?ALTERNATIVE_PLATFORM_COMMISSION_RATE:DEFAULT_PLATFORM_COMMISSION_RATE;
- const commission=Number(total||0)*rate;
- return {rate,commission,paymentProcessingFee:Number(paymentProcessingFee||0),platformFee:commission+Number(paymentProcessingFee||0)};
-}
-async function checkout(){
- if(!cart.length){showToast("Your cart is empty");return}
- if(!requireVerifiedEmail()){closeCart();return}
- if(!isVerified()){closeCart();showPage("account");selectAccountPanel("verification");showToast("Verify your identity before placing a real order");return}
- if(!ensureSupabase("checkout")) return;
- const baseItems=cart.map(item=>{const p=products.find(x=>String(x.id)===String(item.id));return p?{product_id:p.id,title:p.name,price:Number(p.price),quantity:item.qty,image_url:p.images?.[0]||"",vendor_id:p.vendor_id||null}:null;}).filter(Boolean);
- if(!baseItems.length){showToast("Your cart contains no orderable products.");return}
- const commissionData=await getCommissionForItems(baseItems);
- const items=commissionData.items;
- const total=items.reduce((s,item)=>s+(item.price*item.quantity),0);
- const commission=calculateCommission(total,0,PLATFORM_COMMISSION_MODE);
- const vendorCommissionTotal=items.reduce((s,item)=>s+Number(item.commission||0),0);
- try{
-   const {data,error}=await sbClient.from("orders").insert({
-     user_id:userId(),total,status:"pending",payment_method:"pending",items,platform_commission_rate:commission.rate,platform_commission:vendorCommissionTotal || commission.commission,payment_processing_fee:commission.paymentProcessingFee
-   }).select("id,created_at,total,status,payment_method").single();
-   if(error) throw error;
-   await sbClient.from("carts").delete().eq("user_id",userId());
-   cart=[];updateCartUI();closeCart();orders.unshift(data);showPage("account");selectAccountPanel("orders");showToast("Order created successfully");
- }catch(error){showToast(backendMessage(error,"The order could not be created. Check your database policies and try again."));}
-}
-function startSell(){
- if(!requireVerifiedEmail()) return;
- if(!isVerified()){showPage("account");selectAccountPanel("verification");showToast("Verification is required before selling or publishing");return}
- showToast("Seller dashboard is ready for the next backend phase");
-}
+                state.products.unshift(product);
+                renderProducts();
 
-/* ---------- Authentication ---------- */
-function openAuth(mode="login"){
- setAuthMode(mode);document.getElementById("authOverlay").classList.add("open");document.getElementById("authModal").classList.add("open");
- setTimeout(()=>document.getElementById(mode==="login"?"authEmail":"authName")?.focus(),50);
-}
-function closeAuth(e){if(e&&e.target!==document.getElementById("authOverlay"))return;document.getElementById("authOverlay").classList.remove("open");document.getElementById("authModal").classList.remove("open")}
-function setAuthMode(mode){
- authMode=mode;
- const resend=document.getElementById("resendVerificationBtn");
- if(resend) resend.classList.toggle("hidden", mode!=="login");
- document.getElementById("loginTab").classList.toggle("active",mode==="login");
- document.getElementById("registerTab").classList.toggle("active",mode==="register");
- document.getElementById("authModal").querySelector("h2").textContent=mode==="login"?"Sign In":"Create Account";
- document.getElementById("authSubmit").textContent=mode==="login"?"Sign In":"Create Account";
- document.getElementById("authName").required=mode==="register";
- document.getElementById("authName").style.display=mode==="register"?"block":"none";
- document.getElementById("authName").closest(".field").style.display=mode==="register"?"grid":"none";
- document.getElementById("authPhone").closest(".field").style.display=mode==="register"?"grid":"none";
-}
-async function submitAuth(e){
- e.preventDefault();
- if(!ensureSupabase(authMode==="login"?"sign in":"account registration")) return;
- const name=document.getElementById("authName").value.trim()||"SomaZon User";
- const email=document.getElementById("authEmail").value.trim().toLowerCase();
- const password=document.getElementById("authPassword").value;
- const phone=getPhoneValue("authPhone");
- if(authMode==="register" && phone && !validatePhone("authPhone")) return;
- lastAuthEmail=email;
- const submit=document.getElementById("authSubmit");submit.disabled=true;submit.textContent=authMode==="login"?"Signing In…":"Creating Account…";
- try{
-   if(authMode==="register"){
-     const {data,error}=await sbClient.auth.signUp({
-       email,password,
-       options:{
-         data:{full_name:name,phone,country:phoneInputs.authPhone?.getSelectedCountryData()?.name||""},
-         emailRedirectTo:window.location.origin+window.location.pathname
-       }
-     });
-     if(error) throw error;
-     if(data?.user){
-       if(data.session){
-         await saveProfileToSupabase({full_name:name,email,phone,country:phoneInputs.authPhone?.getSelectedCountryData()?.name||""});
-         closeAuth();showToast("Account created and signed in successfully.");
-       }else{
-         closeAuth();showToast("Account created. Check your email and click the verification link before signing in.");
-       }
-     }
-   }else{
-     const {data,error}=await sbClient.auth.signInWithPassword({email,password});
-     if(error) throw error;
-     currentSession=data.session;
-     await refreshUserData();
-     document.getElementById("resendVerificationBtn")?.classList.add("hidden");
-     closeAuth();showToast("Signed in successfully");
-   }
- }catch(error){
-   console.error("Auth error:",error);
-   const message=backendMessage(error,authMode==="login"?"Sign in failed.":"Account creation failed.");
-   if(/email.*not.*confirm/i.test(error?.message||"")){
-     showToast(message);
-     setTimeout(()=>resendVerification(email),400);
-   }else showToast(message);
- }finally{
-   submit.disabled=false;submit.textContent=authMode==="login"?"Sign In":"Create Account";
- }
-}
-async function resendVerification(email=lastAuthEmail){
- if(!ensureSupabase("email verification")) return;
- const target=(email||document.getElementById("authEmail")?.value||"").trim().toLowerCase();
- if(!target){showToast("Enter your email first.");return;}
- try{
-   const {error}=await sbClient.auth.resend({type:"signup",email:target,options:{emailRedirectTo:window.location.origin+window.location.pathname}});
-   if(error) throw error;
-   showToast("Verification email sent. Check your inbox and spam folder.");
- }catch(error){
-   console.error("Resend verification error:",error);
-   showToast(backendMessage(error,"Verification email could not be sent. Check your Supabase SMTP/Resend configuration."));
- }
-}
-async function signOut(){
- if(!SUPABASE_READY){showToast("Supabase is not configured.");return}
- const {error}=await sbClient.auth.signOut();
- if(error){showToast(backendMessage(error,"Could not sign out."));return}
- currentSession=null;currentProfile=null;cart=[];wishlist=[];orders=[];updateAccountUI();showPage("home");showToast("Signed out");
-}
-function handleAccountAuth(){if(isLogged())signOut();else openAuth("login")}
-async function saveProfileToSupabase(profile){
- if(!isLogged() || !SUPABASE_READY) return null;
- const payload={id:userId(),...profile};
- const {data,error}=await sbClient.from("profiles").upsert(payload).select().single();
- if(error) throw error;
- currentProfile=data;return data;
-}
+                // reset form
+                document.getElementById('sellCategory').value = '';
+                document.getElementById('sellTitle').value = '';
+                document.getElementById('sellPrice').value = '';
+                document.getElementById('sellDesc').value = '';
+                // reset images
+                for (let i = 1; i <= 3; i++) {
+                    removeSellImage(i);
+                    state.sellImages[i] = null;
+                }
 
-/* ---------- Account / profile ---------- */
-async function updateAccountUI(){
- const user=getUser();
- const initials=(user?.name||"Guest User").trim().charAt(0).toUpperCase()||"M";
- const photo=currentProfile?.avatar_url||"";
- ["sideAvatar","bigAvatar"].forEach(id=>{
-  const el=document.getElementById(id);if(!el)return;
-  el.innerHTML=photo?`<img src="${escapeHtml(photo)}" alt="Profile">`:escapeHtml(initials);
- });
- const mobileAvatar=document.getElementById("mobileAvatar");if(mobileAvatar)mobileAvatar.textContent=photo?"👤":initials;
- document.getElementById("sideName").textContent=user?.name||"Guest User";
- document.getElementById("sideStatus").textContent=user?(!isEmailVerified()?"Email verification required":(isVerified()?"Verified account":"Account not verified")):"Browsing mode";
- document.getElementById("headerAuthBtn").textContent=user?"Account":"Sign In";
- document.getElementById("accountAuthAction").textContent=user?"🚪 Sign Out":"🔐 Sign In";
- const profile=currentProfile||{};
- document.getElementById("fullName").value=profile.full_name||user?.name||"";
- document.getElementById("email").value=profile.email||user?.email||"";
- const phoneInput=document.getElementById("phone");
- if(phoneInputs.phone){
-   phoneInput.value=profile.phone||"";
-   if(profile.phone) try{phoneInputs.phone.setNumber(profile.phone)}catch(_e){}
- }else phoneInput.value=profile.phone||"";
- setCountryPickerByName(profile.country||"Somalia");
- renderVerification();renderOrders();renderWishlist();loadSettings();
-}
-function showPage(id){
- document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
- const page=document.getElementById(id);if(page)page.classList.add("active");
- document.querySelectorAll("[data-nav]").forEach(b=>b.classList.toggle("active",b.dataset.nav===id));
- document.querySelectorAll("[data-mobile]").forEach(b=>b.classList.toggle("active",b.dataset.mobile===id));
- window.scrollTo({top:0,behavior:"smooth"});
- if(id==="account")updateAccountUI();
- if(id==="deals")renderDeals();
-}
-function selectAccountPanel(name){
- document.querySelectorAll(".account-panel").forEach(p=>p.classList.remove("active"));
- const target=document.getElementById("panel-"+name);if(target)target.classList.add("active");
- document.querySelectorAll(".account-menu button[data-panel]").forEach(b=>b.classList.toggle("active",b.dataset.panel===name));
- if(name==="verification")renderVerification();
- if(name==="orders")renderOrders();
- if(name==="wishlist")renderWishlist();
- updateAccountUI();
-}
-async function saveProfile(e){
- e.preventDefault();
- if(!isLogged()){openAuth("login");showToast("Sign in to save your profile.");return}
- if(!ensureSupabase("profile updates"))return;
- if(!validatePhone("phone"))return;
- const phone=getPhoneValue("phone");
- const country=countryPickerData.find(c=>c.iso2===selectedCountryIso)?.name||document.getElementById("country").value.trim();
- const payload={full_name:document.getElementById("fullName").value.trim(),email:currentSession.user.email||document.getElementById("email").value.trim(),phone,country};
- try{await saveProfileToSupabase(payload);updateAccountUI();showToast("Profile saved successfully");}
- catch(error){showToast(backendMessage(error,"Profile could not be saved."));}
-}
-async function handleProfilePhoto(e){
- const file=e.target.files[0];if(!file)return;
- if(file.size>5*1024*1024){showToast("Photo must be 5MB or smaller");return}
- if(!isLogged()){openAuth("login");return}
- if(!ensureSupabase("profile photo uploads"))return;
- try{
-   const path=`${userId()}/${Date.now()}-${safeFileName(file.name)}`;
-   const storedPath=await uploadToBucket(STORAGE_BUCKETS.avatars,file,path);
-   const url=publicStorageUrl(STORAGE_BUCKETS.avatars,storedPath);
-   await saveProfileToSupabase({avatar_url:url,avatar_path:storedPath});
-   updateAccountUI();showToast("Profile photo updated");
- }catch(error){console.error(error);showToast(backendMessage(error,"Profile photo upload failed."));}
-}
+                msg.textContent = '✅ Product published successfully!';
+                msg.style.color = '#166534';
 
-/* ---------- Verification / KYC ---------- */
-function renderVerification(){
- const status=currentProfile?.kyc||"not_verified",box=document.getElementById("verificationStatus"),btn=document.getElementById("verifyActionBtn");
- if(status==="verified"){
-   box.innerHTML=`<div class="status-box verified"><div class="status-title">✓ Verified</div><div>Your identity has been verified. Protected marketplace actions are enabled.</div></div>`;
-   btn.textContent="Verification Complete";btn.disabled=true;
- }else if(status==="pending"){
-   box.innerHTML=`<div class="status-box pending"><div class="status-title">⏳ Pending Review</div><div>Your verification request has been submitted and is waiting for review.</div></div>`;
-   btn.textContent="Pending Review";btn.disabled=true;
- }else{
-   box.innerHTML=`<div class="status-box notverified"><div class="status-title">Verification Required</div><div>Verification is required before completing a real purchase, placing an order, selling, or publishing a product.</div></div>`;
-   btn.textContent="Start Verification";btn.disabled=false;
- }
-}
-function startVerification(){
- if(!requireVerifiedEmail()) return
- document.getElementById("kycOverlay").classList.add("open");document.getElementById("kycModal").classList.add("open");
-}
-function closeKyc(e){if(e&&e.target!==document.getElementById("kycOverlay"))return;document.getElementById("kycOverlay").classList.remove("open");document.getElementById("kycModal").classList.remove("open")}
-async function submitKyc(){
- if(!requireVerifiedEmail()){closeKyc();return}
- if(!ensureSupabase("identity verification"))return;
- const file=document.getElementById("kycFile").files[0];
- if(!file){showToast("Please upload your identity document");return}
- if(file.size>10*1024*1024){showToast("Verification document must be 10MB or smaller");return}
- try{
-   const type=document.getElementById("kycType").value;
-   const path=`${userId()}/${Date.now()}-${safeFileName(file.name)}`;
-   const storedPath=await uploadToBucket(STORAGE_BUCKETS.kyc,file,path);
-   const {data,error}=await sbClient.from("profiles").update({kyc:"pending",kyc_document_type:type,kyc_document_path:storedPath,kyc_submitted_at:new Date().toISOString()}).eq("id",userId()).select().single();
-   if(error)throw error;
-   currentProfile=data;closeKyc();updateAccountUI();showPage("account");selectAccountPanel("verification");showToast("Verification submitted successfully");
- }catch(error){console.error(error);showToast(backendMessage(error,"Verification upload failed. Check Storage and RLS policies."));}
-}
-document.getElementById("kycFile").addEventListener("change",e=>document.getElementById("kycFileName").textContent=e.target.files[0]?.name||"No file selected");
+                // navigate to marketplace after a beat
+                setTimeout(() => {
+                    showPage('marketplace');
+                    msg.textContent = '';
+                }, 800);
+            };
 
-/* ---------- Wishlist ---------- */
-async function toggleWishlist(id){
- if(!requireVerifiedEmail()) return
- const sid=String(id);
- wishlist=wishlist.includes(sid)?wishlist.filter(x=>x!==sid):[...wishlist,sid];
- try{
-   if(!ensureSupabase("wishlist actions"))return;
-   const {error}=await sbClient.from("profiles").update({wishlist_ids:wishlist}).eq("id",userId());
-   if(error)throw error;
-   if(currentProfile)currentProfile.wishlist_ids=wishlist;
-   renderProducts();renderWishlist();showToast(wishlist.includes(sid)?"Saved to wishlist":"Removed from wishlist");
- }catch(error){showToast(backendMessage(error,"Wishlist could not be updated."));}
-}
-function renderWishlist(){
- const list=wishlist.map(id=>products.find(p=>String(p.id)===String(id))).filter(Boolean);
- document.getElementById("wishlistList").innerHTML=list.length?list.map(renderCard).join(""):`<div class="empty" style="grid-column:1/-1"><h3>Your wishlist is empty</h3><p>Save products while browsing the marketplace.</p></div>`;
-}
+            // ─── RENDER PRODUCTS ──────────────────────────────────
+            function renderProducts(filter = '') {
+                let list = state.products;
+                if (filter.trim()) {
+                    const q = filter.trim().toLowerCase();
+                    list = list.filter(p =>
+                        p.title.toLowerCase().includes(q) ||
+                        p.category.toLowerCase().includes(q) ||
+                        p.description.toLowerCase().includes(q)
+                    );
+                }
 
-/* ---------- Orders ---------- */
-function renderOrders(){
- const el=document.getElementById("ordersList");
- if(!orders.length){el.innerHTML=`<div class="empty"><h3>No orders yet</h3><p>Your completed and pending marketplace orders will appear here.</p></div>`;return}
- el.innerHTML=orders.map(o=>`<div class="order-card"><div class="order-top"><strong>Order ${escapeHtml(o.id)}</strong><span class="badge badge-warning">${escapeHtml(o.status||"pending")}</span></div><div style="color:var(--text-muted);font-size:13px">Placed ${escapeHtml(new Date(o.created_at||Date.now()).toLocaleDateString())}</div><div style="font-weight:900;margin-top:8px">$${Number(o.total||0).toFixed(2)}</div></div>`).join("");
-}
+                // clear grid, keep empty state
+                const grid = productGrid;
+                // remove all children except emptyState
+                Array.from(grid.children).forEach(child => {
+                    if (child.id !== 'emptyState') child.remove();
+                });
 
-/* ---------- FAQ / settings ---------- */
-function toggleFaq(btn){btn.parentElement.classList.toggle("open");btn.querySelector("span").textContent=btn.parentElement.classList.contains("open")?"−":"+"}
-function setTheme(theme){localStorage.setItem("somazon_theme",theme);applyTheme();updateThemeButtons();}
-function applyTheme(){
- const theme=getStoredTheme();
- const dark=theme==="dark"||(theme==="system"&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches);
- document.body.classList.toggle("dark",dark);
-}
-function updateThemeButtons(){
- const t=getStoredTheme();
- document.querySelectorAll("#themeButtons button").forEach(b=>b.classList.toggle("active",b.textContent.toLowerCase()===t));
-}
-function toggleNotifications(){
- const on=getNotifications();
- localStorage.setItem("somazon_notifications",on?"off":"on");
- loadSettings();showToast(on?"Notifications turned off":"Notifications turned on");
-}
-function saveSettings(){
- const lang=document.getElementById("languageSetting").value;
- localStorage.setItem("somazon_language",lang);
- if(lang!=="en"){
-   document.getElementById("languageSetting").value="en";
-   localStorage.setItem("somazon_language","en");
-   showToast("English is the official language; additional languages are coming soon");
- }
- updateThemeButtons();
-}
-function loadSettings(){
- document.getElementById("languageSetting").value="en";
- document.getElementById("notificationToggle").textContent=getNotifications()?"ON":"OFF";
- applyTheme();updateThemeButtons();
-}
-function togglePassword(id,button){
- const input=document.getElementById(id);if(!input)return;
- const visible=input.type==="text";input.type=visible?"password":"text";
- button.innerHTML=visible?'<i class="fa-regular fa-eye"></i>':'<i class="fa-regular fa-eye-slash"></i>';
- button.setAttribute("aria-label",visible?"Show password":"Hide password");
-}
+                if (list.length === 0) {
+                    emptyState.style.display = '';
+                    productCount.textContent = '0 products available';
+                    return;
+                }
+                emptyState.style.display = 'none';
+                productCount.textContent = `${list.length} product${list.length > 1 ? 's' : ''} available`;
 
-window.addEventListener("error", (event)=>{
-  console.error("SomaZon JavaScript error:", event.error || event.message);
-  if(document.getElementById("toast")) showToast("A page function encountered an error. Please reload the page.");
-});
-window.addEventListener("unhandledrejection", (event)=>{
-  console.error("SomaZon promise error:", event.reason);
-  if(document.getElementById("toast")) showToast("An operation could not be completed. Please try again.");
-});
+                list.forEach((p, idx) => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    const imgSrc = p.images && p.images.length > 0 ? p.images[0] : '';
+                    const priceStr = `$${p.price.toFixed(2)}`;
+                    const cat = p.category || 'Uncategorized';
+                    const isNew = (Date.now() - new Date(p.createdAt).getTime()) < 60000; // 1 min
 
-/* ---------- Startup / auth events ---------- */
-async function initSupabaseApp(){
- applyTheme();loadSettings();
- initCountryPicker();
- initPhoneInput("phone");initPhoneInput("authPhone");
- syncCountryFromPhone("phone");
- // Always render the storefront first. Browsing/search/filtering must work even
- // while the production Supabase anon key is being configured.
- products=[...DEMO_PRODUCTS];
- renderProducts();renderDeals();updateCartUI();updateAccountUI();selectAccountPanel("profile");
- if(!SUPABASE_READY){
-   initialLoadComplete=true;
-   if(SUPABASE_CONFIGURED && !window.supabase?.createClient){
-     showToast("Supabase library did not load. Browsing remains available; check your internet connection.");
-   }else{
-     showToast("SomaZon browsing mode is ready. Add your Supabase anon/publishable key to activate accounts, KYC, cart, orders and storage.");
-   }
-   return;
- }
- try{
-   const {data:{session}}=await sbClient.auth.getSession();
-   currentSession=session;
-   await loadProducts();
-   renderProducts();renderDeals();
-   await refreshUserData();
-   initialLoadComplete=true;
- }catch(error){
-   console.error("Supabase startup error:",error);
-   showToast(backendMessage(error,"Supabase connection could not be established."));
- }
- sbClient.auth.onAuthStateChange((event,session)=>{
-   currentSession=session;
-   setTimeout(async()=>{
-     if(event==="SIGNED_OUT"){currentProfile=null;wishlist=[];orders=[];cart=[];}
-     else await refreshUserData();
-     updateAccountUI();
-   },0);
- });
-}
+                    card.innerHTML = `
+                        ${isNew ? '<span class="badge-new">New</span>' : ''}
+                        <div class="img-wrap">
+                            ${imgSrc ? `<img src="${imgSrc}" alt="${p.title}">` : `<span class="placeholder-icon">📷</span>`}
+                        </div>
+                        <span class="category-tag">${cat}</span>
+                        <div class="product-name">${p.title}</div>
+                        <div class="product-desc">${p.description}</div>
+                        <div class="price">${priceStr}</div>
+                        <div class="actions">
+                            <button onclick="buyProduct('${p.id}')">BUY NOW</button>
+                            <button class="outline" onclick="showProductDetail('${p.id}')">View</button>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            }
 
-window.matchMedia?.("(prefers-color-scheme: dark)").addEventListener?.("change",()=>{if(getStoredTheme()==="system")applyTheme();});
-if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", initSupabaseApp, {once:true});
-else initSupabaseApp();
+            // ─── BUY / VIEW ──────────────────────────────────────
+            window.buyProduct = function(id) {
+                const p = state.products.find(pr => pr.id === id);
+                if (!p) return;
+                alert(`🛒 You are about to purchase "${p.title}" for $${p.price.toFixed(2)}.\n\nProceed to checkout?`);
+            };
 
-</script>
+            window.showProductDetail = function(id) {
+                const p = state.products.find(pr => pr.id === id);
+                if (!p) return;
+                const imgList = p.images && p.images.length > 0 ?
+                    p.images.map(img => `<img src="${img}" style="max-width:180px;max-height:140px;border-radius:6px;object-fit:cover;border:2px solid #e2e8f0;">`).join('') :
+                    'No images';
+                alert(
+                    `📦 ${p.title}\n\nCategory: ${p.category}\nPrice: $${p.price.toFixed(2)}\n\nDescription:\n${p.description}\n\nImages:\n${imgList}`
+                    );
+            };
+
+            // ─── SEARCH / FILTER ──────────────────────────────────
+            window.filterProducts = function() {
+                const query = document.getElementById('searchInput').value;
+                renderProducts(query);
+            };
+
+            // ─── INIT ─────────────────────────────────────────────
+            function init() {
+                // seed with demo products
+                const demoProducts = [{
+                    id: 'demo1',
+                    title: 'Premium Wireless Headphones',
+                    price: 149.99,
+                    category: 'Electronics',
+                    description: 'Noise-cancelling, 40hr battery, premium sound.',
+                    images: ['https://picsum.photos/seed/headphones/400/300'],
+                    createdAt: new Date(Date.now() - 120000).toISOString()
+                }, {
+                    id: 'demo2',
+                    title: 'Vintage Leather Jacket',
+                    price: 89.50,
+                    category: 'Fashion',
+                    description: 'Genuine leather, classic biker style, size L.',
+                    images: ['https://picsum.photos/seed/jacket/400/300'],
+                    createdAt: new Date(Date.now() - 300000).toISOString()
+                }, {
+                    id: 'demo3',
+                    title: 'Bitcoin Mining Rig',
+                    price: 1299.00,
+                    category: 'Trading',
+                    description: 'High-performance ASIC miner, 90TH/s.',
+                    images: ['https://picsum.photos/seed/miner/400/300'],
+                    createdAt: new Date(Date.now() - 600000).toISOString()
+                }];
+                state.products = [...demoProducts];
+
+                // set initial profile values in inputs
+                document.getElementById('profileName').value = state.profile.name;
+                document.getElementById('profileEmail').value = state.profile.email;
+                document.getElementById('profilePhone').value = state.profile.phone;
+                document.getElementById('profileCountry').value = state.profile.country;
+
+                updateProfileUI();
+                renderProducts();
+                renderKYC();
+
+                // if on marketplace, show count
+                productCount.textContent = `${state.products.length} products available`;
+            }
+
+            init();
+
+            // ─── expose state for debugging ──────────────────────
+            window.__state = state;
+
+        })();
+    </script>
+
 </body>
 </html>
