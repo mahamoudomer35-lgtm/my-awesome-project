@@ -272,7 +272,7 @@ input[type=file]{display:none}
 
     <div class="section">
       <div class="promo-grid">
-        <div class="promo"><div><h3>Shop with Confidence</h3><p>Verification and account protection for real transactions.</p></div><button class="btn btn-gold" onclick="showPage('account');selectAccountPanel('verification')">Learn About Verification</button></div>
+        <div class="promo"><div><h3>Shop with Confidence</h3><p>Account login protects your marketplace actions.</p></div><button class="btn btn-gold" onclick="openAuth('register')">Create Account</button></div>
         <div class="promo"><div><h3>Start Selling</h3><p>Build your presence and publish products on SomaZon.</p></div><button class="btn btn-gold" onclick="startSell()">Become a Seller</button></div>
         <div class="promo"><div><h3>Need Help?</h3><p>Find answers or contact SomaZon support.</p></div><button class="btn btn-gold" onclick="showPage('account');selectAccountPanel('support')">Get Support</button></div>
       </div>
@@ -280,8 +280,8 @@ input[type=file]{display:none}
 
     <div class="section">
       <div class="trust-grid">
-        <div class="trust-card"><strong>🔒 Secure Shopping</strong><p>Your real transaction actions are protected behind account and verification gates.</p></div>
-        <div class="trust-card"><strong>🛡️ KYC Verification</strong><p>Verification is required when an account needs to complete protected marketplace actions.</p></div>
+        <div class="trust-card"><strong>🔒 Secure Shopping</strong><p>Your real transaction actions require an account.</p></div>
+        <div class="trust-card"><strong>🔐 Account Login</strong><p>Sign in is required to buy or sell.</p></div>
         <div class="trust-card"><strong>📦 Order Tracking</strong><p>Keep your order history and transaction status in your account.</p></div>
         <div class="trust-card"><strong>💬 Customer Support</strong><p>Get help through the SomaZon support section.</p></div>
       </div>
@@ -292,7 +292,7 @@ input[type=file]{display:none}
 <section id="marketplace" class="page">
   <div class="container">
     <div class="section-head">
-      <div><h1>Marketplace</h1><p>Browse products freely. Login and verification are only requested when you perform a protected action.</p></div>
+      <div><h1>Marketplace</h1><p>Browse products freely. Login is requested when you perform a protected action.</p></div>
       <button class="btn btn-outline" onclick="resetProducts()">All Products</button>
     </div>
     <div class="categories" style="margin-bottom:22px">
@@ -319,7 +319,7 @@ input[type=file]{display:none}
     <div style="margin-bottom:22px">
       <div class="eyebrow">Personal Area</div>
       <h1>My Account</h1>
-      <p style="color:var(--text-muted)">Manage your profile, verification, orders, support, and settings.</p>
+      <p style="color:var(--text-muted)">Manage your profile, orders, support, and settings.</p>
     </div>
     <div class="account-layout">
       <aside class="account-sidebar">
@@ -329,7 +329,6 @@ input[type=file]{display:none}
         </div>
         <div class="account-menu">
           <button class="active" data-panel="profile" onclick="selectAccountPanel('profile')">👤 My Profile</button>
-          <button data-panel="verification" onclick="selectAccountPanel('verification')">🛡️ Verification</button>
           <button data-panel="orders" onclick="selectAccountPanel('orders')">📦 My Orders</button>
           <button data-panel="wishlist" onclick="selectAccountPanel('wishlist')">❤️ Wishlist</button>
           <button data-panel="support" onclick="selectAccountPanel('support')">💬 Support</button>
@@ -359,19 +358,7 @@ input[type=file]{display:none}
             <div style="margin-top:20px"><button class="btn btn-black" type="submit">Save Changes</button></div>
           </form>
         </div>
-
-        <div id="panel-verification" class="account-panel">
-          <div class="panel-head"><h2>Verification</h2><p>Verification protects important marketplace actions.</p></div>
-          <div id="verificationStatus"></div>
-          <div class="steps">
-            <div class="step"><b>1</b><div><strong>Account</strong><p style="color:var(--text-muted);font-size:13px">Sign in before starting protected account actions.</p></div></div>
-            <div class="step"><b>2</b><div><strong>Identity information</strong><p style="color:var(--text-muted);font-size:13px">Submit the required identity details or document.</p></div></div>
-            <div class="step"><b>3</b><div><strong>Review</strong><p style="color:var(--text-muted);font-size:13px">Your verification status becomes Pending until reviewed.</p></div></div>
-          </div>
-          <button id="verifyActionBtn" class="btn btn-gold" onclick="startVerification()">Start Verification</button>
-        </div>
-
-        <div id="panel-orders" class="account-panel">
+<div id="panel-orders" class="account-panel">
           <div class="panel-head"><h2>My Orders</h2><p>Your completed and pending marketplace orders.</p></div>
           <div id="ordersList"></div>
         </div>
@@ -400,7 +387,7 @@ input[type=file]{display:none}
           <div class="panel-head"><h2>FAQ & Q&A</h2><p>Common questions about using SomaZon.</p></div>
           <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Can I browse SomaZon without an account?<span>+</span></button><div class="faq-a">Yes. Browsing, searching, and viewing products remain open. An account is requested when you need to perform a protected action.</div></div>
           <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">When is Login required?<span>+</span></button><div class="faq-a">Login is requested when you start an action that requires a user account, such as checkout, placing a real order, selling, or publishing a product.</div></div>
-          <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">When is Verification required?<span>+</span></button><div class="faq-a">Verification is required before completing protected real transactions, including completing a purchase or publishing/selling a product.</div></div>
+          <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">When is Verification required?<span>+</span></button><div class="faq-a">An account is required before buying or selling.</div></div>
           <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Can I change the interface language?<span>+</span></button><div class="faq-a">Yes. English is the official default language. The Settings area is prepared for additional languages.</div></div>
           <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Can I switch between Light and Dark mode?<span>+</span></button><div class="faq-a">Yes. Open My Account → Settings → Appearance and choose Light, Dark, or System.</div></div>
         </div>
@@ -434,7 +421,7 @@ input[type=file]{display:none}
     <div class="footer-grid">
       <div><div class="logo" style="margin-bottom:12px"><span class="soma">Soma</span><span class="zon">Zon</span></div><p>The Zone Where Trade Happens.</p><p style="margin-top:8px">Shop. Sell. Trade. Connect.</p></div>
       <div><h3>Marketplace</h3><a href="#" onclick="showPage('marketplace');return false">All Products</a><a href="#" onclick="showPage('deals');return false">Deals</a><a href="#" onclick="startSell();return false">Sell</a></div>
-      <div><h3>Account</h3><a href="#" onclick="showPage('account');return false">My Account</a><a href="#" onclick="showPage('account');selectAccountPanel('verification');return false">Verification</a><a href="#" onclick="showPage('account');selectAccountPanel('settings');return false">Settings</a></div>
+      <div><h3>Account</h3><a href="#" onclick="showPage('account');return false">My Account</a><a href="#" onclick="openAuth('register');return false">Verification</a><a href="#" onclick="showPage('account');selectAccountPanel('settings');return false">Settings</a></div>
       <div><h3>Support</h3><a href="mailto:mahamoudsa6122@gmail.com">Email Support</a><a href="https://wa.me/2520672367121" target="_blank">WhatsApp</a><a href="#" onclick="showPage('account');selectAccountPanel('faq');return false">FAQ & Q&A</a></div>
     </div>
     <div class="footer-bottom"><span>© 2026 <b style="color:var(--gold)">SomaZon</b> — The Zone Where Trade Happens.</span><span>Built for the future of trade ❤️</span></div>
@@ -463,23 +450,11 @@ input[type=file]{display:none}
     <div class="field"><label>Full Name</label><div class="input-with-icon"><i class="fa-solid fa-user input-icon" aria-hidden="true"></i><input id="authName" placeholder="Your full name" autocomplete="name"></div></div>
     <div class="field" style="margin-top:12px"><label>Email</label><div class="input-with-icon"><i class="fa-solid fa-envelope input-icon" aria-hidden="true"></i><input id="authEmail" type="email" required placeholder="you@example.com" autocomplete="email"></div></div>
     <div class="field" style="margin-top:12px"><label>Phone</label><input id="authPhone" type="tel" placeholder="Phone number" autocomplete="tel"></div>
-    <div class="field" style="margin-top:12px"><label>Password</label><div class="input-with-icon"><i class="fa-solid fa-lock input-icon" aria-hidden="true"></i><input id="authPassword" type="password" required placeholder="Password" autocomplete="new-password"><button type="button" class="password-toggle" onclick="togglePassword('authPassword',this)" aria-label="Show password"><i class="fa-regular fa-eye"></i></button></div></div>
+    <div class="field" style="margin-top:12px"><label>Password</label><div class="input-with-icon"><i class="fa-solid fa-lock input-icon" aria-hidden="true"></i><input id="authPassword" type="password" required placeholder="Password" autocomplete="current-password"><button type="button" class="password-toggle" onclick="togglePassword('authPassword',this)" aria-label="Show password"><i class="fa-regular fa-eye"></i></button></div></div>
     <p class="auth-note">You can browse SomaZon without signing in. Sign in is only required when you start a protected account action.</p>
-    <button type="button" id="resendVerificationBtn" class="btn btn-outline btn-full hidden" style="margin-bottom:10px" onclick="resendVerification()">Resend Verification Email</button>
     <button class="btn btn-black btn-full" id="authSubmit">Sign In</button>
   </form>
 </div>
-
-<div id="kycOverlay" class="modal-overlay" onclick="closeKyc(event)"></div>
-<div id="kycModal" class="modal">
-  <div class="modal-head"><h2>Identity Verification</h2><button class="close" onclick="closeKyc()">×</button></div>
-  <p style="color:var(--text-muted);margin-bottom:16px">To complete this protected action, submit your verification details.</p>
-  <div class="field"><label>Document Type</label><select id="kycType"><option>ID Card</option><option>Passport</option></select></div>
-  <div class="field" style="margin-top:12px"><label>Document Photo</label><label class="file-label">📄 Upload Document<input id="kycFile" type="file" accept="image/*,.pdf"></label><p id="kycFileName" style="font-size:12px;color:var(--slate);margin-top:6px">No file selected</p></div>
-  <div class="buy-gate">Your document is uploaded securely to the Supabase kyc-documents bucket and your verification request is saved to your profile.</div>
-  <button class="btn btn-gold btn-full" style="margin-top:18px" onclick="submitKyc()">Submit Verification</button>
-</div>
-
 <div id="toast" class="toast"></div>
 
 <script>
@@ -491,7 +466,11 @@ input[type=file]{display:none}
 /* ---------- Supabase configuration ---------- */
 const SUPABASE_URL = "https://ywajfrskmmehsgckgnbd.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_-djHA95UQyk5DhIF1gtTxA_QD9vnmRa";
-const SUPABASE_READY = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY && !SUPABASE_URL.includes("YOUR_SUPABASE"));
+const SUPABASE_READY = Boolean(
+  window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY &&
+  !SUPABASE_URL.includes("YOUR_SUPABASE") &&
+  !SUPABASE_ANON_KEY.includes("YOUR_SUPABASE")
+);
 
 const supabase = SUPABASE_READY
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
@@ -540,18 +519,8 @@ let lastAuthEmail = "";
 function getStoredTheme(){ return localStorage.getItem("somazon_theme") || "system"; }
 function getNotifications(){ return localStorage.getItem("somazon_notifications") !== "off"; }
 function isLogged(){ return Boolean(currentSession?.user); }
-function isEmailVerified(){ return Boolean(currentSession?.user?.email_confirmed_at); }
-function isVerified(){ return currentProfile?.kyc === "verified"; }
-
 function requireVerifiedEmail(){
-  if(!isLogged()){ openAuth("login"); showToast("Sign in is required to continue"); return false; }
-  if(!isEmailVerified()){
-    lastAuthEmail=currentSession?.user?.email||lastAuthEmail;
-    openAuth("login");
-    document.getElementById("resendVerificationBtn")?.classList.remove("hidden");
-    showToast("Please verify your email before continuing.");
-    return false;
-  }
+  if(!isLogged()){ openAuth("login"); showToast("Please sign in to continue."); return false; }
   return true;
 }
 function userId(){ return currentSession?.user?.id || null; }
@@ -652,7 +621,7 @@ async function loadProfile(){
     currentProfile=data || null;
     if(!currentProfile){
       const user=currentSession.user;
-      const fallback={id:user.id,email:user.email||"",full_name:user.user_metadata?.full_name||"SomaZon User",kyc:"not_verified"};
+      const fallback={id:user.id,email:user.email||"",full_name:user.user_metadata?.full_name||"SomaZon User",};
       const {data:created,error:createError}=await supabase.from("profiles").upsert(fallback).select().single();
       if(!createError) currentProfile=created;
     }
@@ -755,7 +724,6 @@ async function loadCart(){
 }
 async function addToCart(id){
   if(!requireVerifiedEmail()) return;
-  if(!isVerified()){openKyc();showToast("Verification is required to complete a purchase");return;}
   const p=products.find(x=>String(x.id)===String(id));
   if(!p || String(p.id).startsWith("demo-")){showToast("This temporary demo product is not orderable.");return;}
   if(!ensureSupabase("cart actions")) return;
@@ -809,13 +777,12 @@ function closeCart(){document.getElementById("drawerOverlay").classList.remove("
 async function buyProduct(id){
  if(String(id).startsWith("demo-")){showToast("Connect products table to enable real orders.");return;}
  if(!requireVerifiedEmail()) return;
- if(!isVerified()){showPage("account", "verification");showToast("Verification is required to complete a purchase");return;}
+ 
  await addToCart(id);openCart();
 }
 async function checkout(){
  if(!cart.length){showToast("Your cart is empty");return;}
  if(!requireVerifiedEmail()){closeCart();return;}
- if(!isVerified()){closeCart();showPage("account", "verification");showToast("Verify your identity before placing a real order");return;}
  if(!ensureSupabase("checkout")) return;
  const baseItems=cart.map(item=>{const p=products.find(x=>String(x.id)===String(item.id));return p?{product_id:p.id,title:p.name,price:Number(p.price),quantity:item.qty,image_url:p.images?.[0]||"",vendor_id:p.vendor_id||null}:null;}).filter(Boolean);
  if(!baseItems.length){showToast("Your cart contains no orderable products.");return;}
@@ -829,7 +796,6 @@ async function checkout(){
 }
 function startSell(){
  if(!requireVerifiedEmail()) return;
- if(!isVerified()){showPage("account", "verification");showToast("Verification is required before selling.");return;}
  showToast("Seller dashboard is ready for the next backend phase");
 }
 
@@ -874,7 +840,7 @@ async function submitAuth(e){
          await saveProfileToSupabase({full_name:name,email,phone,country:phoneInputs.authPhone?.getSelectedCountryData()?.name||""});
          closeAuth();showToast("Account created and signed in.");
        }else{
-         closeAuth();showToast("Account created. Check your email and click the link before signing in.");
+         closeAuth();showToast("Account created. If email confirmation is enabled in Supabase, check your inbox before signing in.");
        }
      }
    }else{
@@ -882,29 +848,17 @@ async function submitAuth(e){
      if(error) throw error;
      currentSession=data.session;
      await refreshUserData();
-     document.getElementById("resendVerificationBtn")?.classList.add("hidden");
+     
      closeAuth();showToast("Signed in successfully");
    }
  }catch(error){
    const message=backendMessage(error,authMode==="login"?"Sign in failed.":"Account creation failed.");
-   if(/email.*not.*confirm/i.test(error?.message||"")){
-     showToast(message);
-     setTimeout(()=>resendVerification(email),400);
-   }else showToast(message);
+   showToast(message);
  }finally{
    submit.disabled=false;submit.textContent=authMode==="login"?"Sign In":"Create Account";
  }
 }
-async function resendVerification(email=lastAuthEmail){
- if(!ensureSupabase("email verification")) return;
- const target=(email||document.getElementById("authEmail")?.value||"").trim().toLowerCase();
- if(!target){showToast("Enter your email first.");return;}
- try{
-   const {error}=await supabase.auth.resend({type:"signup",email:target,options:{emailRedirectTo:window.location.origin+window.location.pathname}});
-   if(error) throw error;
-   showToast("Verification email sent.");
- }catch(error){showToast(backendMessage(error,"Verification email could not be sent."));}
-}
+
 async function signOut(){
  if(!SUPABASE_READY){showToast("Supabase is not configured.");return;}
  const {error}=await supabase.auth.signOut();
@@ -930,7 +884,7 @@ async function updateAccountUI(){
  });
  const mobileAvatar=document.getElementById("mobileAvatar");if(mobileAvatar)mobileAvatar.textContent=photo?"👤":initials;
  document.getElementById("sideName").textContent=user?.name||"Guest User";
- document.getElementById("sideStatus").textContent=user?(!isEmailVerified()?"Email verification required":(isVerified()?"Verified account":"Account not verified")):"Browsing mode";
+ document.getElementById("sideStatus").textContent=user?"Signed in":"Browsing mode";
  document.getElementById("headerAuthBtn").textContent=user?"Account":"Sign In";
  document.getElementById("accountAuthAction").textContent=user?"🚪 Sign Out":"🔐 Sign In";
  const profile=currentProfile||{};
@@ -942,7 +896,7 @@ async function updateAccountUI(){
    if(profile.phone) try{phoneInputs.phone.setNumber(profile.phone)}catch(_e){}
  }else phoneInput.value=profile.phone||"";
  document.getElementById("country").value=profile.country||"";
- renderVerification();renderOrders();renderWishlist();loadSettings();
+ renderOrders();renderWishlist();loadSettings();
 }
 
 /* =========================================================
@@ -981,7 +935,6 @@ function selectAccountPanel(name){
  document.querySelectorAll(".account-panel").forEach(p=>p.classList.remove("active"));
  const target=document.getElementById("panel-"+name);if(target)target.classList.add("active");
  document.querySelectorAll(".account-menu button[data-panel]").forEach(b=>b.classList.toggle("active",b.dataset.panel===name));
- if(name==="verification")renderVerification();
  if(name==="orders")renderOrders();
  if(name==="wishlist")renderWishlist();
  updateAccountUI();
@@ -1025,41 +978,6 @@ async function handleProfilePhoto(e){
    updateAccountUI();showToast("Profile photo updated");
  }catch(error){showToast(backendMessage(error,"Profile photo upload failed."));}
 }
-
-function renderVerification(){
- const status=currentProfile?.kyc||"not_verified",box=document.getElementById("verificationStatus"),btn=document.getElementById("verifyActionBtn");
- if(status==="verified"){
-   box.innerHTML=`<div class="status-box verified"><div class="status-title">✓ Verified</div><div>Your identity has been verified. Protected marketplace actions are enabled.</div></div>`;
-   btn.textContent="Verification Complete";btn.disabled=true;
- }else if(status==="pending"){
-   box.innerHTML=`<div class="status-box pending"><div class="status-title">⏳ Pending Review</div><div>Your verification request has been submitted and is waiting for review.</div></div>`;
-   btn.textContent="Pending Review";btn.disabled=true;
- }else{
-   box.innerHTML=`<div class="status-box notverified"><div class="status-title">Verification Required</div><div>Verification is required before completing a real purchase, placing an order, selling, or publishing a product.</div></div>`;
-   btn.textContent="Start Verification";btn.disabled=false;
- }
-}
-function startVerification(){
- if(!requireVerifiedEmail()) return
- document.getElementById("kycOverlay").classList.add("open");document.getElementById("kycModal").classList.add("open");
-}
-function closeKyc(e){if(e&&e.target!==document.getElementById("kycOverlay"))return;document.getElementById("kycOverlay").classList.remove("open");document.getElementById("kycModal").classList.remove("open")}
-async function submitKyc(){
- if(!requireVerifiedEmail()){closeKyc();return}
- if(!ensureSupabase("identity verification"))return;
- const file=document.getElementById("kycFile").files[0];
- if(!file){showToast("Please upload your identity document");return}
- if(file.size>10*1024*1024){showToast("Verification document must be 10MB or smaller");return}
- try{
-   const type=document.getElementById("kycType").value;
-   const path=`${userId()}/${Date.now()}-${safeFileName(file.name)}`;
-   const storedPath=await uploadToBucket(STORAGE_BUCKETS.kyc,file,path);
-   const {data,error}=await supabase.from("profiles").update({kyc:"pending",kyc_document_type:type,kyc_document_path:storedPath,kyc_submitted_at:new Date().toISOString()}).eq("id",userId()).select().single();
-   if(error)throw error;
-   currentProfile=data;closeKyc();updateAccountUI();showPage("account", "verification");showToast("Verification submitted successfully");
- }catch(error){showToast(backendMessage(error,"Verification upload failed."));}
-}
-document.getElementById("kycFile").addEventListener("change",e=>document.getElementById("kycFileName").textContent=e.target.files[0]?.name||"No file selected");
 
 async function toggleWishlist(id){
  if(!requireVerifiedEmail()) return
