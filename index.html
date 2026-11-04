@@ -206,7 +206,11 @@ input[type=file]{display:none}
 .input-with-icon{position:relative}.input-with-icon>i.input-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--slate);z-index:2;pointer-events:none}.input-with-icon>input{padding-left:40px!important;padding-right:42px!important}.password-toggle{position:absolute;right:9px;top:50%;transform:translateY(-50%);background:transparent;color:var(--slate);width:34px;height:34px;border-radius:var(--radius-btn);z-index:3}.password-toggle:hover{color:var(--gold-dark)}
 .logo{line-height:1;flex-shrink:0}.logo .brand-wordmark{display:inline-flex;align-items:center}.logo .brand-dot{color:var(--gold)}
 </style>
+
+<!-- ✅ تم إضافة مكتبة الهاتف الناقصة هنا -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/css/intlTelInput.css">
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/intlTelInput.min.js"></script>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -488,10 +492,6 @@ const ACCEPTED_COUNTRIES = [
   "qa","kw","bh","om","jo","iq","pk","in","my","id","jp","kr","sg","za","ng","gh","sn"
 ];
 
-const DEFAULT_PLATFORM_COMMISSION_RATE = 0.05;
-const ALTERNATIVE_PLATFORM_COMMISSION_RATE = 0.02;
-const PLATFORM_COMMISSION_MODE = "standard";
-
 const DEMO_PRODUCTS = [
  {id:"demo-1",name:"Premium Smartphone",category:"Electronics",price:599,old:699,icon:"📱",rating:4.8,badge:"SALE",desc:"Powerful everyday smartphone with a premium display."},
  {id:"demo-2",name:"Wireless Headphones",category:"Electronics",price:89,old:119,icon:"🎧",rating:4.7,badge:"HOT",desc:"Comfortable wireless audio for work and travel."},
@@ -512,7 +512,6 @@ let authMode = "login";
 let currentSession = null;
 let currentProfile = null;
 let phoneInputs = {};
-let initialLoadComplete = false;
 let lastAuthEmail = "";
 
 /* ---------- Utilities ---------- */
@@ -777,7 +776,6 @@ function closeCart(){document.getElementById("drawerOverlay").classList.remove("
 async function buyProduct(id){
  if(String(id).startsWith("demo-")){showToast("Connect products table to enable real orders.");return;}
  if(!requireVerifiedEmail()) return;
- 
  await addToCart(id);openCart();
 }
 async function checkout(){
@@ -921,9 +919,10 @@ function showPage(id, panel = null){
  }
  if(id==="deals") renderDeals();
  
+ // ✅ إصلاح مشكلة التجمد في Netlify
  let hash = panel ? `#${id}/${panel}` : `#${id}`;
  if(window.location.hash !== hash) {
-     history.pushState(null, null, hash);
+     try { history.pushState(null, null, hash); } catch(e) {}
  }
  
  window.scrollTo({top:0,behavior:"smooth"});
@@ -938,7 +937,7 @@ function selectAccountPanel(name){
  updateAccountUI();
  
  if(document.getElementById("account").classList.contains("active")){
-     history.pushState(null, null, `#account/${name}`);
+     try { history.pushState(null, null, `#account/${name}`); } catch(e) {}
  }
 }
 
@@ -1047,7 +1046,7 @@ async function initSupabaseApp(){
 
  if(!SUPABASE_READY){
    showToast("Supabase is not configured yet. Add your URL and anon key to activate production mode.");
-   initialLoadComplete=true;return;
+   return;
  }
  try{
    const {data:{session}}=await supabase.auth.getSession();
@@ -1055,7 +1054,6 @@ async function initSupabaseApp(){
    await loadProducts();
    renderProducts();renderDeals();
    await refreshUserData();
-   initialLoadComplete=true;
  }catch(error){
    showToast(backendMessage(error,"Supabase connection could not be established."));
  }
@@ -1069,8 +1067,7 @@ async function initSupabaseApp(){
  });
 }
 
-// Explicitly expose handlers used by inline HTML attributes. Some embedded/mobile browsers
-// do not resolve top-level declarations consistently from inline event attributes.
+// ✅ ربط جميع الدوال بنافذة المتصفح لضمان عملها على Netlify
 window.showPage = showPage;
 window.openAuth = openAuth;
 window.filterCategory = filterCategory;
@@ -1098,16 +1095,7 @@ window.handleProfilePhoto = handleProfilePhoto;
 window.submitAuth = submitAuth;
 window.renderProducts = renderProducts;
 
-// Report runtime errors visibly so a WebView does not fail silently.
-window.addEventListener("error", function(event){
-  try { showToast("JavaScript error: " + (event.message || "unknown error")); } catch (_) {}
-});
-window.addEventListener("unhandledrejection", function(event){
-  try { showToast("App error: " + (event.reason?.message || String(event.reason || "unknown error"))); } catch (_) {}
-});
-
-window.matchMedia?.("(prefers-color-scheme: dark)").addEventListener?.("change",()=>{if(getStoredTheme()==="system")applyTheme();});
 initSupabaseApp();
 </script>
 </body>
-          </html>
+  </html>
