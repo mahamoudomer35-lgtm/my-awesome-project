@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="SomaZon — The Zone Where Trade Happens.">
+<title>SomaZon Marketplace</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/css/intlTelInput.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+
+<header class="header">
+  <div class="header-main">
+    <button class="logo" onclick="showPage('home')"><span class="logo-mark">S</span><span class="soma">Soma</span><span class="zon">Zon</span></button>
+    <div class="search-wrap">
+      <span class="search-icon">⌕</span>
+      <input id="searchInput" type="search" placeholder="Search products, brands, categories..." oninput="renderProducts()">
+    </div>
+    <div class="header-actions">
+      <button class="header-link" onclick="showPage('marketplace')">Marketplace</button>
+      <button class="header-link" id="headerAuthBtn" onclick="location.href='login.html'">Sign In</button>
+      <button class="profile-btn" id="profileBtn" onclick="showPage('account');selectAccountPanel('profile')" aria-label="My Account">M</button>
+    </div>
+  </div>
+  <nav class="desktop-nav">
+    <div class="desktop-nav-inner">
+      <button onclick="showPage('home')" data-nav="home">Home</button>
+      <button onclick="showPage('marketplace')" data-nav="marketplace">Marketplace</button>
+      <button onclick="filterCategory('Electronics')" data-nav="category">Categories</button>
+      <button onclick="showPage('deals')" data-nav="deals">Deals</button>
+      <button onclick="startSell()" data-nav="sell">Sell</button>
+      <button onclick="showPage('account');selectAccountPanel('support')" data-nav="support">Support</button>
+    </div>
+  </nav>
+</header>
+
+<main>
+<section id="home" class="page active">
+  <div class="container">
+    <div class="hero">
+      <div>
+        <div class="eyebrow">SomaZon Marketplace</div>
+        <h1>Welcome to the Future of Trading</h1>
+        <p>Discover, buy, sell, and connect with confidence on SomaZon — The Zone Where Trade Happens.</p>
+        <div class="hero-actions">
+          <button class="btn btn-gold" onclick="showPage('marketplace')">Start Shopping</button>
+          <button class="btn btn-black" onclick="startSell()">Start Selling</button>
+        </div>
+      </div>
+      <div class="hero-visual"><div class="rocket">🚀</div></div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><div><h2>Shop by Category</h2><p>Explore the SomaZon marketplace.</p></div></div>
+      <div class="categories">
+        <button class="category" onclick="filterCategory('Electronics')"><div class="emoji">📱</div>Electronics</button>
+        <button class="category" onclick="filterCategory('Fashion')"><div class="emoji">👟</div>Fashion</button>
+        <button class="category" onclick="filterCategory('Home')"><div class="emoji">🏠</div>Home</button>
+        <button class="category" onclick="filterCategory('Beauty')"><div class="emoji">✨</div>Beauty</button>
+        <button class="category" onclick="filterCategory('Trading Assets')"><div class="emoji">📈</div>Trading Assets</button>
+        <button class="category" onclick="filterCategory('Services')"><div class="emoji">🛠️</div>Services</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><div><h2>Featured Products</h2><p>Curated picks from the marketplace.</p></div><button class="btn btn-outline" onclick="showPage('marketplace')">View All</button></div>
+      <div id="homeProducts" class="product-grid"></div>
+    </div>
+
+    <div class="section">
+      <div class="promo-grid">
+        <div class="promo"><div><h3>Shop with Confidence</h3><p>Account features are available while identity verification is paused in Version 0.01.</p></div><button class="btn btn-gold" onclick="showPage('account');selectAccountPanel('verification')">Version 0.01 status</button></div>
+        <div class="promo"><div><h3>Start Selling</h3><p>Build your presence and publish products on SomaZon.</p></div><button class="btn btn-gold" onclick="startSell()">Become a Seller</button></div>
+        <div class="promo"><div><h3>Need Help?</h3><p>Find answers or contact SomaZon support.</p></div><button class="btn btn-gold" onclick="showPage('account');selectAccountPanel('support')">Get Support</button></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="trust-grid">
+        <div class="trust-card"><strong>🔒 Secure Shopping</strong><p>Your real transaction actions are protected behind account and verification gates.</p></div>
+        <div class="trust-card"><strong>🧪 Early Access</strong><p>Identity verification is disabled in this experimental version.</p></div>
+        <div class="trust-card"><strong>📦 Order Tracking</strong><p>Keep your order history and transaction status in your account.</p></div>
+        <div class="trust-card"><strong>💬 Customer Support</strong><p>Get help through the SomaZon support section.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="marketplace" class="page">
+  <div class="container">
+    <div class="section-head">
+      <div><h1>Marketplace</h1><p>Browse products freely. Login and verification are only requested when you perform a protected action.</p></div>
+      <button class="btn btn-outline" onclick="resetProducts()">All Products</button>
+    </div>
+    <div class="categories" style="margin-bottom:22px">
+      <button class="category" onclick="filterCategory('All')">🌐 All</button>
+      <button class="category" onclick="filterCategory('Electronics')">📱 Electronics</button>
+      <button class="category" onclick="filterCategory('Fashion')">👟 Fashion</button>
+      <button class="category" onclick="filterCategory('Home')">🏠 Home</button>
+      <button class="category" onclick="filterCategory('Trading Assets')">📈 Trading</button>
+      <button class="category" onclick="filterCategory('Services')">🛠️ Services</button>
+    </div>
+    <div id="marketProducts" class="product-grid"></div>
+  </div>
+</section>
+
+<section id="deals" class="page">
+  <div class="container">
+    <div class="section-head"><div><h1>Deals</h1><p>Current marketplace offers.</p></div></div>
+    <div id="dealProducts" class="product-grid"></div>
+  </div>
+</section>
+
+<section id="account" class="page">
+  <div class="container">
+    <div style="margin-bottom:22px">
+      <div class="eyebrow">Personal Area</div>
+      <h1>My Account</h1>
+      <p style="color:var(--text-muted)">Manage your profile, verification, orders, support, and settings.</p>
+    </div>
+    <div class="account-layout">
+      <aside class="account-sidebar">
+        <div class="account-user">
+          <div class="avatar" id="sideAvatar">M</div>
+          <div><strong id="sideName">Guest User</strong><small id="sideStatus">Browsing mode</small></div>
+        </div>
+        <div class="account-menu">
+          <button class="active" data-panel="profile" onclick="selectAccountPanel('profile')">👤 My Profile</button>
+          <button data-panel="verification" onclick="selectAccountPanel('verification')">🧪 Version 0.01</button>
+          <button data-panel="orders" onclick="selectAccountPanel('orders')">📦 My Orders</button>
+          <button data-panel="wishlist" onclick="selectAccountPanel('wishlist')">❤️ Wishlist</button>
+          <button data-panel="support" onclick="selectAccountPanel('support')">💬 Support</button>
+          <button data-panel="faq" onclick="selectAccountPanel('faq')">❓ FAQ & Q&A</button>
+          <button data-panel="settings" onclick="selectAccountPanel('settings')">⚙️ Settings</button>
+          <button id="accountAuthAction" onclick="handleAccountAuth()">🔐 Sign In</button>
+        </div>
+      </aside>
+
+      <div class="account-content">
+        <div id="panel-profile" class="account-panel active">
+          <div class="panel-head"><h2>My Profile</h2><p>Update your personal information and profile picture.</p></div>
+          <div class="profile-upload">
+            <div class="big-avatar" id="bigAvatar">M</div>
+            <div>
+              <label class="file-label">📷 Upload Photo<input id="profilePhoto" type="file" accept="image/png,image/jpeg,image/gif" onchange="handleProfilePhoto(event)"></label>
+              <p style="font-size:12px;color:var(--slate);margin-top:7px">JPG, PNG, GIF · Max 5MB</p>
+            </div>
+          </div>
+          <form onsubmit="saveProfile(event)">
+            <div class="form-grid">
+              <div class="field"><label>Full Name</label><input id="fullName" placeholder="Your full name"></div>
+              <div class="field"><label>Email</label><input id="email" type="email" placeholder="Your email"></div>
+              <div class="field"><label>Phone</label><input id="phone" placeholder="Phone number"></div>
+              <div class="field"><label>Country</label><input id="country" placeholder="Country"></div>
+            </div>
+            <div style="margin-top:20px"><button class="btn btn-black" type="submit">Save Changes</button></div>
+          </form>
+        </div>
+
+        <div id="panel-verification" class="account-panel">
+          <div class="panel-head"><h2>Verification</h2><p>Verification protects important marketplace actions.</p></div>
+          <div id="verificationStatus"></div>
+          <div class="steps">
+            <div class="step"><b>1</b><div><strong>Account</strong><p style="color:var(--text-muted);font-size:13px">Sign in before starting protected account actions.</p></div></div>
+            <div class="step"><b>2</b><div><strong>Identity information</strong><p style="color:var(--text-muted);font-size:13px">Submit the required identity details or document.</p></div></div>
+            <div class="step"><b>3</b><div><strong>Review</strong><p style="color:var(--text-muted);font-size:13px">Your verification status becomes Pending until reviewed.</p></div></div>
+          </div>
+          <button id="verifyActionBtn" class="btn btn-gold" onclick="startVerification()">Start Verification</button>
+        </div>
+
+        <div id="panel-orders" class="account-panel">
+          <div class="panel-head"><h2>My Orders</h2><p>Your completed and pending marketplace orders.</p></div>
+          <div id="ordersList"></div>
+        </div>
+
+        <div id="panel-wishlist" class="account-panel">
+          <div class="panel-head"><h2>Wishlist</h2><p>Products you saved for later.</p></div>
+          <div id="wishlistList" class="product-grid"></div>
+        </div>
+
+        <div id="panel-support" class="account-panel">
+          <div class="panel-head"><h2>Support</h2><p>Need help? Contact the SomaZon team.</p></div>
+          <div class="status-box notverified">
+            <div class="status-title">SomaZon Support</div>
+            <div style="color:var(--text-muted);font-size:14px">Email: mahamoudsa6122@gmail.com</div>
+            <div style="color:var(--text-muted);font-size:14px">WhatsApp: +2520672367121</div>
+            <div style="color:var(--text-muted);font-size:14px">Telegram: @Walith_1</div>
+          </div>
+          <div class="form-grid">
+            <div class="field full"><label>Subject</label><input placeholder="How can we help?"></div>
+            <div class="field full"><label>Message</label><textarea placeholder="Describe your question or issue..."></textarea></div>
+          </div>
+          <button class="btn btn-black" style="margin-top:18px" onclick="showToast('Support request prepared. Connect the backend to send it.')">Send Support Request</button>
+        </div>
+
+        <div id="panel-faq" class="account-panel">
+          <div class="panel-head"><h2>FAQ & Q&A</h2><p>Common questions about using SomaZon.</p></div>
+          <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Can I browse SomaZon without an account?<span>+</span></button><div class="faq-a">Yes. Browsing, searching, and viewing products remain open. An account is requested when you need to perform a protected action.</div></div>
+          <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">When is Login required?<span>+</span></button><div class="faq-a">Login is requested when you start an action that requires a user account, such as checkout, placing a real order, selling, or publishing a product.</div></div>
+          <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">When is Verification required?<span>+</span></button><div class="faq-a">Identity verification is currently disabled in Version 0.01.</div></div>
+          <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Can I change the interface language?<span>+</span></button><div class="faq-a">Yes. English is the official default language. The Settings area is prepared for additional languages.</div></div>
+          <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Can I switch between Light and Dark mode?<span>+</span></button><div class="faq-a">Yes. Open My Account → Settings → Appearance and choose Light, Dark, or System.</div></div>
+        </div>
+
+        <div id="panel-settings" class="account-panel">
+          <div class="panel-head"><h2>Settings</h2><p>Control your SomaZon interface and account preferences.</p></div>
+          <div class="setting-row">
+            <div><strong>Language</strong><p>Official default: English.</p></div>
+            <select id="languageSetting" onchange="saveSettings()"><option value="en">English</option><option value="ar">Arabic (Coming Soon)</option><option value="so">Somali (Coming Soon)</option></select>
+          </div>
+          <div class="setting-row">
+            <div><strong>Appearance</strong><p>Choose how SomaZon looks on your device.</p></div>
+            <div class="segmented" id="themeButtons">
+              <button onclick="setTheme('light')">Light</button><button onclick="setTheme('dark')">Dark</button><button onclick="setTheme('system')">System</button>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div><strong>Notifications</strong><p>Receive marketplace updates in the future.</p></div>
+            <button id="notificationToggle" class="btn btn-outline" onclick="toggleNotifications()">ON</button>
+          </div>
+          <div style="margin-top:22px"><button class="btn btn-gold" onclick="saveSettings();showToast('Settings saved')">Save Settings</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><div class="logo" style="margin-bottom:12px"><span class="soma">Soma</span><span class="zon">Zon</span></div><p>The Zone Where Trade Happens.</p><p style="margin-top:8px">Shop. Sell. Trade. Connect.</p></div>
+      <div><h3>Marketplace</h3><a href="#" onclick="showPage('marketplace');return false">All Products</a><a href="#" onclick="showPage('deals');return false">Deals</a><a href="#" onclick="startSell();return false">Sell</a></div>
+      <div><h3>Account</h3><a href="#" onclick="showPage('account');return false">My Account</a><a href="#" onclick="showPage('account');selectAccountPanel('verification');return false">Verification</a><a href="#" onclick="showPage('account');selectAccountPanel('settings');return false">Settings</a></div>
+      <div><h3>Support</h3><a href="mailto:mahamoudsa6122@gmail.com">Email Support</a><a href="https://wa.me/2520672367121" target="_blank">WhatsApp</a><a href="#" onclick="showPage('account');selectAccountPanel('faq');return false">FAQ & Q&A</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 <b style="color:var(--gold)">SomaZon</b> — The Zone Where Trade Happens.</span><span>Built for the future of trade ❤️</span></div>
+  </div>
+</footer>
+
+<nav class="mobile-nav">
+  <button onclick="showPage('home')" data-mobile="home"><span>⌂</span>Home</button>
+  <button onclick="showPage('marketplace')" data-mobile="marketplace"><span>🛍</span>Market</button>
+  <button onclick="openCart()"><span>🛒</span>Cart <sup id="cartCountMobile">0</sup></button>
+  <button onclick="showPage('account');selectAccountPanel('profile')" data-mobile="account"><span id="mobileAvatar">M</span>Account</button>
+</nav>
+
+<div id="drawerOverlay" class="drawer-overlay" onclick="closeCart()"></div>
+<aside id="cartDrawer" class="cart-drawer">
+  <div class="drawer-head"><h2>Your Cart</h2><button class="close" onclick="closeCart()">×</button></div>
+  <div id="cartBody" class="drawer-body"></div>
+  <div class="drawer-foot"><div class="total-line"><span>Total</span><span id="cartTotal">$0.00</span></div><button class="btn btn-gold btn-full" onclick="checkout()">Proceed to Checkout</button></div>
+</aside>
+
+<div id="toast" class="toast"></div>
+
+
+<script src="js/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/intlTelInput.min.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

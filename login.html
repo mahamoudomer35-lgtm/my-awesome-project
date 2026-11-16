@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head><meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#000000">
+        <title>Login | SomaZon</title><link rel="stylesheet" href="css/style.css">
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    </head>
+    <body class="" data-auth-page="login">
+        <main class="auth-page">
+            <section class="auth-card"><div class="auth-brand">
+                    <a class="logo" href="index.html">
+                        <span class="logo-mark">S</span>
+                        <span class="soma">Soma</span>
+                        <span class="zon">Zon</span>
+                    </a>
+                </div>
+                <h1>Welcome back</h1>
+                <p class="auth-subtitle">Sign in to continue to SomaZon.</p>
+                <form id="authForm">
+                    <div class="field">
+                        <label for="authEmail">Email address</label>
+                        <input id="authEmail" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+                    </div>
+                    <div class="field">
+                        <label for="authPassword">Password</label>
+                        <input id="authPassword" name="password" type="password" autocomplete="current-password" placeholder="Your password" required minlength="6">
+                    </div>
+                    <div id="authAlert" class="auth-alert hidden" role="status"></div>
+                    <button id="authSubmit" class="btn btn-gold btn-full" type="submit">Sign in</button>
+                </form>
+                <button class="btn btn-outline btn-full" style="margin-top:10px" type="button" onclick="resendVerification()">Resend confirmation email</button>
+                <p class="auth-switch">New to SomaZon? 
+                    <a href="register.html">Create an account</a>
+                </p>
+                <a class="auth-back" href="index.html">← Back to marketplace</a>
+            </section>
+        </main>
+        <script src="js/supabase.js"></script>
+        <script src="js/auth.js"></script>
+    </body>
+ </html>
